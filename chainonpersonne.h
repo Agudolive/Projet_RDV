@@ -11,11 +11,11 @@ private:
 
     chainonPersonne(string nom, string prenom, string numero, string email);
     ~chainonPersonne();
-    string c_nom;
-    string c_prenom;
-    string c_numero;
-    string c_email;
-    chainonPersonne* c_suivant;
+    string cp_nom;
+    string cp_prenom;
+    string cp_numero;
+    string cp_email;
+    chainonPersonne* cp_suivant;
 };
 
 #endif // CHAINONPERSONNE_H

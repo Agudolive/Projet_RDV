@@ -2,12 +2,12 @@
 #include <string>
 using namespace std;
 
-chainonPersonne::chainonPersonne(string nom, string prenom, string numero, string email):c_nom{nom}, c_prenom{prenom}, c_numero{numero}, c_email{email}
+chainonPersonne::chainonPersonne(string nom, string prenom, string numero, string email):cp_nom{nom}, cp_prenom{prenom}, cp_numero{numero}, cp_email{email}
 {
 }
 
 chainonPersonne::~chainonPersonne()
 {
-  delete c_suivant;
+  delete cp_suivant;
   delete this;
 }

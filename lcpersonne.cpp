@@ -19,16 +19,16 @@ void LCPersonne::ajouter(string nom, string prenom, string numero, string email)
 
   if(precedent == nullptr)
   {
-    nouveauChainon->c_suivant = l_tete;
+    nouveauChainon->cp_suivant = l_tete;
     l_tete = nouveauChainon;
   }
   else
   {
     chainonPersonne* crt = l_tete;
     while(crt != precedent)
-      crt = crt->c_suivant;
-    nouveauChainon->c_suivant = precedent->c_suivant;
-    precedent->c_suivant = nouveauChainon;
+      crt = crt->cp_suivant;
+    nouveauChainon->cp_suivant = precedent->cp_suivant;
+    precedent->cp_suivant = nouveauChainon;
   }
 }
 
@@ -45,8 +45,8 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
 
   while( crt != nullptr)
   {
-    crtNom = crt->c_nom;
-    crtPrenom = crt->c_prenom;
+    crtNom = crt->cp_nom;
+    crtPrenom = crt->cp_prenom;
     i = 0;
     while (i < crtNom.length() & i < nouveauNom.length())
     {
@@ -68,7 +68,7 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
         i++;
     }
     precedent = crt;
-    crt = crt->c_suivant;
+    crt = crt->cp_suivant;
 
     if(crt == nullptr)
       return precedent;
@@ -80,25 +80,25 @@ void LCPersonne::afficher()
   chainonPersonne* crt = l_tete;
   while(crt != nullptr)
   {
-    cout << crt->c_nom << " ; " << crt->c_prenom << " ; " << crt->c_numero << " ; " << crt->c_email << endl;
-    crt = crt->c_suivant;
+    cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
+    crt = crt->cp_suivant;
   }
 }
 
 void LCPersonne::supprimer(string nom, string prenom)
 {
   chainonPersonne* crt = l_tete;
-  if(nom == crt->c_nom & prenom == crt->c_prenom)
+  if(nom == crt->cp_nom & prenom == crt->cp_prenom)
   {
-    l_tete = crt->c_suivant;
+    l_tete = crt->cp_suivant;
     //delete
   }
   else
   {
-    while(crt->c_suivant->c_nom != nom & crt->c_suivant->c_prenom != prenom)
+    while(crt->cp_suivant->cp_nom != nom & crt->cp_suivant->cp_prenom != prenom)
     {
-      crt = crt->c_suivant;
+      crt = crt->cp_suivant;
     }
-    crt->c_suivant = crt->c_suivant->c_suivant;
+    crt->cp_suivant = crt->cp_suivant->cp_suivant;
   }
 }

@@ -16,6 +16,10 @@ public:
     void afficherPersonne(string nom);
     void supprimer(string nom, string prenom);
 
+    //a faire
+    void modifier(string nom, string prenom);
+    bool estLibre(string nom, string prenom);
+
 private:
     chainonPersonne* l_tete;
     chainonPersonne* trier(string& nouveauNom, string& nouveauPrenom) const;

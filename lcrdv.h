@@ -15,6 +15,10 @@ public:
     void supprimer(string libelle);
     void afficher(string libelle, LCPersonne* listePersonnes);
 
+    //a faire
+    void modifier(string libelle);
+    
+
 private:
     chainonRdv* l_tete;
 };

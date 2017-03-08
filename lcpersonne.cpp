@@ -5,8 +5,7 @@
 using namespace std;
 
 LCPersonne::LCPersonne():l_tete{nullptr}
-{
-}
+{}
 
 LCPersonne::~LCPersonne()
 {
@@ -83,6 +82,18 @@ void LCPersonne::afficher()
     cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
     crt = crt->cp_suivant;
   }
+}
+
+void LCPersonne::afficherPersonne(string nom)
+{
+  chainonPersonne* crt = l_tete;
+  while( (crt->cp_nom != nom) & (crt->cp_suivant != nullptr) )
+  {
+    crt = crt->cp_suivant;
+  }
+
+  if(crt->cp_nom == nom)
+    cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
 }
 
 void LCPersonne::supprimer(string nom, string prenom)

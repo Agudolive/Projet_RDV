@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-class chainonRdv;
+class LCPersonne;
 
 class LCRdv
 {
@@ -13,7 +13,7 @@ public:
     ~LCRdv();
     void ajouter(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<string> participants);
     void supprimer(string libelle);
-    void afficher();
+    void afficher(string libelle, LCPersonne* listePersonnes);
 
 private:
     chainonRdv* l_tete;

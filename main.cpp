@@ -11,28 +11,34 @@ using namespace std;
 
 int main()
 {
-    /*LCPersonne test;
-    test.ajouter("hzerezr","utikyuki", "666666666", "eifnopien@zefhzeuf.fr");
-    test.ajouter("gzerbzetrb","trynry", "666aezf666", "eifazefazeaefhzeuf.fr");
-    test.ajouter("azrtgzrt","azezrea", "666666666", "eifnopien@zefhzeuf.fr");
-    test.ajouter("czergzerg","xvsdfv", "666aezf666", "eifazefazeaefhzeuf.fr");
-    test.supprimer("azrtgzrt","azezrea");
-    test.afficher();*/
+    //création d'un répertoire de personnes
+    LCPersonne repertoirePersonne;
+    repertoirePersonne.ajouter("agudo","hassane", "0687654565", "eifnopien@zefhzeuf.fr");
+    repertoirePersonne.ajouter("gherardi","aliot", "0389769809", "eifazefazeaefhz@euf.fr");
+    repertoirePersonne.ajouter("carasco","sylvain", "0987675643", "eifnopien@zefhzeuf.fr");
+    repertoirePersonne.ajouter("hindie","olivier", "0789765487", "eifazefazeae@fhzeuf.fr");
+    repertoirePersonne.afficher();
+    cout << endl;
 
-    vector<string> p1(1);
-    p1[0]="Aa";
-    vector<string> p2(1);
-    p2[0]="Ba";
-    vector<string> p3(1);
-    p3[0]="Ca";
+    //création d'un vecteur string de participants a passer au constructeur
+    //liste rendez vous qui appelle lui meme le constructeur d'un nouveau chainon
+    vector<string> p1(2);
+    p1[0]="agudo";
+    p1[1]="hindie";
 
-    LCRdv test;
-    test.ajouter("azert", 1, 1, 1, 1, 2, p1);
-    test.ajouter("yuiop", 2, 2, 2, 2, 3, p2);
-    test.ajouter("qsdfg", 3, 3, 3, 3, 4, p3);
+    vector<string> p2(3);
+    p2[0]="gherardi";
+    p2[1]="carasco";
+    p2[2]="hindie";
 
-    test.supprimer("qsdfg");
+    //liste de rendez vous contenant 2 rendez vous
+    LCRdv repertoireRdv;
+    repertoireRdv.ajouter("rdv1", 1, 1, 1, 1, 2, p1);
+    repertoireRdv.ajouter("rdv2", 2, 2, 2, 2, 3, p2);
 
-    test.afficher();
+    repertoireRdv.afficher("rdv1", &repertoirePersonne);
+    cout << endl;
 
+    repertoireRdv.afficher("rdv2", &repertoirePersonne);
+    cout << endl;
 }

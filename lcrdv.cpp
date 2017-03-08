@@ -1,4 +1,5 @@
 #include "lcrdv.h"
+#include "lcpersonne.h"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -39,12 +40,20 @@ void LCRdv::supprimer(string libelle)
   }
 }
 
-void LCRdv::afficher()
+void LCRdv::afficher(string libelle, LCPersonne* listePersonnes)
 {
   chainonRdv* crt = l_tete;
-  while(crt != nullptr)
+
+  while( (libelle != crt->cr_libelle) &  (crt != nullptr) )
   {
-    cout << crt->cr_libelle << endl;
     crt = crt->cr_suivant;
   }
+
+  if(crt != nullptr)
+  {
+    cout << libelle << " :" << endl;
+    for(int i=0; i<crt->cr_participants.size(); i++)
+      listePersonnes->afficherPersonne(crt->cr_participants[i]);
+  }
+
 }

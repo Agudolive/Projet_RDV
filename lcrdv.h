@@ -16,8 +16,10 @@ public:
     void afficher(string libelle, LCPersonne* listePersonnes);
 
     //a faire
-    void modifier(string libelle);
-    
+    //tri rdv par ordre alphabétique
+    void modifier(string libelle); //modifier, date, heure et liste personne
+    void afficherEntreDates(/*date+heure debut*/ /*date+heure fin*/); //afficher rdv entre 2 dates
+    void afficherPourPersonne(string nom); //afficher tous rdv d'une personne
 
 private:
     chainonRdv* l_tete;

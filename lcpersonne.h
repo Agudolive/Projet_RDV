@@ -17,8 +17,9 @@ public:
     void supprimer(string nom, string prenom);
 
     //a faire
-    void modifier(string nom, string prenom);
-    bool estLibre(string nom, string prenom);
+    //si un personne a un rdv, on ne peut pas la supprimer, affiher message erreur
+    void modifier(string nom, string prenom); //tout modifier sauf nom/prenom
+    bool estLibre(string nom, string prenom /*date+heure debut*/ /*date+heure fin*/); //personne est-elle libre entre 2 dates
 
 private:
     chainonPersonne* l_tete;

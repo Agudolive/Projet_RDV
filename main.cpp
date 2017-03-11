@@ -25,8 +25,7 @@ int main()
     repertoirePersonne.ajouter("Ferre","Mathis", "06.52.35.59.69", "mathisferre@fakeemail.tld");
     repertoirePersonne.ajouter("Dumas","Quentin", "06.71.23.98.10", "quentindumas@fakeemail.tld");
     repertoirePersonne.afficher();
-    cout << endl;
-
+    cout << "___________________________________________" << endl << endl;
 
     //création d'un vecteur string de participants a passer au constructeur
     //liste rendez vous qui appelle lui meme le constructeur d'un nouveau chainon
@@ -55,22 +54,29 @@ int main()
     //affichage de la liste de rdv
     cout << "répertoire rdv :" << endl;
     repertoireRdv.afficherListeRdv();
-    cout << endl << endl;
+    cout << endl << "___________________________________________" << endl << endl;
 
     //affichage de chaque rdv
     repertoireRdv.afficher("rdv1", &repertoirePersonne);
     cout << endl;
 
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
-    cout << endl;
+    cout << endl << "___________________________________________" << endl << endl;
+
 
     //afficher tous les rdv entre 2 dates     int jour1, int mois1, int annee1, int jour2, int mois2, int annee2
-    cout << endl;
     repertoireRdv.afficherEntreDates(6,12,2016,11,9,2018);
     cout << endl;
     repertoireRdv.afficherEntreDates(11,1,2016,27,9,2017);
+    cout << endl << "___________________________________________" << endl << endl;
 
+    //affachier tous les rendez-vous d'une personne
+    cout << "rendez-vous de Ruiz CLément :" << endl;
+    repertoireRdv.afficherPourPersonne("Ruiz", "Clément", &repertoirePersonne);
     cout << endl;
+    cout << "rendez-vous de Dumas Quentin :" << endl;
+    repertoireRdv.afficherPourPersonne("Dumas", "Quentin", &repertoirePersonne);
+    cout << "___________________________________________" << endl << endl;
 
     //modification d'un rendez-vous
     bool b = false;
@@ -130,12 +136,13 @@ int main()
                 break;
         }
     }
-/*
+
     repertoireRdv.afficher("rdv1", &repertoirePersonne);
     cout << endl;
 
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
-    cout << endl;
-*/
+    cout << "___________________________________________" << endl << endl;
+
+
 
 }

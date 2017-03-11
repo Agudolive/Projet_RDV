@@ -4,9 +4,15 @@
 
 using namespace std;
 
+/**
+  Construit un objet liste chainée
+*/
 LCPersonne::LCPersonne():l_tete{nullptr}
 {}
 
+/**
+  Détruit un objet liste chainée
+*/
 LCPersonne::~LCPersonne()
 {
   //appel du destructeur de chaque chainonPersonne contenu dans la liste
@@ -21,6 +27,10 @@ LCPersonne::~LCPersonne()
 
 }
 
+/**
+  Ajoute une instance de l'objet chainonPersonne à la liste chainée
+  @param[in] nom, prenom, numero, email - des string contenant les informations de la personne
+*/
 void LCPersonne::ajouter(string nom, string prenom, string numero, string email)
 {
   chainonPersonne* nouveauChainon = new chainonPersonne(nom, prenom, numero, email);
@@ -41,6 +51,11 @@ void LCPersonne::ajouter(string nom, string prenom, string numero, string email)
   }
 }
 
+/**
+  Trouve la position à laquelle ajouter un nouveau chainon dans la liste de personnes
+  @param[in] nouveauNom, nouveauPrenom - le nom de la personne à ajouter
+  @return precedant - un pointeur sur le chainon précédant celui devant être ajouté
+*/
 chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) const
 {
   unsigned i;
@@ -84,6 +99,9 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
   }
 }
 
+/**
+  Affiche une liste de toutes les instance de la classe chainonPersonne avec les paramètres associés
+*/
 void LCPersonne::afficher()
 {
   chainonPersonne* crt = l_tete;
@@ -94,6 +112,10 @@ void LCPersonne::afficher()
   }
 }
 
+/**
+  Recherche un personne et affiche ses informations
+  @param[in] nom, prenom - des string contenant le nom de la personne
+*/
 void LCPersonne::afficherPersonne(string nom, string prenom)
 {
   chainonPersonne* crt = l_tete;
@@ -106,6 +128,10 @@ void LCPersonne::afficherPersonne(string nom, string prenom)
     cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
 }
 
+/**
+  supprime un chainon de la liste
+  @param[in] nom, prenom - des string contenant le nom de la personne à retirer de la liste
+*/
 void LCPersonne::supprimer(string nom, string prenom)
 {
   chainonPersonne* crt = l_tete;

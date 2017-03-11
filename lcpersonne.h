@@ -13,7 +13,7 @@ public:
     ~LCPersonne();
     void ajouter(string nom, string prenom, string numero, string email);
     void afficher();
-    void afficherPersonne(string nom);
+    void afficherPersonne(string nom, string prenom);
     void supprimer(string nom, string prenom);
 
     //a faire

@@ -21,7 +21,7 @@ LCRdv::~LCRdv()
   }
 }
 
-void LCRdv::ajouter(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<string> participants)
+void LCRdv::ajouter(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<vector<string>> participants)
 {
   chainonRdv* nouveauChainon = new chainonRdv(libelle, jour, mois, annee, heureDebut, heureFin, participants);
   chainonRdv* precedent = trier(libelle);
@@ -115,7 +115,7 @@ void LCRdv::afficher(string libelle, LCPersonne* listePersonnes)
     cout << libelle << " :" << endl;
     cout << "Le " << crt->cr_jour << "/" << crt->cr_mois << "/" << crt->cr_annee << " de " << crt->cr_heureDebut << "h à " << crt->cr_heureFin << "h" << endl;
     for(int i=0; i<crt->cr_participants.size(); i++)
-      listePersonnes->afficherPersonne(crt->cr_participants[i]);
+      listePersonnes->afficherPersonne(crt->cr_participants[i][0], crt->cr_participants[i][1]);
   }
 }
 
@@ -158,7 +158,7 @@ void LCRdv::modifierHeure(string libelle, int heureDebut, int heureFin)
   }
 }
 
-void LCRdv::modifierListePersonnes(string libelle, vector<string> participants)
+void LCRdv::modifierListePersonnes(string libelle, vector<vector<string>> participants)
 {
   chainonRdv* crt = l_tete;
 

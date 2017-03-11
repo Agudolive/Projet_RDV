@@ -14,29 +14,43 @@ int main()
     //création d'un répertoire de personnes
     LCPersonne repertoirePersonne;
     cout << "répertoire personnes :" << endl;
-    repertoirePersonne.ajouter("agudo","hassane", "0687654565", "eifnopien@zefhzeuf.fr");
-    repertoirePersonne.ajouter("gherardi","aliot", "0389769809", "eifazefazeaefhz@euf.fr");
-    repertoirePersonne.ajouter("carasco","sylvain", "0987675643", "eifnopien@zefhzeuf.fr");
-    repertoirePersonne.ajouter("hindie","olivier", "0789765487", "eifazefazeae@fhzeuf.fr");
+    repertoirePersonne.ajouter("Lefebvre","Kyllian", "06.92.38.77.78", "kyllianlefebvre@fakeemail.tld");
+    repertoirePersonne.ajouter("Texier","Lilian", "06.88.19.80.00", "liliantexier@fakeemail.tld");
+    repertoirePersonne.ajouter("Evrard","Juliette", "06.67.34.92.88", "julietteevrard@fakeemail.tld");
+    repertoirePersonne.ajouter("Grenier","Juliette", "06.34.10.68.70", "clemencegrenier@fakeemail.tld");
+    repertoirePersonne.ajouter("Simon","Mathieu", "06.33.15.83.95", "mathieusimon@fakeemail.tld");
+    repertoirePersonne.ajouter("Ruiz","Clément", "06.79.66.76.53", "clementmathieu@fakeemail.tld");
+    repertoirePersonne.ajouter("Ruiz","Florentin", "06.08.32.08.45", "florentinrichard@fakeemail.tld");
+    repertoirePersonne.ajouter("Ruiz","Théo", "06.36.60.14.14", "theoruiz@fakeemail.tld");
+    repertoirePersonne.ajouter("Ferre","Mathis", "06.52.35.59.69", "mathisferre@fakeemail.tld");
+    repertoirePersonne.ajouter("Dumas","Quentin", "06.71.23.98.10", "quentindumas@fakeemail.tld");
     repertoirePersonne.afficher();
     cout << endl;
 
 
     //création d'un vecteur string de participants a passer au constructeur
     //liste rendez vous qui appelle lui meme le constructeur d'un nouveau chainon
-    vector<string> p1(2);
-    p1[0]="agudo";
-    p1[1]="hindie";
+    vector<vector<string>> p1;
+    p1.resize(2, vector<string>(2));
+    p1[0][0]="Lefebvre";
+    p1[0][1]="Kyllian";
+    p1[1][0]="Ruiz";
+    p1[1][1]="Clément";
 
-    vector<string> p2(3);
-    p2[0]="gherardi";
-    p2[1]="carasco";
-    p2[2]="hindie";
+    vector<vector<string>> p2;
+    p2.resize(3, vector<string>(2));
+    p2[0][0]="Ruiz";
+    p2[0][1]="Clément";
+    p2[1][0]="Ruiz";
+    p2[1][1]="Florentin";
+    p2[2][0]="Dumas";
+    p2[2][1]="Quentin";
 
     //liste de rendez vous contenant 2 rendez vous
     LCRdv repertoireRdv;
     repertoireRdv.ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
-    repertoireRdv.ajouter("rdv2", 3, 2, 2017, 11, 12, p2);
+    repertoireRdv.ajouter("rdv2", 2, 3, 2017, 11, 12, p2);
+
 
     //affichage de la liste de rdv
     cout << "répertoire rdv :" << endl;
@@ -51,7 +65,11 @@ int main()
     cout << endl;
 
     //afficher tous les rdv entre 2 dates     int jour1, int mois1, int annee1, int jour2, int mois2, int annee2
-    repertoireRdv.afficherEntreDates(1, 3, 2014, 29, 6, 2018);
+    cout << endl;
+    repertoireRdv.afficherEntreDates(6,12,2016,11,9,2018);
+    cout << endl;
+    repertoireRdv.afficherEntreDates(11,1,2016,27,9,2017);
+
     cout << endl;
 
     //modification d'un rendez-vous
@@ -92,11 +110,16 @@ int main()
                 break;
             case 3:
             {
-                vector<string> personnes(4);
-                personnes[0]="gherardi";
-                personnes[1]="carasco";
-                personnes[2]="hindie";
-                personnes[3]= "agudo";
+                vector<vector<string>> personnes;
+                personnes.resize(4, vector<string>(2));
+                personnes[0][0]="Evrard";
+                personnes[0][1]="Juliette",
+                personnes[1][0]="Grenier";
+                personnes[1][1]="Juliette",
+                personnes[2][0]="Simon";
+                personnes[2][1]="Mathieu",
+                personnes[3][0]="Ferre";
+                personnes[3][1]="Mathis",
                 repertoireRdv.modifierListePersonnes(rdv, personnes);
                 break;
             }

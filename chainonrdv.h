@@ -11,7 +11,7 @@ friend class LCRdv;
 
 private:
 
-    chainonRdv(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<string> participants);
+    chainonRdv(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<vector<string>> participants);
     ~chainonRdv();
     string cr_libelle;
     int cr_jour;
@@ -19,8 +19,10 @@ private:
     int cr_annee;
     int cr_heureDebut;
     int cr_heureFin;
-    vector<string> cr_participants;
+    vector<vector<string>> cr_participants;
     chainonRdv* cr_suivant;
 };
 
 #endif // CHAINONRDV_H
+
+//tabContingence.resize(k_n, vector<double>(k_m));

@@ -94,15 +94,15 @@ void LCPersonne::afficher()
   }
 }
 
-void LCPersonne::afficherPersonne(string nom)
+void LCPersonne::afficherPersonne(string nom, string prenom)
 {
   chainonPersonne* crt = l_tete;
-  while( (crt->cp_nom != nom) & (crt->cp_suivant != nullptr) )
+  while( !((crt->cp_nom == nom) & (crt->cp_prenom == prenom)) & (crt->cp_suivant != nullptr) )
   {
     crt = crt->cp_suivant;
   }
 
-  if(crt->cp_nom == nom)
+  if( (crt->cp_nom == nom) & (crt->cp_prenom == prenom) )
     cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
 }
 

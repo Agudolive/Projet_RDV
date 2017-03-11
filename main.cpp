@@ -13,6 +13,7 @@ int main()
 {
     //création d'un répertoire de personnes
     LCPersonne repertoirePersonne;
+    cout << "répertoire personnes :" << endl;
     repertoirePersonne.ajouter("agudo","hassane", "0687654565", "eifnopien@zefhzeuf.fr");
     repertoirePersonne.ajouter("gherardi","aliot", "0389769809", "eifazefazeaefhz@euf.fr");
     repertoirePersonne.ajouter("carasco","sylvain", "0987675643", "eifnopien@zefhzeuf.fr");
@@ -34,10 +35,11 @@ int main()
 
     //liste de rendez vous contenant 2 rendez vous
     LCRdv repertoireRdv;
-    repertoireRdv.ajouter("rdv1", 2, 2, 2, 2, 3, p1);
-    repertoireRdv.ajouter("rdv2", 1, 1, 1, 1, 2, p2);
+    repertoireRdv.ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
+    repertoireRdv.ajouter("rdv2", 3, 2, 2017, 11, 12, p2);
 
     //affichage de la liste de rdv
+    cout << "répertoire rdv :" << endl;
     repertoireRdv.afficherListeRdv();
     cout << endl << endl;
 
@@ -48,8 +50,12 @@ int main()
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
     cout << endl;
 
+    //afficher tous les rdv entre 2 dates     int jour1, int mois1, int annee1, int jour2, int mois2, int annee2
+    repertoireRdv.afficherEntreDates(1, 3, 2014, 29, 6, 2018);
+    cout << endl;
+
     //modification d'un rendez-vous
-    bool b = true;
+    bool b = false;
     while(b)
     {
         string rdv;
@@ -101,10 +107,12 @@ int main()
                 break;
         }
     }
-
+/*
     repertoireRdv.afficher("rdv1", &repertoirePersonne);
     cout << endl;
 
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
     cout << endl;
+*/
+
 }

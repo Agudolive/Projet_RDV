@@ -113,6 +113,7 @@ void LCRdv::afficher(string libelle, LCPersonne* listePersonnes)
   if(crt != nullptr)
   {
     cout << libelle << " :" << endl;
+    cout << "Le " << crt->cr_jour << "/" << crt->cr_mois << "/" << crt->cr_annee << " de " << crt->cr_heureDebut << "h à " << crt->cr_heureFin << "h" << endl;
     for(int i=0; i<crt->cr_participants.size(); i++)
       listePersonnes->afficherPersonne(crt->cr_participants[i]);
   }
@@ -167,5 +168,49 @@ void LCRdv::modifierListePersonnes(string libelle, vector<string> participants)
   if(crt->cr_libelle == libelle)
   {
     crt->cr_participants = participants;
+  }
+}
+
+void LCRdv::afficherEntreDates(int jour1, int mois1, int annee1, int jour2, int mois2, int annee2)
+{
+  chainonRdv* crt = l_tete;
+
+  cout << "Entre le " << jour1 << "/" << mois1 << "/" << annee1 << " et le " << jour2 << "/" << mois2 << "/" << annee2 << endl;
+
+  while( crt != nullptr )
+  {
+
+    bool inferieur = false;
+    bool superieur = false;
+
+    //test si la date de rdv est supérieure a la borne inférieur
+    if(crt->cr_annee > annee1)
+      superieur = true;
+    else if(crt->cr_annee == annee1)
+    {
+      if(crt->cr_mois > mois1)
+        superieur = true;
+      else if(crt->cr_mois == mois1)
+        if(crt->cr_jour >= jour1)
+          superieur = true;
+    }
+
+    //test si la date de rdv est inférieur a la borne superieure
+    if(crt->cr_annee < annee2)
+      inferieur = true;
+    else if(crt->cr_annee == annee2)
+    {
+      if(crt->cr_mois < mois2)
+        inferieur = true;
+      else if(crt->cr_mois == mois2)
+        if(crt->cr_jour <= jour2)
+          inferieur = true;
+    }
+
+    //si la date de rdv est comprise entre les deux bornes, on l'afficher
+    if(inferieur & superieur)
+      cout << crt->cr_libelle << " ;";
+
+    crt = crt->cr_suivant;
   }
 }

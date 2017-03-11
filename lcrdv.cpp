@@ -10,8 +10,15 @@ LCRdv::LCRdv():l_tete{nullptr}
 
 LCRdv::~LCRdv()
 {
-  //delete l_tete;
-  //delete this;
+  //appel du destructeur de chaque chainonRdv contenu dans la liste
+  chainonRdv* suivant = l_tete;
+
+  while(suivant != nullptr)
+  {
+    suivant = l_tete->cr_suivant;
+    l_tete->~chainonRdv();
+    l_tete = suivant;
+  }
 }
 
 void LCRdv::ajouter(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<string> participants)

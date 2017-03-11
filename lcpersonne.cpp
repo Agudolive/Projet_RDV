@@ -9,6 +9,16 @@ LCPersonne::LCPersonne():l_tete{nullptr}
 
 LCPersonne::~LCPersonne()
 {
+  //appel du destructeur de chaque chainonPersonne contenu dans la liste
+  chainonPersonne* suivant = l_tete;
+
+  while(suivant != nullptr)
+  {
+    suivant = l_tete->cp_suivant;
+    l_tete->~chainonPersonne();
+    l_tete = suivant;
+  }
+
 }
 
 void LCPersonne::ajouter(string nom, string prenom, string numero, string email)

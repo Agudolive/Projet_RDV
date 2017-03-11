@@ -20,6 +20,7 @@ int main()
     repertoirePersonne.afficher();
     cout << endl;
 
+
     //création d'un vecteur string de participants a passer au constructeur
     //liste rendez vous qui appelle lui meme le constructeur d'un nouveau chainon
     vector<string> p1(2);

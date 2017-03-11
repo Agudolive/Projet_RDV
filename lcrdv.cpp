@@ -127,3 +127,45 @@ void LCRdv::afficherListeRdv()
     crt = crt->cr_suivant;
   }
 }
+
+void LCRdv::modifierDate(string libelle, int jour, int mois, int annee)
+{
+  chainonRdv* crt = l_tete;
+
+  while( (crt->cr_libelle != libelle) & (crt != nullptr) )
+    crt = crt->cr_suivant;
+
+  if(crt->cr_libelle == libelle)
+  {
+    crt->cr_jour = jour;
+    crt->cr_mois = mois;
+    crt->cr_annee = annee;
+  }
+}
+
+void LCRdv::modifierHeure(string libelle, int heureDebut, int heureFin)
+{
+  chainonRdv* crt = l_tete;
+
+  while( (crt->cr_libelle != libelle) & (crt != nullptr) )
+    crt = crt->cr_suivant;
+
+  if(crt->cr_libelle == libelle)
+  {
+    crt->cr_heureDebut = heureDebut;
+    crt->cr_heureFin = heureFin;
+  }
+}
+
+void LCRdv::modifierListePersonnes(string libelle, vector<string> participants)
+{
+  chainonRdv* crt = l_tete;
+
+  while( (crt->cr_libelle != libelle) & (crt != nullptr) )
+    crt = crt->cr_suivant;
+
+  if(crt->cr_libelle == libelle)
+  {
+    crt->cr_participants = participants;
+  }
+}

@@ -15,10 +15,12 @@ public:
     void supprimer(string libelle);
     void afficher(string libelle, LCPersonne* listePersonnes);
     void afficherListeRdv();
+    
+    void modifierDate(string libelle, int jour, int mois, int annee);
+    void modifierHeure(string libelle, int heureDebut, int HeureFin);
+    void modifierListePersonnes(string libelle, vector<string> participants);
 
     //a faire
-    //tri rdv par ordre alphabétique
-    void modifier(string libelle); //modifier, date, heure et liste personne
     void afficherEntreDates(/*date+heure debut*/ /*date+heure fin*/); //afficher rdv entre 2 dates
     void afficherPourPersonne(string nom); //afficher tous rdv d'une personne
 

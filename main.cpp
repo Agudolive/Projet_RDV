@@ -48,4 +48,63 @@ int main()
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
     cout << endl;
 
+    //modification d'un rendez-vous
+    bool b = true;
+    while(b)
+    {
+        string rdv;
+        cout << "Quel Rdv modifier ?" << endl;
+        cin >> rdv;
+
+        int choix;
+        cout << "Que voulez-vous modifier ?" << endl;
+        cout << "1) Date" << endl;
+        cout << "2) Heure" << endl;
+        cout << "3) Liste personnes" << endl;
+        cout << "4) Quitter" << endl;
+        cin >> choix;
+
+        switch (choix)
+        {
+            case 1:
+                int jour, mois, annee;
+                cout << "jour : ";
+                cin >> jour;
+                cout << "mois : ";
+                cin >> mois;
+                cout << "annee : ";
+                cin >> annee;
+                repertoireRdv.modifierDate(rdv, jour, mois, annee);
+                break;
+            case 2:
+                int heureDebut, heureFin;
+                cout << "heure debut : ";
+                cin >> heureDebut;
+                cout << "heure fin : ";
+                cin >> heureFin;
+                repertoireRdv.modifierHeure(rdv, heureDebut, heureFin);
+                break;
+            case 3:
+            {
+                vector<string> personnes(4);
+                personnes[0]="gherardi";
+                personnes[1]="carasco";
+                personnes[2]="hindie";
+                personnes[3]= "agudo";
+                repertoireRdv.modifierListePersonnes(rdv, personnes);
+                break;
+            }
+            case 4:
+                b = false;
+                break;
+            default:
+                break;
+        }
+    }
+
+    repertoireRdv.afficher("rdv1", &repertoirePersonne);
+    cout << endl;
+
+    repertoireRdv.afficher("rdv2", &repertoirePersonne);
+    cout << endl;
 }

@@ -24,9 +24,63 @@ LCRdv::~LCRdv()
 void LCRdv::ajouter(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<string> participants)
 {
   chainonRdv* nouveauChainon = new chainonRdv(libelle, jour, mois, annee, heureDebut, heureFin, participants);
+  chainonRdv* precedent = trier(libelle);
 
-  nouveauChainon->cr_suivant = l_tete;
-  l_tete = nouveauChainon;
+  if(precedent == nullptr)
+  {
+    nouveauChainon->cr_suivant = l_tete;
+    l_tete = nouveauChainon;
+  }
+  else
+  {
+    chainonRdv* crt = l_tete;
+    while(crt != precedent)
+      crt = crt->cr_suivant;
+    nouveauChainon->cr_suivant = precedent->cr_suivant;
+    precedent->cr_suivant = nouveauChainon;
+  }
+}
+
+chainonRdv* LCRdv::trier(string& nouveauLibelle) const
+{
+  unsigned i;
+  chainonRdv* crt = l_tete;
+  chainonRdv* precedent = l_tete;
+  if(crt == nullptr)
+    return nullptr;
+
+  string crtLibelle;
+  char nouveauChar, crtChar;
+
+  while( crt != nullptr)
+  {
+    crtLibelle = crt->cr_libelle;
+    i = 0;
+    while (i < crtLibelle.length() & i < nouveauLibelle.length())
+    {
+      nouveauChar = tolower(nouveauLibelle.at(i));
+      crtChar = tolower(crtLibelle.at(i));
+
+      if(nouveauChar < crtChar)
+      {
+        if(crt != l_tete)
+          return precedent;
+
+        else if (crt == l_tete)
+          return nullptr;
+      }
+      else if(nouveauChar > crtChar)
+        break;
+
+      else if(nouveauChar == crtChar)
+        i++;
+    }
+    precedent = crt;
+    crt = crt->cr_suivant;
+
+    if(crt == nullptr)
+      return precedent;
+  }
 }
 
 void LCRdv::supprimer(string libelle)
@@ -62,5 +116,14 @@ void LCRdv::afficher(string libelle, LCPersonne* listePersonnes)
     for(int i=0; i<crt->cr_participants.size(); i++)
       listePersonnes->afficherPersonne(crt->cr_participants[i]);
   }
+}
 
+void LCRdv::afficherListeRdv()
+{
+  chainonRdv* crt = l_tete;
+  while(crt != nullptr)
+  {
+    cout << crt->cr_libelle << " ; ";
+    crt = crt->cr_suivant;
+  }
 }

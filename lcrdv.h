@@ -14,6 +14,7 @@ public:
     void ajouter(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<string> participants);
     void supprimer(string libelle);
     void afficher(string libelle, LCPersonne* listePersonnes);
+    void afficherListeRdv();
 
     //a faire
     //tri rdv par ordre alphabétique
@@ -23,6 +24,7 @@ public:
 
 private:
     chainonRdv* l_tete;
+    chainonRdv* trier(string& nouveauLibelle) const;
 };
 
 #endif // LCRDV_H

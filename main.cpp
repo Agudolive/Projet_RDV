@@ -34,12 +34,18 @@ int main()
 
     //liste de rendez vous contenant 2 rendez vous
     LCRdv repertoireRdv;
-    repertoireRdv.ajouter("rdv1", 1, 1, 1, 1, 2, p1);
-    repertoireRdv.ajouter("rdv2", 2, 2, 2, 2, 3, p2);
+    repertoireRdv.ajouter("rdv1", 2, 2, 2, 2, 3, p1);
+    repertoireRdv.ajouter("rdv2", 1, 1, 1, 1, 2, p2);
 
+    //affichage de la liste de rdv
+    repertoireRdv.afficherListeRdv();
+    cout << endl << endl;
+
+    //affichage de chaque rdv
     repertoireRdv.afficher("rdv1", &repertoirePersonne);
     cout << endl;
 
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
     cout << endl;
+
 }

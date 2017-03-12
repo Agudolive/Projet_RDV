@@ -21,7 +21,7 @@ LCRdv::~LCRdv()
   while(suivant != nullptr)
   {
     suivant = l_tete->cr_suivant;
-    l_tete->~chainonRdv();
+    delete l_tete;
     l_tete = suivant;
   }
 }
@@ -109,7 +109,7 @@ void LCRdv::supprimer(string libelle)
   if(libelle == crt->cr_libelle)
   {
     l_tete = crt->cr_suivant;
-    crt->~chainonRdv();
+    delete crt;
   }
   else
   {
@@ -117,12 +117,9 @@ void LCRdv::supprimer(string libelle)
     {
       crt = crt->cr_suivant;
     }
+    chainonRdv* tmp = crt->cr_suivant;
     crt->cr_suivant = crt->cr_suivant->cr_suivant;
-
-    /* à trouver : comment appeler destructeur pour le chainonRdv
-    crt->cr_suivant->cr_suivant = nullptr;
-    crt->cr_suivant->~chainonRdv();
-    */
+    delete tmp;
   }
 }
 

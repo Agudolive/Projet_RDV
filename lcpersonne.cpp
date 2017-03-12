@@ -21,7 +21,7 @@ LCPersonne::~LCPersonne()
   while(suivant != nullptr)
   {
     suivant = l_tete->cp_suivant;
-    l_tete->~chainonPersonne();
+    delete l_tete;
     l_tete = suivant;
   }
 
@@ -138,14 +138,16 @@ void LCPersonne::supprimer(string nom, string prenom)
   if(nom == crt->cp_nom & prenom == crt->cp_prenom)
   {
     l_tete = crt->cp_suivant;
-    //delete
+    delete crt;
   }
   else
   {
-    while(crt->cp_suivant->cp_nom != nom & crt->cp_suivant->cp_prenom != prenom)
+    while( !(crt->cp_suivant->cp_nom == nom & crt->cp_suivant->cp_prenom == prenom) )
     {
       crt = crt->cp_suivant;
     }
+    chainonPersonne* tmp = crt->cp_suivant;
     crt->cp_suivant = crt->cp_suivant->cp_suivant;
+    delete tmp;;
   }
 }

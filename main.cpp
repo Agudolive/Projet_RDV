@@ -1,9 +1,7 @@
-#include <string>
 #include "lcpersonne.h"
-#include "chainonpersonne.h"
 #include "lcrdv.h"
-#include "chainonrdv.h"
 
+#include <string>
 #include <vector>
 #include <iostream>
 
@@ -25,6 +23,9 @@ int main()
     repertoirePersonne.ajouter("Ferre","Mathis", "06.52.35.59.69", "mathisferre@fakeemail.tld");
     repertoirePersonne.ajouter("Dumas","Quentin", "06.71.23.98.10", "quentindumas@fakeemail.tld");
     repertoirePersonne.afficher();
+    repertoirePersonne.supprimer("Dumas", "Quentin");
+    repertoirePersonne.supprimer("Ruiz", "Florentin");
+    repertoirePersonne.supprimer("Texier", "Lilian");
     cout << "___________________________________________" << endl << endl;
 
     //création d'un vecteur string de participants a passer au constructeur
@@ -49,6 +50,7 @@ int main()
     LCRdv repertoireRdv;
     repertoireRdv.ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
     repertoireRdv.ajouter("rdv2", 2, 3, 2017, 11, 12, p2);
+    repertoireRdv.ajouter("rdv3", 1, 1, 1, 1, 1, p2);
 
 
     //affichage de la liste de rdv
@@ -142,7 +144,5 @@ int main()
 
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
     cout << "___________________________________________" << endl << endl;
-
-
 
 }

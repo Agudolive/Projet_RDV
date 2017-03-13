@@ -23,9 +23,9 @@ int main()
     repertoirePersonne.ajouter("Ferre","Mathis", "06.52.35.59.69", "mathisferre@fakeemail.tld");
     repertoirePersonne.ajouter("Dumas","Quentin", "06.71.23.98.10", "quentindumas@fakeemail.tld");
     repertoirePersonne.afficher();
-    repertoirePersonne.supprimer("Dumas", "Quentin");
-    repertoirePersonne.supprimer("Ruiz", "Florentin");
-    repertoirePersonne.supprimer("Texier", "Lilian");
+    //repertoirePersonne.supprimer("Dumas", "Quentin");
+    //repertoirePersonne.supprimer("Ruiz", "Florentin");
+    //repertoirePersonne.supprimer("Texier", "Lilian");
     cout << "___________________________________________" << endl << endl;
 
     //création d'un vecteur string de participants a passer au constructeur
@@ -144,5 +144,16 @@ int main()
 
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
     cout << "___________________________________________" << endl << endl;
+
+    repertoirePersonne.supprimer("Lefebvre", "Kyllian", &repertoireRdv);
+    repertoirePersonne.supprimer("Grenier", "Juliette", &repertoireRdv);
+    repertoirePersonne.supprimer("Ruiz", "Théo", &repertoireRdv);
+
+    cout << "___________________________________________" << endl << endl;
+
+    repertoirePersonne.afficherPersonne("Lefebvre", "Kyllian");
+    repertoirePersonne.modifierNumero("Lefebvre", "Kyllian", "00.00.00.00.00");
+    repertoirePersonne.modifierEmail("Lefebvre", "Kyllian", "aaaaaaabbbbbbbb@ccccccccc.eee");
+    repertoirePersonne.afficherPersonne("Lefebvre", "Kyllian");
 
 }

@@ -23,6 +23,8 @@ public:
     void modifierHeure(string libelle, int heureDebut, int HeureFin);
     void modifierListePersonnes(string libelle, vector<vector<string>> participants);
 
+    bool avoirRdv(string nom, string prenom);
+
 private:
     chainonRdv* l_tete;
     chainonRdv* trier(string& nouveauLibelle) const;

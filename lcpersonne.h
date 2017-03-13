@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-class chainonPersonne;
+class LCRdv;
 
 class LCPersonne
 {
@@ -14,11 +14,12 @@ public:
     void ajouter(string nom, string prenom, string numero, string email);
     void afficher();
     void afficherPersonne(string nom, string prenom);
-    void supprimer(string nom, string prenom);
+    void supprimer(string nom, string prenom, LCRdv* listeRdv);
+
+    void modifierNumero(string nom, string prenom, string numero);
+    void modifierEmail(string nom, string prenom, string email);
 
     //a faire
-    //si un personne a un rdv, on ne peut pas la supprimer, affiher message erreur
-    void modifier(string nom, string prenom); //tout modifier sauf nom/prenom
     bool estLibre(string nom, string prenom /*date+heure debut*/ /*date+heure fin*/); //personne est-elle libre entre 2 dates
 
 private:

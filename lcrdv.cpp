@@ -117,9 +117,9 @@ void LCRdv::supprimer(string libelle)
     {
       crt = crt->cr_suivant;
     }
-    chainonRdv* tmp = crt->cr_suivant;
+    chainonRdv* crt = crt->cr_suivant;
     crt->cr_suivant = crt->cr_suivant->cr_suivant;
-    delete tmp;
+    delete crt;
   }
 }
 
@@ -282,4 +282,21 @@ void LCRdv::modifierListePersonnes(string libelle, vector<vector<string>> partic
   {
     crt->cr_participants = participants;
   }
+}
+
+bool LCRdv::avoirRdv(string nom, string prenom)
+{
+  chainonRdv* crt = l_tete;
+  bool rdv = false;
+
+  while(crt)
+  {
+    for(int i=0; i<crt->cr_participants.size(); i++)
+    {
+      if(crt->cr_participants[i][0]==nom & crt->cr_participants[i][1]==prenom)
+        rdv = true;
+    }
+    crt = crt->cr_suivant;
+  }
+  return rdv;
 }

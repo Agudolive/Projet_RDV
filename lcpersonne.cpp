@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include "lcpersonne.h"
+#include "lcrdv.h"
 
 using namespace std;
 
@@ -132,22 +133,56 @@ void LCPersonne::afficherPersonne(string nom, string prenom)
   supprime un chainon de la liste
   @param[in] nom, prenom - des string contenant le nom de la personne à retirer de la liste
 */
-void LCPersonne::supprimer(string nom, string prenom)
+void LCPersonne::supprimer(string nom, string prenom, LCRdv* listeRdv)
 {
   chainonPersonne* crt = l_tete;
-  if(nom == crt->cp_nom & prenom == crt->cp_prenom)
+
+  if(!listeRdv->avoirRdv(nom, prenom))
   {
-    l_tete = crt->cp_suivant;
-    delete crt;
+    if(nom == crt->cp_nom & prenom == crt->cp_prenom)
+    {
+      l_tete = crt->cp_suivant;
+      delete crt;
+    }
+    else
+    {
+      while( !(crt->cp_suivant->cp_nom == nom & crt->cp_suivant->cp_prenom == prenom) )
+      {
+        crt = crt->cp_suivant;
+      }
+      chainonPersonne* tmp = crt->cp_suivant;
+      crt->cp_suivant = crt->cp_suivant->cp_suivant;
+      delete tmp;;
+    }
   }
   else
   {
-    while( !(crt->cp_suivant->cp_nom == nom & crt->cp_suivant->cp_prenom == prenom) )
-    {
-      crt = crt->cp_suivant;
-    }
-    chainonPersonne* tmp = crt->cp_suivant;
-    crt->cp_suivant = crt->cp_suivant->cp_suivant;
-    delete tmp;;
+    cout << "La personne a un rdv en cours, impossible de supprimer" << endl;
+  }
+}
+
+void LCPersonne::modifierNumero(string nom, string prenom, string numero)
+{
+  chainonPersonne* crt = l_tete;
+
+  while( (crt->cp_nom!=nom & crt->cp_prenom!=prenom) & crt != nullptr )
+    crt = crt->cp_suivant;
+
+  if(crt->cp_nom == nom & crt->cp_prenom==prenom)
+  {
+    crt->cp_numero = numero;
+  }
+}
+
+void LCPersonne::modifierEmail(string nom, string prenom, string email)
+{
+  chainonPersonne* crt = l_tete;
+
+  while( (crt->cp_nom!=nom & crt->cp_prenom!=prenom) & crt != nullptr )
+    crt = crt->cp_suivant;
+
+  if(crt->cp_nom == nom & crt->cp_prenom==prenom)
+  {
+    crt->cp_email = email;
   }
 }

@@ -6,7 +6,6 @@ using namespace std;
 class chainonPersonne
 {
 friend class LCPersonne;
-friend class fromJson;
 
 private:
 

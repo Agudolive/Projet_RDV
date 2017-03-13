@@ -2,3 +2,9 @@
 
 interface::interface(){
 }
+
+void interface::ajouterPersonne(){
+
+  cout << "test";
+
+}

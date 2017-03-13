@@ -1,5 +1,6 @@
 #ifndef AFFICHAGE_H
     #include <iostream>
+    #include "interface.h"
 #define AFFICHAGE_H
 
 using namespace std;

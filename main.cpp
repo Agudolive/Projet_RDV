@@ -1,8 +1,6 @@
 #include <string>
 #include "lcpersonne.h"
-#include "chainonpersonne.h"
 #include "lcrdv.h"
-#include "chainonrdv.h"
 #include "affichage.h"
 #include "interface.h"
 #include <vector>
@@ -15,7 +13,6 @@ int main()
     interface* intertest;
     affichage test(intertest);
     test.demarrer();
-
 
     /*
     création d'un répertoire de personnes

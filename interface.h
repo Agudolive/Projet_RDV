@@ -8,6 +8,12 @@ class interface
 {
 public:
     interface();
+    void ajouterPersonne();
+    void supprimerPersonne();
+    //void modifierPersonne();
+    void ajouterRdv();
+    void supprimerRdv();
+    //void modifierRdv();
 
 private:
 

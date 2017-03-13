@@ -75,14 +75,14 @@ void affichage::menuPersonne(){
 
   switch (i) {
     case 1:
-        d_interface->ajouterPersonne();
+        a_interface->ajouterPersonne();
       break;
     case 2:
-        d_interface->supprimerPersonne();
+        a_interface->supprimerPersonne();
       break;
     case 3:
         //faire sous menu
-        d_interface->modifierPersonne();
+        //a_interface->modifierPersonne();
       break;
     case 4:
       menuPrincipale();
@@ -111,14 +111,14 @@ void affichage::menuRDV(){
 
   switch (i) {
     case 1:
-      d_interface->ajouterRdv();
+      a_interface->ajouterRdv();
       break;
     case 2:
-      d_interface->supprimerRdv();
+      a_interface->supprimerRdv();
       break;
     case 3:
       //faire un sous menu
-      d_interface->modifierRdv();
+      //a_interface->modifierRdv();
       break;
     case 4:
       menuPrincipale();

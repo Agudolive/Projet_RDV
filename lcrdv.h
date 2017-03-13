@@ -8,6 +8,7 @@ class LCPersonne;
 
 class LCRdv
 {
+friend class fromJson;
 public:
     LCRdv();
     ~LCRdv();

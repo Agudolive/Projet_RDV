@@ -8,6 +8,7 @@ class chainonPersonne;
 
 class LCPersonne
 {
+friend class fromJson;
 public:
     LCPersonne();
     ~LCPersonne();

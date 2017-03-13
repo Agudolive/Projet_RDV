@@ -8,6 +8,7 @@ class chainonRdv
 {
 
 friend class LCRdv;
+friend class fromJson;
 
 private:
 

@@ -3,7 +3,8 @@
 #include "chainonpersonne.h"
 #include "lcrdv.h"
 #include "chainonrdv.h"
-
+#include "affichage.h"
+#include "interface.h"
 #include <vector>
 #include <iostream>
 
@@ -11,7 +12,14 @@ using namespace std;
 
 int main()
 {
-    //création d'un répertoire de personnes
+    interface* intertest;
+    affichage test(intertest);
+    test.demarrer();
+
+
+    /*
+    création d'un répertoire de personnes
+
     LCPersonne repertoirePersonne;
     repertoirePersonne.ajouter("agudo","hassane", "0687654565", "eifnopien@zefhzeuf.fr");
     repertoirePersonne.ajouter("gherardi","aliot", "0389769809", "eifazefazeaefhz@euf.fr");
@@ -41,4 +49,5 @@ int main()
 
     repertoireRdv.afficher("rdv2", &repertoirePersonne);
     cout << endl;
+    */
 }

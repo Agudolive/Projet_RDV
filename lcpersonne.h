@@ -8,6 +8,7 @@ class chainonPersonne;
 
 class LCPersonne
 {
+
 public:
     LCPersonne();
     ~LCPersonne();

@@ -73,7 +73,7 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
     crtNom = crt->cp_nom;
     crtPrenom = crt->cp_prenom;
     i = 0;
-    while (i < crtNom.length() & i < nouveauNom.length())
+    while ( (i < crtNom.length()) & (i < nouveauNom.length()) )
     {
       nouveauChar = tolower(nouveauNom.at(i));
       crtChar = tolower(crtNom.at(i));
@@ -98,6 +98,7 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
     if(crt == nullptr)
       return precedent;
   }
+  return nullptr;
 }
 
 /**
@@ -139,14 +140,14 @@ void LCPersonne::supprimer(string nom, string prenom, LCRdv* listeRdv)
 
   if(!listeRdv->avoirRdv(nom, prenom))
   {
-    if(nom == crt->cp_nom & prenom == crt->cp_prenom)
+    if( (nom == crt->cp_nom) & (prenom == crt->cp_prenom) )
     {
       l_tete = crt->cp_suivant;
       delete crt;
     }
     else
     {
-      while( !(crt->cp_suivant->cp_nom == nom & crt->cp_suivant->cp_prenom == prenom) )
+      while( !( (crt->cp_suivant->cp_nom == nom) & (crt->cp_suivant->cp_prenom == prenom) ) )
       {
         crt = crt->cp_suivant;
       }
@@ -165,10 +166,10 @@ void LCPersonne::modifierNumero(string nom, string prenom, string numero)
 {
   chainonPersonne* crt = l_tete;
 
-  while( (crt->cp_nom!=nom & crt->cp_prenom!=prenom) & crt != nullptr )
+  while( ( (crt->cp_nom!=nom) & (crt->cp_prenom!=prenom) ) & (crt != nullptr) )
     crt = crt->cp_suivant;
 
-  if(crt->cp_nom == nom & crt->cp_prenom==prenom)
+  if( (crt->cp_nom == nom) & (crt->cp_prenom==prenom) )
   {
     crt->cp_numero = numero;
   }
@@ -178,10 +179,10 @@ void LCPersonne::modifierEmail(string nom, string prenom, string email)
 {
   chainonPersonne* crt = l_tete;
 
-  while( (crt->cp_nom!=nom & crt->cp_prenom!=prenom) & crt != nullptr )
+  while( ( (crt->cp_nom!=nom) & (crt->cp_prenom!=prenom) ) & (crt != nullptr) )
     crt = crt->cp_suivant;
 
-  if(crt->cp_nom == nom & crt->cp_prenom==prenom)
+  if( (crt->cp_nom == nom) & (crt->cp_prenom==prenom) )
   {
     crt->cp_email = email;
   }

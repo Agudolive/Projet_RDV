@@ -7,4 +7,9 @@ class cadre : public wxFrame
 {
   public :
     cadre();
+  private :
+    void OnCharger(wxCommandEvent& e);
+    void OnSave(wxCommandEvent& e);
+    void OnExit(wxCommandEvent& e);
+    void OnAfficherPersonnes(wxCommandEvent& e);
 };

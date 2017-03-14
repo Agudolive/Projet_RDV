@@ -72,7 +72,7 @@ chainonRdv* LCRdv::trier(string& nouveauLibelle) const
   {
     crtLibelle = crt->cr_libelle;
     i = 0;
-    while (i < crtLibelle.length() & i < nouveauLibelle.length())
+    while ( (i < crtLibelle.length()) & (i < nouveauLibelle.length()) )
     {
       nouveauChar = tolower(nouveauLibelle.at(i));
       crtChar = tolower(crtLibelle.at(i));
@@ -97,6 +97,7 @@ chainonRdv* LCRdv::trier(string& nouveauLibelle) const
     if(crt == nullptr)
       return precedent;
   }
+  return nullptr;
 }
 
 /**
@@ -117,7 +118,8 @@ void LCRdv::supprimer(string libelle)
     {
       crt = crt->cr_suivant;
     }
-    chainonRdv* crt = crt->cr_suivant;
+    //chainonRdv*
+    crt = crt->cr_suivant;
     crt->cr_suivant = crt->cr_suivant->cr_suivant;
     delete crt;
   }
@@ -141,7 +143,7 @@ void LCRdv::afficher(string libelle, LCPersonne* listePersonnes)
   {
     cout << libelle << " :" << endl;
     cout << "Le " << crt->cr_jour << "/" << crt->cr_mois << "/" << crt->cr_annee << " de " << crt->cr_heureDebut << "h à " << crt->cr_heureFin << "h" << endl;
-    for(int i=0; i<crt->cr_participants.size(); i++)
+    for(unsigned i=0; i<crt->cr_participants.size(); i++)
       listePersonnes->afficherPersonne(crt->cr_participants[i][0], crt->cr_participants[i][1]);
   }
 }
@@ -219,7 +221,7 @@ void LCRdv::afficherPourPersonne(string nom, string prenom, LCPersonne* listePer
 
   while( crt != nullptr )
   {
-    for(int i=0; i<crt->cr_participants.size(); i++)
+    for(unsigned i=0; i<crt->cr_participants.size(); i++)
     if( (crt->cr_participants[i][0]==nom) & (crt->cr_participants[i][1]==prenom) )
     afficher(crt->cr_libelle, listePersonnes);
 
@@ -291,9 +293,9 @@ bool LCRdv::avoirRdv(string nom, string prenom)
 
   while(crt)
   {
-    for(int i=0; i<crt->cr_participants.size(); i++)
+    for(unsigned i=0; i<crt->cr_participants.size(); i++)
     {
-      if(crt->cr_participants[i][0]==nom & crt->cr_participants[i][1]==prenom)
+      if( (crt->cr_participants[i][0]==nom) & (crt->cr_participants[i][1]==prenom) )
         rdv = true;
     }
     crt = crt->cr_suivant;

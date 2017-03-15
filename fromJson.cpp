@@ -105,11 +105,11 @@ void fromJson::getRdv()
     for ( unsigned i = 0; i < data.size(); i++ )
     {
         vector<vector<string>> participants;
-		
+
 		for ( unsigned j = 0; j < data[i]["participants"].size(); j++ )
-		{	
+		{
 			vector<string> tmp_participants;
-			
+
 			tmp_participants.push_back(data[i]["participants"][j][0]);
 			tmp_participants.push_back(data[i]["participants"][j][1]);
 
@@ -128,7 +128,7 @@ void fromJson::getRdv()
                 participants
         );
 
-		
+
     }
 }
 
@@ -153,7 +153,7 @@ void fromJson::saveRdv() {
         tmp["heureDebut"]   =   fj_repertoireRdv->getHeureDebut(crt);
         tmp["heureFin"]     =   fj_repertoireRdv->getHeureFin(crt);
 
-        for ( int i = 0; i < fj_repertoireRdv->getParticipants(crt).size(); i++ )
+        for ( unsigned i = 0; i < fj_repertoireRdv->getParticipants(crt).size(); i++ )
 		{
 			json tmp_participants;
 
@@ -161,7 +161,7 @@ void fromJson::saveRdv() {
 			tmp_participants.push_back(fj_repertoireRdv->getParticipants(crt)[i][1]);
             participants.push_back(tmp_participants);
 		}
-		
+
 
         tmp["participants"]	=	participants;
 

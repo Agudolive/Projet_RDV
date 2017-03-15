@@ -2,6 +2,7 @@
 
 #include "lcpersonne.h"
 #include "lcrdv.h"
+#include "fromJson.h"
 
 #include <string>
 #include <vector>

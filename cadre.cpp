@@ -148,19 +148,56 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
 
+  enum{
+    ID_CHAMP1, ID_CHAMP2, ID_CHAMP3, ID_CHAMP4, ID_BOUTON
+  };
+
   auto f = new wxFrame{nullptr, ID_POPUP, "Ajouter une personne", wxDefaultPosition};
   f -> Show(true);
   auto panneau = new wxPanel{f, wxID_ANY};
-  auto txt1 = new wxStaticText{f, wxID_STATIC,"Nom : "};
-  auto txt1 = new wxStaticText{f, wxID_STATIC,"Prenom : "};
-  auto txt1 = new wxStaticText{f, wxID_STATIC,"Numéro : "};
-  auto txt1 = new wxStaticText{f, wxID_STATIC,"Email : "};
+  // panneau->SetSize({6000,3000});
+
+  auto txt1 = new wxStaticText{panneau, wxID_STATIC,"Nom    : "};
+  auto txt2 = new wxStaticText{panneau, wxID_STATIC,"Prenom : "};
+  auto txt3 = new wxStaticText{panneau, wxID_STATIC,"Numero : "};
+  auto txt4 = new wxStaticText{panneau, wxID_STATIC,"Email  : "};
+
+  auto champ1 = new wxTextCtrl(panneau, ID_CHAMP1,"");
+  auto champ2 = new wxTextCtrl(panneau, ID_CHAMP2,"");
+  auto champ3 = new wxTextCtrl(panneau, ID_CHAMP3,"");
+  auto champ4 = new wxTextCtrl(panneau, ID_CHAMP4,"");
+
+  auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
+
   auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
+  sizer1->Add(txt1,0,wxALIGN_RIGHT | wxALL, 10);
+  sizer1->AddStretchSpacer(1);
+  sizer1->Add(champ1,0,wxALIGN_LEFT | wxALL, 10);
+
   auto sizer2 = new wxBoxSizer{wxHORIZONTAL};
+  sizer2->Add(txt2,0,wxALIGN_RIGHT | wxALL, 10);
+  sizer2->AddStretchSpacer(1);
+  sizer2->Add(champ2,0,wxALIGN_LEFT | wxALL, 10);
+
   auto sizer3 = new wxBoxSizer{wxHORIZONTAL};
+  sizer3->Add(txt3,0,wxALIGN_RIGHT | wxALL, 10);
+  sizer3->AddStretchSpacer(1);
+  sizer3->Add(champ3,0,wxALIGN_LEFT | wxALL, 10);
+
   auto sizer4 = new wxBoxSizer{wxHORIZONTAL};
+  sizer4->Add(txt4,0,wxALIGN_RIGHT | wxALL, 10);
+  sizer4->AddStretchSpacer(1);
+  sizer4->Add(champ4,0,wxALIGN_LEFT | wxALL, 10);
+
   auto sizer5 = new wxBoxSizer{wxVERTICAL};
+  sizer5->Add(sizer1,0,wxALIGN_LEFT | wxALL, 10);
+  sizer5->Add(sizer2,0,wxALIGN_LEFT | wxALL, 10);
+  sizer5->Add(sizer3,0,wxALIGN_LEFT | wxALL, 10);
+  sizer5->Add(sizer4,0,wxALIGN_LEFT | wxALL, 10);
+  sizer5->Add(bouton,0,wxALIGN_LEFT | wxALL, 10);
 
+  panneau->SetSizerAndFit(sizer5);
 
-
+  SetClientSize(panneau->GetSize());
+  SetMinSize(GetSize());
 }

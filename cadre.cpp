@@ -8,6 +8,7 @@
 #include <vector>
 #include <iostream>
 
+
 using namespace std;
 
 enum
@@ -154,13 +155,13 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
   chainonPersonne* crt = repertoirePersonne->getTete();
   wxString t;
   while(crt){
-    t += "   ";
+    t += wxString::FromUTF8("\xC2\xA0");
     t += repertoirePersonne->getNom(crt);
-    t += "   ";
+    t += wxString::FromUTF8("\xC2\xA0;\xC2\xA0");
     t += repertoirePersonne->getPrenom(crt);
-    t += "   ";
+    t += wxString::FromUTF8("\xC2\xA0;\xC2\xA0");
     t += repertoirePersonne->getNumero(crt);
-    t += "   ";
+    t += wxString::FromUTF8("\xC2\xA0;\xC2\xA0");
     t += repertoirePersonne->getEmail(crt);
     t += "\n";
     crt = repertoirePersonne->getSuivant(crt);

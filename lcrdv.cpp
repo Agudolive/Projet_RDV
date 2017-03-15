@@ -302,3 +302,58 @@ bool LCRdv::avoirRdv(string nom, string prenom)
   }
   return rdv;
 }
+
+
+bool LCRdv::estLibre(string nom, string prenom, int jour1, int mois1, int annee1, int heure1, int jour2, int mois2, int annee2, int heure2){
+
+  chainonRdv* crt = l_tete;
+
+  while(crt != nullptr){
+    for(unsigned i=0; i < crt->cr_participants.size(); i++){
+      if((crt->cr_participants[i][0] == nom) && (crt->cr_participants[i][1] == prenom)){
+
+        bool inferieur = false;
+        bool superieur = false;
+
+        if(crt->cr_annee > annee1)
+          superieur = true;
+        else if(crt->cr_annee == annee1){
+          if(crt->cr_mois > mois1)
+            superieur = true;
+          else if(crt->cr_mois == mois1){
+            if(crt->cr_jour > jour1)
+              superieur = true;
+            else if(crt->cr_jour == jour1){
+              superieur = true;
+              if(crt->cr_heureDebut >= heure1)
+                superieur = true;
+            }
+          }
+        }
+
+        //test si la date de rdv est inférieur a la borne superieure
+        if(crt->cr_annee < annee2)
+        inferieur = true;
+        else if(crt->cr_annee == annee2){
+          if(crt->cr_mois < mois2)
+            inferieur = true;
+          else if (crt->cr_mois == mois2){
+            if(crt->cr_jour <= jour2)
+              inferieur = true;
+            else if (crt->cr_jour == jour2){
+              inferieur = true;
+              if(crt->cr_heureFin <= heure2)
+                inferieur = true;
+            }
+          }
+        }
+
+        if(inferieur & superieur){
+          return 0;
+        }
+      }
+    }
+    crt = crt->cr_suivant;
+  }
+  return 1;
+}

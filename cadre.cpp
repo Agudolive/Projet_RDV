@@ -131,8 +131,13 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
   auto f = new wxFrame{nullptr, ID_POPUP, "Liste personnes", wxDefaultPosition, wxSize{640, 360}};
   f -> Show(true);
   chainonPersonne* crt = repertoirePersonne->getTete();
+  auto sizer = new wxBoxSizer{wxVERTICAL};
   while(crt){
-    new wxStaticText{f, wxID_STATIC, repertoirePersonne->getNom(crt)};
+    wxString t;
+    t += repertoirePersonne->getNom(crt);
+    t += "\n";
+    auto txt = new wxStaticText{f, wxID_STATIC, t};
+    sizer->Add(txt,0,wxALIGN_LEFT | wxALL,10);
     crt = repertoirePersonne->getSuivant(crt);
   }
 }

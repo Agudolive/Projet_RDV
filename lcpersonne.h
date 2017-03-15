@@ -19,8 +19,6 @@ public:
     void modifierNumero(string nom, string prenom, string numero);
     void modifierEmail(string nom, string prenom, string email);
 
-    //a faire
-    bool estLibre(string nom, string prenom /*date+heure debut*/ /*date+heure fin*/); //personne est-elle libre entre 2 dates
     chainonPersonne* getTete();
     string getNom(chainonPersonne* crt);
     string getPrenom(chainonPersonne* crt);

@@ -19,6 +19,10 @@ enum
 
 cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Carnet de rendez-vous", wxDefaultPosition}
 {
+  //initialisation des repertoires
+  repertoirePersonne = new LCPersonne{};
+  repertoireRdv = new LCRdv{};
+
   //création de la fenête vide
   SetClientSize(wxSize{960,540});
 
@@ -77,17 +81,18 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Carnet de rendez-vous", wxDefaultPo
 void cadre::OnCharger(wxCommandEvent& e)
 {
   //provisoire, sera remplacé par l'import json
-  LCPersonne repertoirePersonne;
-  repertoirePersonne.ajouter("Lefebvre","Kyllian", "06.92.38.77.78", "kyllianlefebvre@fakeemail.tld");
-  repertoirePersonne.ajouter("Texier","Lilian", "06.88.19.80.00", "liliantexier@fakeemail.tld");
-  repertoirePersonne.ajouter("Evrard","Juliette", "06.67.34.92.88", "julietteevrard@fakeemail.tld");
-  repertoirePersonne.ajouter("Grenier","Juliette", "06.34.10.68.70", "clemencegrenier@fakeemail.tld");
-  repertoirePersonne.ajouter("Simon","Mathieu", "06.33.15.83.95", "mathieusimon@fakeemail.tld");
-  repertoirePersonne.ajouter("Ruiz","Clément", "06.79.66.76.53", "clementmathieu@fakeemail.tld");
-  repertoirePersonne.ajouter("Ruiz","Florentin", "06.08.32.08.45", "florentinrichard@fakeemail.tld");
-  repertoirePersonne.ajouter("Ruiz","Théo", "06.36.60.14.14", "theoruiz@fakeemail.tld");
-  repertoirePersonne.ajouter("Ferre","Mathis", "06.52.35.59.69", "mathisferre@fakeemail.tld");
-  repertoirePersonne.ajouter("Dumas","Quentin", "06.71.23.98.10", "quentindumas@fakeemail.tld");
+  cout << repertoirePersonne->getTete() << endl;
+
+  repertoirePersonne->ajouter("Lefebvre","Kyllian", "06.92.38.77.78", "kyllianlefebvre@fakeemail.tld");
+  repertoirePersonne->ajouter("Texier","Lilian", "06.88.19.80.00", "liliantexier@fakeemail.tld");
+  repertoirePersonne->ajouter("Evrard","Juliette", "06.67.34.92.88", "julietteevrard@fakeemail.tld");
+  repertoirePersonne->ajouter("Grenier","Juliette", "06.34.10.68.70", "clemencegrenier@fakeemail.tld");
+  repertoirePersonne->ajouter("Simon","Mathieu", "06.33.15.83.95", "mathieusimon@fakeemail.tld");
+  repertoirePersonne->ajouter("Ruiz","Clément", "06.79.66.76.53", "clementmathieu@fakeemail.tld");
+  repertoirePersonne->ajouter("Ruiz","Florentin", "06.08.32.08.45", "florentinrichard@fakeemail.tld");
+  repertoirePersonne->ajouter("Ruiz","Théo", "06.36.60.14.14", "theoruiz@fakeemail.tld");
+  repertoirePersonne->ajouter("Ferre","Mathis", "06.52.35.59.69", "mathisferre@fakeemail.tld");
+  repertoirePersonne->ajouter("Dumas","Quentin", "06.71.23.98.10", "quentindumas@fakeemail.tld");
 
   vector<vector<string>> p1;
   p1.resize(2, vector<string>(2));
@@ -105,9 +110,10 @@ void cadre::OnCharger(wxCommandEvent& e)
   p2[2][0]="Dumas";
   p2[2][1]="Quentin";
 
-  LCRdv repertoireRdv;
-  repertoireRdv.ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
-  repertoireRdv.ajouter("rdv2", 2, 3, 2017, 11, 12, p2);
+
+  repertoireRdv->ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
+  repertoireRdv->ajouter("rdv2", 2, 3, 2017, 11, 12, p2);
+
 }
 
 void cadre::OnSave(wxCommandEvent& e)
@@ -124,5 +130,9 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 {
   auto f = new wxFrame{nullptr, ID_POPUP, "Liste personnes", wxDefaultPosition, wxSize{640, 360}};
   f -> Show(true);
-  new wxStaticText{f, wxID_STATIC, "Afficher informations ici"};
+  chainonPersonne* crt = repertoirePersonne->getTete();
+  while(crt){
+    new wxStaticText{f, wxID_STATIC, repertoirePersonne->getNom(crt)};
+    crt = repertoirePersonne->getSuivant(crt);
+  }
 }

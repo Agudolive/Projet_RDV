@@ -21,6 +21,14 @@ public:
 
     //a faire
     bool estLibre(string nom, string prenom /*date+heure debut*/ /*date+heure fin*/); //personne est-elle libre entre 2 dates
+    chainonPersonne* getTete();
+    string getNom(chainonPersonne* crt);
+    string getPrenom(chainonPersonne* crt);
+    string getNumero(chainonPersonne* crt);
+    string getEmail(chainonPersonne* crt);
+    void setTete();
+    chainonPersonne* getSuivant(chainonPersonne* crt);
+
 
 private:
     chainonPersonne* l_tete;

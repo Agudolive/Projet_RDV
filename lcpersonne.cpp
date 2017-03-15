@@ -60,6 +60,7 @@ void LCPersonne::ajouter(string nom, string prenom, string numero, string email)
 chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) const
 {
   unsigned i;
+  cout << "test12" << endl;
   chainonPersonne* crt = l_tete;
   chainonPersonne* precedent = l_tete;
   if(crt == nullptr)
@@ -186,4 +187,28 @@ void LCPersonne::modifierEmail(string nom, string prenom, string email)
   {
     crt->cp_email = email;
   }
+}
+
+chainonPersonne* LCPersonne::getTete(){
+  return l_tete;
+}
+
+string LCPersonne::getEmail(chainonPersonne* crt){
+  return crt->cp_email;
+}
+
+string LCPersonne::getNom(chainonPersonne* crt){
+  return crt->cp_nom;
+}
+
+string LCPersonne::getPrenom(chainonPersonne* crt){
+  return crt->cp_prenom;
+}
+
+string LCPersonne::getNumero(chainonPersonne* crt){
+  return crt->cp_numero;
+}
+
+chainonPersonne* LCPersonne::getSuivant(chainonPersonne* crt){
+  return crt->cp_suivant;
 }

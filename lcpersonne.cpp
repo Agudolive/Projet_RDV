@@ -113,3 +113,39 @@ void LCPersonne::supprimer(string nom, string prenom)
     crt->cp_suivant = crt->cp_suivant->cp_suivant;
   }
 }
+
+string LCPersonne::getNom(chainonPersonne &cp) {
+  return cp.cp_nom;
+}
+
+string LCPersonne::getPrenom(chainonPersonne &cp) {
+  return cp.cp_prenom;
+}
+
+string LCPersonne::getNumero(chainonPersonne &cp) {
+  return cp.cp_numero;
+}
+
+string LCPersonne::getEmail(chainonPersonne &cp) {
+  return cp.cp_email;
+}
+
+chainonPersonne * LCPersonne::getSuivant(chainonPersonne *cp) {
+  return cp->cp_suivant;
+}
+
+void LCPersonne::setNom(chainonPersonne &cp, string nom) {
+  cp.cp_nom = nom;
+}
+
+void LCPersonne::setPrenom(chainonPersonne &cp, string prenom) {
+  cp.cp_prenom = prenom;
+}
+
+void LCPersonne::setNumero(chainonPersonne &cp, string numero) {
+  cp.cp_numero = numero;
+}
+
+void LCPersonne::setEmail(chainonPersonne &cp, string email) {
+  cp.cp_email = email;
+}

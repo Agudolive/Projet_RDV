@@ -87,13 +87,13 @@ void fromJson::saveRepertoire() {
     {
         json tmp;
 
-        tmp["email"]    =   cp->cp_email;
-        tmp["nom"]      =   cp->cp_nom;
-        tmp["prenom"]   =   cp->cp_prenom;
-        tmp["numero"]   =   cp->cp_numero;
+        tmp["email"]    =   repertoirePersonne.getEmail(*cp);
+        tmp["nom"]      =   repertoirePersonne.getNom(*cp);
+        tmp["prenom"]   =   repertoirePersonne.getNumero(*cp);
+        tmp["numero"]   =   repertoirePersonne.getEmail(*cp);
 
         array.push_back(tmp);
-        cp = cp->cp_suivant;
+        cp = repertoirePersonne.getSuivant(cp);
 
     }
 
@@ -117,13 +117,13 @@ void fromJson::saveRepertoire(LCPersonne &repertoire) {
     {
         json tmp;
 
-        tmp["email"]    =   cp->cp_email;
-        tmp["nom"]      =   cp->cp_nom;
-        tmp["prenom"]   =   cp->cp_prenom;
-        tmp["numero"]   =   cp->cp_numero;
+        tmp["email"]    =   repertoire.getEmail(*cp);
+        tmp["nom"]      =   repertoire.getNom(*cp);
+        tmp["prenom"]   =   repertoire.getNumero(*cp);
+        tmp["numero"]   =   repertoire.getEmail(*cp);
 
         array.push_back(tmp);
-        cp = cp->cp_suivant;
+        cp = repertoire.getSuivant(cp);
 
     }
 
@@ -219,20 +219,20 @@ void fromJson::saveRdv() {
         json tmp;
         json participants;
 
-        tmp["libelle"]      =   cr->cr_libelle;
-        tmp["jour"]         =   cr->cr_jour;
-        tmp["mois"]         =   cr->cr_mois;
-        tmp["annee"]        =   cr->cr_annee;
-        tmp["heureDebut"]   =   cr->cr_heureDebut;
-        tmp["heureFin"]     =   cr->cr_heureFin;
+        tmp["libelle"]      =   repertoireRdv.getLibelle(*cr);
+        tmp["jour"]         =   repertoireRdv.getJour(*cr);
+        tmp["mois"]         =   repertoireRdv.getMois(*cr);
+        tmp["annee"]        =   repertoireRdv.getAnnee(*cr);
+        tmp["heureDebut"]   =   repertoireRdv.getHeureDebut(*cr);
+        tmp["heureFin"]     =   repertoireRdv.getHeureFin(*cr);
 
-        for ( int i = 0; i < cr->cr_participants.size(); i++ )
-            participants.push_back(cr->cr_participants[i]);
+        for ( int i = 0; i < repertoireRdv.getParticipants(*cr).size(); i++ )
+            participants.push_back(repertoireRdv.getParticipants(*cr)[i]);
 
         tmp["participants"] =   participants;
 
         array.push_back(tmp);
-        cr = cr->cr_suivant;
+        cr = repertoireRdv.getSuivant(*cr);
     }
 
     if ( output_json.is_open() )
@@ -255,20 +255,20 @@ void fromJson::saveRdv(LCRdv &repertoire) {
         json tmp;
         json participants;
 
-        tmp["libelle"]      =   cr->cr_libelle;
-        tmp["jour"]         =   cr->cr_jour;
-        tmp["mois"]         =   cr->cr_mois;
-        tmp["annee"]        =   cr->cr_annee;
-        tmp["heureDebut"]   =   cr->cr_heureDebut;
-        tmp["heureFin"]     =   cr->cr_heureFin;
+        tmp["libelle"]      =   repertoire.getLibelle(*cr);
+        tmp["jour"]         =   repertoire.getJour(*cr);
+        tmp["mois"]         =   repertoire.getMois(*cr);
+        tmp["annee"]        =   repertoire.getAnnee(*cr);
+        tmp["heureDebut"]   =   repertoire.getHeureDebut(*cr);
+        tmp["heureFin"]     =   repertoire.getHeureFin(*cr);
 
-        for ( int i = 0; i < cr->cr_participants.size(); i++ )
-            participants.push_back(cr->cr_participants[i]);
+        for ( int i = 0; i < repertoire.getParticipants(*cr).size(); i++ )
+            participants.push_back(repertoire.getParticipants(*cr)[i]);
 
         tmp["participants"] =   participants;
 
         array.push_back(tmp);
-        cr = cr->cr_suivant;
+        cr = repertoire.getSuivant(*cr);
     }
 
     if ( output_json.is_open() )

@@ -9,6 +9,9 @@ class chainonRdv
 
 friend class LCRdv;
 
+public:
+
+    
 private:
 
     chainonRdv(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<string> participants);

@@ -17,6 +17,18 @@ public:
     void afficherPersonne(string nom);
     void supprimer(string nom, string prenom);
 
+    string  getNom(chainonPersonne &cp);
+    string  getPrenom(chainonPersonne &cp);
+    string  getNumero(chainonPersonne &cp);
+    string  getEmail(chainonPersonne &cp);
+
+    void    setNom(chainonPersonne &cp, string nom);
+    void    setPrenom(chainonPersonne &cp, string prenom);
+    void    setNumero(chainonPersonne &cp, string numero);
+    void    setEmail(chainonPersonne &cp, string email);
+
+    chainonPersonne * getSuivant(chainonPersonne *cp);
+
     //a faire
     //si un personne a un rdv, on ne peut pas la supprimer, affiher message erreur
     void modifier(string nom, string prenom); //tout modifier sauf nom/prenom

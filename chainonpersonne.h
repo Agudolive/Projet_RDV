@@ -7,6 +7,8 @@ class chainonPersonne
 {
 friend class LCPersonne;
 
+public:
+
 private:
 
     chainonPersonne(string nom, string prenom, string numero, string email);

@@ -14,15 +14,15 @@ using namespace std;
 class fromJson {
 public:
 
-    fromJson(LCPersonne &lcp, LCRdv &lcr);
+    fromJson(LCPersonne *lcp, LCRdv *lcr);
     fromJson();
 
-    // LCRdv       getRdv();
-    // void        getRdv(LCRdv &repertoire);
-    // void        saveRdv();
-    // void        saveRdv(LCRdv &repertoire);
+	void getRdv();
+    void        getRdv(LCRdv &repertoire);
+    void        saveRdv();
+	void        saveRdv(LCRdv *repertoire);
 
-    LCPersonne  getRepertoire();
+    void getRepertoire();
     void        getRepertoire(LCPersonne &repertoire);
     void        saveRepertoire();
     void        saveRepertoire(LCPersonne &repertoire);
@@ -30,8 +30,8 @@ public:
 
 private:
 
-    LCPersonne  fj_repertoirePersonne;
-    LCRdv       fj_repertoireRdv;
+    LCPersonne*  fj_repertoirePersonne;
+    LCRdv*       fj_repertoireRdv;
 
 
 };

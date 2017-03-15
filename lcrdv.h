@@ -26,18 +26,22 @@ public:
 
     bool avoirRdv(string nom, string prenom);
 
-    string getLibelle();
-    int getJour();
-    int getMois();
-    int getAnnee();
-    int getHeureDebut();
-    int getHeureFin();
-    vector<vector<string>> getParticipants(chainonRdv &crt, vector<string> &participants);
+    string getLibelle(chainonRdv *crt);
+    chainonRdv *getTete();
+
+    int getJour(chainonRdv *crt);
+    int getMois(chainonRdv *crt);
+    int getAnnee(chainonRdv *crt);
+    int getHeureDebut(chainonRdv *crt);
+    int getHeureFin(chainonRdv *crt);
+    chainonRdv * getSuivant(chainonRdv *crt);
+    vector<vector<string>> getParticipants(chainonRdv *crt);
 
 
 private:
     chainonRdv* l_tete;
     chainonRdv* trier(string& nouveauLibelle) const;
+
 };
 
 #endif // LCRDV_H

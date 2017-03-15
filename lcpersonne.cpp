@@ -60,6 +60,7 @@ void LCPersonne::ajouter(string nom, string prenom, string numero, string email)
 chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) const
 {
   unsigned i;
+  cout << "test12" << endl;
   chainonPersonne* crt = l_tete;
   chainonPersonne* precedent = l_tete;
   if(crt == nullptr)

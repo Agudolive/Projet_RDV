@@ -357,3 +357,47 @@ bool LCRdv::estLibre(string nom, string prenom, int jour1, int mois1, int annee1
   }
   return 1;
 }
+
+string LCRdv::getLibelle(chainonRdv *crt)
+{
+  return crt->cr_libelle;
+}
+
+int LCRdv::getJour(chainonRdv *crt)
+{
+  return crt->cr_jour;
+}
+
+int LCRdv::getMois(chainonRdv *crt)
+{
+  return crt->cr_mois;
+}
+
+int LCRdv::getAnnee(chainonRdv *crt)
+{
+  return crt->cr_annee;
+}
+
+int LCRdv::getHeureDebut(chainonRdv *crt)
+{
+  return crt->cr_heureDebut;
+}
+
+int LCRdv::getHeureFin(chainonRdv *crt)
+{
+  return crt->cr_heureFin;
+}
+
+chainonRdv * LCRdv::getSuivant(chainonRdv *crt)
+{
+  return crt->cr_suivant;
+}
+
+chainonRdv *LCRdv::getTete()
+{
+  return l_tete;
+}
+
+vector<vector<string>> LCRdv::getParticipants(chainonRdv *crt) {
+    return crt->cr_participants;
+}

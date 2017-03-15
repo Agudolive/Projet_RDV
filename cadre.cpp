@@ -83,6 +83,7 @@ void cadre::OnCharger(wxCommandEvent& e)
 {
   //provisoire, sera remplace par l'import json
 
+  /*
   repertoirePersonne->ajouter("Lefebvre","Kyllian", "06.92.38.77.78", "kyllianlefebvre@fakeemail.tld");
   repertoirePersonne->ajouter("Texier","Lilian", "06.88.19.80.00", "liliantexier@fakeemail.tld");
   repertoirePersonne->ajouter("Evrard","Juliette", "06.67.34.92.88", "julietteevrard@fakeemail.tld");
@@ -113,11 +114,29 @@ void cadre::OnCharger(wxCommandEvent& e)
 
   repertoireRdv->ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
   repertoireRdv->ajouter("rdv2", 2, 3, 2017, 11, 12, p2);
+   */
+
+  delete repertoirePersonne;
+  delete repertoireRdv;
+
+  //appel lors du chargement json
+  repertoirePersonne = new LCPersonne{};
+  repertoireRdv = new LCRdv{};
+
+  fromJson json_load = fromJson{repertoirePersonne, repertoireRdv};
+
+
+  json_load.getRepertoire();
+  json_load.getRdv();
 }
 
 void cadre::OnSave(wxCommandEvent& e)
 {
   //appel de la sauvegarde json
+  fromJson json_save = fromJson{repertoirePersonne, repertoireRdv};
+
+  json_save.saveRepertoire();
+  json_save.saveRdv();
 }
 
 void cadre::OnExit(wxCommandEvent& e)
@@ -147,7 +166,6 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 }
 
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
-
   auto f = new wxFrame{nullptr, ID_POPUP, "Ajouter une personne", wxDefaultPosition};
   f -> Show(true);
   auto panneau = new wxPanel{f, wxID_ANY};
@@ -160,7 +178,6 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
   auto sizer3 = new wxBoxSizer{wxHORIZONTAL};
   auto sizer4 = new wxBoxSizer{wxHORIZONTAL};
   auto sizer5 = new wxBoxSizer{wxVERTICAL};
-
 
 
 }

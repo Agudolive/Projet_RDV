@@ -115,7 +115,7 @@ void cadre::OnCharger(wxCommandEvent& e)
 
   repertoireRdv->ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
   repertoireRdv->ajouter("rdv2", 2, 3, 2017, 11, 12, p2);
-   */
+*/
 
   delete repertoirePersonne;
   delete repertoireRdv;
@@ -149,6 +149,8 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 {
   auto f = new wxFrame{nullptr, ID_POPUP, "Liste des contacts", wxDefaultPosition};
   f -> Show(true);
+  auto panneau = new wxPanel{f, wxID_ANY};
+
   chainonPersonne* crt = repertoirePersonne->getTete();
   wxString t;
   while(crt){
@@ -163,7 +165,15 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
     t += "\n";
     crt = repertoirePersonne->getSuivant(crt);
   }
-  new wxStaticText{f, wxID_STATIC,t};
+  auto txt = new wxStaticText{panneau, wxID_STATIC,t};
+
+  auto sizer = new wxBoxSizer{wxVERTICAL};
+  sizer->Add(txt,0,wxALIGN_LEFT | wxALL,10);
+
+  panneau->SetSizerAndFit(sizer);
+  SetClientSize(panneau->GetSize());
+
+  SetMinSize(GetSize());
 }
 
 void cadre::OnAjouterPersonne(wxCommandEvent& e){

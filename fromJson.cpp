@@ -34,7 +34,7 @@ void fromJson::getRepertoire()
 
     for ( unsigned i = 0; i < data.size(); i++ )
     {
-        cout << data[i]["email"] << endl;
+        //cout << data[i]["email"] << endl;
 
         fj_repertoirePersonne->ajouter(
                 data[i]["nom"],
@@ -59,7 +59,7 @@ void fromJson::saveRepertoire() {
     while (crt)
     {
         json tmp;
-        cout << fj_repertoirePersonne->getEmail(crt) << endl;
+        //cout << fj_repertoirePersonne->getEmail(crt) << endl;
 
         tmp["email"]    =   fj_repertoirePersonne->getEmail(crt);
         tmp["nom"]      =   fj_repertoirePersonne->getNom(crt);
@@ -116,7 +116,7 @@ void fromJson::getRdv()
 			participants.push_back(tmp_participants);
 		}
 
-        cout << data[i]["libelle"] << endl;
+        //cout << data[i]["libelle"] << endl;
 
         fj_repertoireRdv->ajouter(
                 data[i]["libelle"],

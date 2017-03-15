@@ -19,5 +19,6 @@ class cadre : public wxFrame
     void OnSave(wxCommandEvent& e);
     void OnExit(wxCommandEvent& e);
     void OnAfficherPersonnes(wxCommandEvent& e);
+    void OnAjouterPersonne(wxCommandEvent& e);
 
 };

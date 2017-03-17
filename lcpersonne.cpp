@@ -103,8 +103,6 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
 
     if(nouveauNom == crt->cp_nom)
     {
-    //  if(nouveauPrenom<crt->cp_prenom)
-      //  return precedent;
 
       i = 0;
       while (i < crt->cp_prenom.length() & i < nouveauPrenom.length())

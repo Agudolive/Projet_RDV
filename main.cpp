@@ -159,9 +159,12 @@ repertoirePersonne.ajouter("Lafon","Rémi","0","@");
 
     //liste de rendez vous contenant 2 rendez vous
     LCRdv repertoireRdv;
-    repertoireRdv.ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
+    repertoireRdv.ajouter("r", 28, 1, 2016, 15, 16, p1);
     repertoireRdv.ajouter("rdv2", 2, 3, 2017, 11, 12, p2);
+    repertoireRdv.ajouter("rdv", 1, 1, 1, 1, 1, p2);
     repertoireRdv.ajouter("rdv3", 1, 1, 1, 1, 1, p2);
+    repertoireRdv.ajouter("rdv3", 1, 1, 1, 1, 1, p2);
+    repertoireRdv.ajouter("rd", 1, 1, 1, 1, 1, p2);
 
 
     //affichage de la liste de rdv

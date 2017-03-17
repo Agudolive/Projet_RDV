@@ -91,6 +91,17 @@ chainonRdv* LCRdv::trier(string& nouveauLibelle) const
       else if(nouveauChar == crtChar)
         i++;
     }
+
+
+    if(nouveauLibelle.length()<crtLibelle.length())
+    {
+      if(i==nouveauLibelle.length())
+      {
+        return precedent;
+      }
+    }
+
+
     precedent = crt;
     crt = crt->cr_suivant;
 

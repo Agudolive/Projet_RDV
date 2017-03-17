@@ -20,5 +20,11 @@ class cadre : public wxFrame
     void OnExit(wxCommandEvent& e);
     void OnAfficherPersonnes(wxCommandEvent& e);
     void OnAjouterPersonne(wxCommandEvent& e);
+    void OnBoutonAjouterPersonne(wxCommandEvent& e);
+
+    wxTextCtrl* c_champNom;
+    wxTextCtrl* c_champPrenom;
+    wxTextCtrl* c_champNumero;
+    wxTextCtrl* c_champEmail;
 
 };

@@ -8,7 +8,6 @@
 #include <vector>
 #include <iostream>
 
-
 using namespace std;
 
 enum
@@ -16,7 +15,8 @@ enum
   ID_LOAD, ID_NEW_PERSONNE, ID_EDIT_PERSONNE, ID_DELETE_PERSONNE,
   ID_NEW_RDV, ID_EDIT_RDV, ID_DELETE_RDV, ID_DOC, ID_A_PROPOS,
   ID_LISTE_PERSONNES, ID_LISTE_RDV, ID_RDV_DE, ID_RDV_ENTRE,
-  ID_DETAIL_RDV, ID_DETAIL_PERSONNE, ID_POPUP
+  ID_DETAIL_RDV, ID_DETAIL_PERSONNE, ID_POPUP, ID_BOUTON_AJOUTER_PERSONNE, ID_CHAMP1_AJOUTER_PERSONNE, ID_CHAMP2_AJOUTER_PERSONNE, ID_CHAMP3_AJOUTER_PERSONNE,
+  ID_CHAMP4_AJOUTER_PERSONNE
 };
 
 cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Carnet de rendez-vous", wxDefaultPosition}
@@ -166,69 +166,76 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
     t += "\n";
     crt = repertoirePersonne->getSuivant(crt);
   }
-  auto txt = new wxStaticText{panneau, wxID_STATIC,t};
-
+  auto txt = new wxStaticText{panneau,wxID_STATIC,t};
   auto sizer = new wxBoxSizer{wxVERTICAL};
-  sizer->Add(txt,0,wxALIGN_LEFT | wxALL,10);
+  sizer->Add(txt,1, wxEXPAND | wxALL,10);
 
   panneau->SetSizerAndFit(sizer);
-  SetClientSize(panneau->GetSize());
-
-  SetMinSize(GetSize());
+  f->SetSize(panneau->GetSize());
+  f->SetMinSize({300,50});
 }
 
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
 
-  enum{
-    ID_CHAMP1, ID_CHAMP2, ID_CHAMP3, ID_CHAMP4, ID_BOUTON
-  };
+  // enum{
+  //   ID_BOUTON_AJOUTER_PERSONNE, ID_CHAMP1_AJOUTER_PERSONNE, ID_CHAMP2_AJOUTER_PERSONNE, ID_CHAMP3_AJOUTER_PERSONNE,
+  //   ID_CHAMP4_AJOUTER_PERSONNE
+  // };
 
   auto f = new wxFrame{nullptr, ID_POPUP, "Ajouter une personne", wxDefaultPosition};
   f -> Show(true);
   auto panneau = new wxPanel{f, wxID_ANY};
   // panneau->SetSize({6000,3000});
 
-  auto txt1 = new wxStaticText{panneau, wxID_STATIC,"Nom    : "};
-  auto txt2 = new wxStaticText{panneau, wxID_STATIC,"Prenom : "};
-  auto txt3 = new wxStaticText{panneau, wxID_STATIC,"Numero : "};
-  auto txt4 = new wxStaticText{panneau, wxID_STATIC,"Email  : "};
+  auto txt1 = new wxStaticText{panneau, wxID_STATIC,("Nom : ")};
+  auto txt2 = new wxStaticText{panneau, wxID_STATIC,("Prenom : ")};
+  auto txt3 = new wxStaticText{panneau, wxID_STATIC,("Numero : ")};
+  auto txt4 = new wxStaticText{panneau, wxID_STATIC,("Email : ")};
 
-  auto champ1 = new wxTextCtrl(panneau, ID_CHAMP1,"");
-  auto champ2 = new wxTextCtrl(panneau, ID_CHAMP2,"");
-  auto champ3 = new wxTextCtrl(panneau, ID_CHAMP3,"");
-  auto champ4 = new wxTextCtrl(panneau, ID_CHAMP4,"");
+  c_champNom = new wxTextCtrl(panneau, ID_CHAMP1_AJOUTER_PERSONNE,"");
+  c_champPrenom = new wxTextCtrl(panneau, ID_CHAMP2_AJOUTER_PERSONNE,"");
+  c_champNumero = new wxTextCtrl(panneau, ID_CHAMP3_AJOUTER_PERSONNE,"");
+  c_champEmail = new wxTextCtrl(panneau, ID_CHAMP4_AJOUTER_PERSONNE,"");
 
-  auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
+  auto bouton = new wxButton(panneau, ID_BOUTON_AJOUTER_PERSONNE, "Valider");
 
   auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
-  sizer1->Add(txt1,0,wxALIGN_RIGHT | wxALL, 10);
+  sizer1->Add(txt1,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
   sizer1->AddStretchSpacer(1);
-  sizer1->Add(champ1,0,wxALIGN_LEFT | wxALL, 10);
+  sizer1->Add(c_champNom,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
 
   auto sizer2 = new wxBoxSizer{wxHORIZONTAL};
-  sizer2->Add(txt2,0,wxALIGN_RIGHT | wxALL, 10);
+  sizer2->Add(txt2,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
   sizer2->AddStretchSpacer(1);
-  sizer2->Add(champ2,0,wxALIGN_LEFT | wxALL, 10);
+  sizer2->Add(c_champPrenom,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
 
   auto sizer3 = new wxBoxSizer{wxHORIZONTAL};
-  sizer3->Add(txt3,0,wxALIGN_RIGHT | wxALL, 10);
+  sizer3->Add(txt3,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
   sizer3->AddStretchSpacer(1);
-  sizer3->Add(champ3,0,wxALIGN_LEFT | wxALL, 10);
+  sizer3->Add(c_champNumero,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
 
   auto sizer4 = new wxBoxSizer{wxHORIZONTAL};
-  sizer4->Add(txt4,0,wxALIGN_RIGHT | wxALL, 10);
+  sizer4->Add(txt4,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
   sizer4->AddStretchSpacer(1);
-  sizer4->Add(champ4,0,wxALIGN_LEFT | wxALL, 10);
+  sizer4->Add(c_champEmail,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
 
   auto sizer5 = new wxBoxSizer{wxVERTICAL};
-  sizer5->Add(sizer1,0,wxALIGN_LEFT | wxALL, 10);
-  sizer5->Add(sizer2,0,wxALIGN_LEFT | wxALL, 10);
-  sizer5->Add(sizer3,0,wxALIGN_LEFT | wxALL, 10);
-  sizer5->Add(sizer4,0,wxALIGN_LEFT | wxALL, 10);
+  sizer5->Add(sizer1,1,wxALIGN_LEFT | wxALL, 10);
+  sizer5->Add(sizer2,1,wxALIGN_LEFT | wxALL, 10);
+  sizer5->Add(sizer3,1,wxALIGN_LEFT | wxALL, 10);
+  sizer5->Add(sizer4,1,wxALIGN_LEFT | wxALL, 10);
   sizer5->Add(bouton,0,wxALIGN_LEFT | wxALL, 10);
 
   panneau->SetSizerAndFit(sizer5);
-
-  SetClientSize(panneau->GetSize());
+  f->SetSize(panneau->GetSize());
   SetMinSize(GetSize());
+
+  Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterPersonne, this, ID_BOUTON_AJOUTER_PERSONNE);
+}
+
+void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
+
+  cout << "test" << endl;
+  repertoirePersonne->ajouter(std::string(c_champNom->GetValue()), std::string(c_champPrenom->GetValue()), std::string(c_champNumero->GetValue()), std::string(c_champEmail->GetValue()));
+
 }

@@ -16,17 +16,18 @@ class cadre : public wxFrame
   private :
     LCPersonne* repertoirePersonne;
     LCRdv* repertoireRdv;
-    void OnCadrePrincipal();
     void OnCharger(wxCommandEvent& e);
     void OnSave(wxCommandEvent& e);
     void OnExit(wxCommandEvent& e);
     void OnAfficherPersonnes(wxCommandEvent& e);
     void OnAjouterPersonne(wxCommandEvent& e);
     void OnBoutonAjouterPersonne(wxCommandEvent& e);
+    void OnModifierPersonne(wxCommandEvent& e);
 
     wxTextCtrl* c_champNom;
     wxTextCtrl* c_champPrenom;
     wxTextCtrl* c_champNumero;
     wxTextCtrl* c_champEmail;
+    std::vector<string> repertoire;
 
 };

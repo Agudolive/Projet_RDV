@@ -10,18 +10,8 @@
 
 using namespace std;
 
-cadre::cadre() : wxFrame{nullptr, wxID_ANY, "NomFrame", wxDefaultPosition}
+cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultPosition}
 {
-
-}
-
-cadre::cadre(string c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}
-{
-
-}
-
-void cadre::OnCadrePrincipal(){
-
   enum
   {
     ID_LOAD, ID_NEW_PERSONNE, ID_EDIT_PERSONNE, ID_DELETE_PERSONNE,
@@ -30,7 +20,7 @@ void cadre::OnCadrePrincipal(){
     ID_DETAIL_RDV, ID_DETAIL_PERSONNE
   };
 
-  auto  CadreMenuPrincipal = new cadre("Menu Principal");
+  // auto  CadreMenuPrithisncipal = new cadre("Menu Principal");
 
   //initialisation des repertoires
   repertoirePersonne = new LCPersonne{};
@@ -38,9 +28,7 @@ void cadre::OnCadrePrincipal(){
 
   //creation de la fenête vide
   SetClientSize(wxSize{960,540});
-
-  //creation d'un panneau
-  auto panneau = new wxPanel{CadreMenuPrincipal, wxID_ANY};
+  auto panneau = new wxPanel{this, wxID_ANY};
   panneau->SetSize(GetClientSize());
 
   //creation des menus
@@ -84,16 +72,21 @@ void cadre::OnCadrePrincipal(){
   SetMenuBar(menubar);
 
   //liaisons
-  Bind(wxEVT_MENU, &cadre::OnCharger, CadreMenuPrincipal, ID_LOAD);
-  Bind(wxEVT_MENU, &cadre::OnSave, CadreMenuPrincipal, wxID_SAVE);
-  Bind(wxEVT_MENU, &cadre::OnExit, CadreMenuPrincipal, wxID_EXIT);
-  Bind(wxEVT_MENU, &cadre::OnAfficherPersonnes, CadreMenuPrincipal, ID_LISTE_PERSONNES);
-  Bind(wxEVT_MENU, &cadre::OnAjouterPersonne, CadreMenuPrincipal, ID_NEW_PERSONNE);
+  Bind(wxEVT_MENU, &cadre::OnCharger, this, ID_LOAD);
+  Bind(wxEVT_MENU, &cadre::OnSave, this, wxID_SAVE);
+  Bind(wxEVT_MENU, &cadre::OnExit, this, wxID_EXIT);
+  Bind(wxEVT_MENU, &cadre::OnAfficherPersonnes, this, ID_LISTE_PERSONNES);
+  Bind(wxEVT_MENU, &cadre::OnAjouterPersonne, this, ID_NEW_PERSONNE);
+  Bind(wxEVT_MENU, &cadre::OnModifierPersonne, this, ID_EDIT_PERSONNE);
 
 }
 
-void cadre::OnCharger(wxCommandEvent& e)
-{
+cadre::cadre(string c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}{
+
+}
+
+void cadre::OnCharger(wxCommandEvent& e){
+
   delete repertoirePersonne;
   delete repertoireRdv;
 
@@ -102,7 +95,6 @@ void cadre::OnCharger(wxCommandEvent& e)
   repertoireRdv = new LCRdv{};
 
   fromJson json_load = fromJson{repertoirePersonne, repertoireRdv};
-
 
   json_load.getRepertoire();
   json_load.getRdv();
@@ -153,26 +145,22 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
 
   enum{
-    ID_BOUTON_AJOUTER_PERSONNE, ID_CHAMP1_AJOUTER_PERSONNE, ID_CHAMP2_AJOUTER_PERSONNE, ID_CHAMP3_AJOUTER_PERSONNE,
-    ID_CHAMP4_AJOUTER_PERSONNE
+    ID_BOUTON_AJOUTER_PERSONNE
   };
 
   auto CadreAjouterPersonne = new cadre("Ajouter une personne");
-
-
   CadreAjouterPersonne -> Show(true);
   auto panneau = new wxPanel{CadreAjouterPersonne, wxID_ANY};
-  // panneau->SetSize({6000,3000});
 
   auto txt1 = new wxStaticText{panneau, wxID_STATIC,("Nom : ")};
   auto txt2 = new wxStaticText{panneau, wxID_STATIC,("Prenom : ")};
   auto txt3 = new wxStaticText{panneau, wxID_STATIC,("Numero : ")};
   auto txt4 = new wxStaticText{panneau, wxID_STATIC,("Email : ")};
 
-  c_champNom = new wxTextCtrl(panneau, ID_CHAMP1_AJOUTER_PERSONNE,"");
-  c_champPrenom = new wxTextCtrl(panneau, ID_CHAMP2_AJOUTER_PERSONNE,"");
-  c_champNumero = new wxTextCtrl(panneau, ID_CHAMP3_AJOUTER_PERSONNE,"");
-  c_champEmail = new wxTextCtrl(panneau, ID_CHAMP4_AJOUTER_PERSONNE,"");
+  c_champNom = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_champPrenom = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_champNumero = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_champEmail = new wxTextCtrl(panneau, wxID_STATIC,"");
 
   auto bouton = new wxButton(panneau, ID_BOUTON_AJOUTER_PERSONNE, "Valider");
 
@@ -207,12 +195,42 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
   CadreAjouterPersonne->SetSize(panneau->GetSize());
   SetMinSize(GetSize());
 
-  Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterPersonne, CadreAjouterPersonne, ID_BOUTON_AJOUTER_PERSONNE);
+  bouton->Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterPersonne, this);
 }
 
 void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
 
-  cout << "test" << endl;
   repertoirePersonne->ajouter(std::string(c_champNom->GetValue()), std::string(c_champPrenom->GetValue()), std::string(c_champNumero->GetValue()), std::string(c_champEmail->GetValue()));
+
+}
+
+void cadre::OnModifierPersonne(wxCommandEvent& e){
+
+  enum{ID_CHOIX,ID_BOUTON_AJOUTER_PERSONNE};
+
+  auto CadreModifierPersonne = new cadre("Modifier une personne");
+  CadreModifierPersonne -> Show(true);
+  auto panneau = new wxPanel{CadreModifierPersonne, wxID_ANY};
+
+  auto c_choix = new wxChoice(panneau, ID_CHOIX);
+
+  auto txt1 = new wxStaticText{panneau, wxID_STATIC,("Nom")};
+  auto txt2 = new wxStaticText{panneau, wxID_STATIC,("Prenom")};
+  c_champNumero = new wxTextCtrl(panneau, wxID_STATIC,"Numero");
+  c_champEmail = new wxTextCtrl(panneau, wxID_STATIC,"Email");
+
+  auto bouton = new wxButton(panneau, ID_BOUTON_AJOUTER_PERSONNE, "Valider");
+
+  auto sizer1 = new wxBoxSizer{wxVERTICAL};
+  sizer1->Add(c_choix,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(txt1,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(txt2,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(c_champNumero,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(c_champEmail,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(bouton,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer1);
+  CadreModifierPersonne->SetSize(panneau->GetSize());
+  SetMinSize(GetSize());
 
 }

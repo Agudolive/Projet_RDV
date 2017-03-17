@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <vector>
 #include "lcpersonne.h"
 #include "lcrdv.h"
 
@@ -73,7 +74,7 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
     crtNom = crt->cp_nom;
     crtPrenom = crt->cp_prenom;
     i = 0;
-    while ( (i < crtNom.length()) & (i < nouveauNom.length()) )
+    while ((i < crtNom.length()) & (i < nouveauNom.length()))
     {
       nouveauChar = tolower(nouveauNom.at(i));
       crtChar = tolower(crtNom.at(i));
@@ -92,6 +93,39 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
       else if(nouveauChar == crtChar)
         i++;
     }
+
+    if(nouveauNom.length()<crtNom.length())
+    {
+      if(i==nouveauNom.length())
+      {
+        return precedent;
+      }
+    }
+
+    if(nouveauNom == crt->cp_nom)
+    {
+
+      i = 0;
+      while ((i < crt->cp_prenom.length()) & (i < nouveauPrenom.length()))
+      {
+        nouveauChar = tolower(nouveauPrenom.at(i));
+        crtChar = tolower(crt->cp_prenom.at(i));
+
+        if(nouveauChar < crtChar)
+        {
+          if(crt != l_tete)
+            return precedent;
+
+          else if (crt == l_tete)
+            return nullptr;
+        }
+        else if(nouveauChar > crtChar)
+          break;
+        else
+          i++;
+      }
+    }
+
     precedent = crt;
     crt = crt->cp_suivant;
 
@@ -210,4 +244,28 @@ string LCPersonne::getNumero(chainonPersonne* crt){
 
 chainonPersonne* LCPersonne::getSuivant(chainonPersonne* crt){
   return crt->cp_suivant;
+}
+
+void LCPersonne::vecteurNoms(vector<string>& v){
+
+  chainonPersonne* crt = l_tete;
+  int i = 0;
+
+  while(crt){
+    v[i] = crt->cp_nom;
+    crt = crt->cp_suivant;
+    i++;
+  }
+}
+
+void LCPersonne::vecteurPrenoms(vector<string>& v){
+
+  chainonPersonne* crt = l_tete;
+  int i = 0;
+
+  while(crt){
+    v[i] = crt->cp_prenom;
+    crt = crt->cp_suivant;
+    i++;
+  }
 }

@@ -72,7 +72,7 @@ chainonRdv* LCRdv::trier(string& nouveauLibelle) const
   {
     crtLibelle = crt->cr_libelle;
     i = 0;
-    while ( (i < crtLibelle.length()) & (i < nouveauLibelle.length()) )
+    while ((i < crtLibelle.length()) & (i < nouveauLibelle.length()))
     {
       nouveauChar = tolower(nouveauLibelle.at(i));
       crtChar = tolower(crtLibelle.at(i));
@@ -91,6 +91,15 @@ chainonRdv* LCRdv::trier(string& nouveauLibelle) const
       else if(nouveauChar == crtChar)
         i++;
     }
+
+    if(nouveauLibelle.length()<crtLibelle.length())
+    {
+      if(i==nouveauLibelle.length())
+      {
+        return precedent;
+      }
+    }
+
     precedent = crt;
     crt = crt->cr_suivant;
 

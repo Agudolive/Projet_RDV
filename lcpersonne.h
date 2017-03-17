@@ -2,6 +2,8 @@
 #define LCPERSONNE_H
 #include "chainonpersonne.h"
 #include <string>
+#include <vector>
+
 using namespace std;
 
 class LCRdv;
@@ -25,8 +27,9 @@ public:
     string getNumero(chainonPersonne* crt);
     string getEmail(chainonPersonne* crt);
     void setTete();
+    void vecteurNoms(vector<string> &v);
+    void vecteurPrenoms(vector<string> &v);
     chainonPersonne* getSuivant(chainonPersonne* crt);
-
 
 private:
     chainonPersonne* l_tete;

@@ -113,7 +113,13 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
         crtChar = tolower(crt->cp_prenom.at(i));
 
         if(nouveauChar < crtChar)
-          return precedent;
+        {
+          if(crt != l_tete)
+            return precedent;
+
+          else if (crt == l_tete)
+            return nullptr;
+        }
         else if(nouveauChar > crtChar)
           break;
         else

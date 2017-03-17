@@ -2,6 +2,7 @@
 #include "lcpersonne.h"
 #include <string>
 #include <iostream>
+#include <vector>
 using namespace std;
 
 /**
@@ -175,11 +176,10 @@ void LCRdv::afficherListeRdv()
   @param[in] jour1, mois1, annee1 - des entiers représentant la borne inférieure de la date
   @param[in] jour2, mois2, annee2 - des entiers représentant la borne supérieure de la date
 */
-void LCRdv::afficherEntreDates(int jour1, int mois1, int annee1, int jour2, int mois2, int annee2)
+vector<string> LCRdv::afficherEntreDates(int jour1, int mois1, int annee1, int jour2, int mois2, int annee2)
 {
+  vector<string> liste(0);
   chainonRdv* crt = l_tete;
-
-  cout << "Entre le " << jour1 << "/" << mois1 << "/" << annee1 << " et le " << jour2 << "/" << mois2 << "/" << annee2 << endl;
 
   while( crt != nullptr )
   {
@@ -213,10 +213,11 @@ void LCRdv::afficherEntreDates(int jour1, int mois1, int annee1, int jour2, int 
 
     //si la date de rdv est comprise entre les deux bornes, on l'afficher
     if(inferieur & superieur)
-    cout << crt->cr_libelle << " ; ";
+      liste.push_back(crt->cr_libelle);
 
     crt = crt->cr_suivant;
   }
+  return liste;
 }
 
 /**

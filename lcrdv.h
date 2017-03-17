@@ -2,6 +2,7 @@
 #define LCRDV_H
 #include "chainonrdv.h"
 #include <string>
+#include <vector>
 using namespace std;
 
 class LCPersonne;
@@ -16,7 +17,7 @@ public:
 
     void afficher(string libelle, LCPersonne* listePersonnes);
     void afficherListeRdv();
-    void afficherEntreDates(int jour1, int mois1, int annee1, int jour2, int mois2, int annee2);
+    vector<string> afficherEntreDates(int jour1, int mois1, int annee1, int jour2, int mois2, int annee2);
     void afficherPourPersonne(string nom, string prenom, LCPersonne* listePersonnes);
 
     void modifierDate(string libelle, int jour, int mois, int annee);

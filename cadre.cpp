@@ -77,8 +77,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnExit, this, wxID_EXIT);
   Bind(wxEVT_MENU, &cadre::OnAfficherPersonnes, this, ID_LISTE_PERSONNES);
   Bind(wxEVT_MENU, &cadre::OnAjouterPersonne, this, ID_NEW_PERSONNE);
-  Bind(wxEVT_MENU, &cadre::OnModifierPersonne, this, ID_EDIT_PERSONNE);
-
+  Bind(wxEVT_MENU, &cadre::OnAfficherEntreDates, this, ID_RDV_ENTRE);
 }
 
 cadre::cadre(string c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}{
@@ -142,13 +141,45 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
   CadreListePersonne->SetMinSize({300,50});
 }
 
+void cadre::OnAfficherRdvs(wxCommandEvent& e)
+{
+  auto  CadreListeRdvs = new cadre("Liste des rendez-vous");
+  CadreListeRdvs -> Show(true);
+  auto panneau = new wxPanel{CadreListeRdvs, wxID_ANY};
+
+  chainonRdv* crt = repertoireRdv->getTete();
+  wxString t;
+  while(crt){
+
+    t += wxString::FromUTF8("\xC2\xA0");
+    t += repertoireRdv->getLibelle(crt);
+    t += " le " + wxString::Format(wxT("%i"),repertoireRdv->getJour(crt));
+    t += "/" + wxString::Format(wxT("%i"),repertoireRdv->getMois(crt));
+    t += "/" + wxString::Format(wxT("%i"),repertoireRdv->getAnnee(crt));
+    t += " de " + wxString::Format(wxT("%i"),repertoireRdv->getHeureDebut(crt)) + "h";
+    t += " a " + wxString::Format(wxT("%i"),repertoireRdv->getHeureFin(crt)) + "h";
+
+    t += "\n";
+
+    crt = repertoireRdv->getSuivant(crt);
+  }
+
+  auto txt = new wxStaticText{panneau,wxID_STATIC,t};
+  auto sizer = new wxBoxSizer{wxVERTICAL};
+  sizer->Add(txt,1, wxEXPAND | wxALL,10);
+  panneau->SetSizerAndFit(sizer);
+  CadreListeRdvs->SetSize(panneau->GetSize());
+  CadreListeRdvs->SetMinSize({300,50});
+
+}
+
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
 
   enum{
     ID_BOUTON_AJOUTER_PERSONNE
   };
 
-  auto CadreAjouterPersonne = new cadre("Ajouter une personne");
+  auto CadreAjouterPersonne = new cadre{"Ajouter une personne"};
   CadreAjouterPersonne -> Show(true);
   auto panneau = new wxPanel{CadreAjouterPersonne, wxID_ANY};
 
@@ -204,33 +235,95 @@ void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
 
 }
 
-void cadre::OnModifierPersonne(wxCommandEvent& e){
 
-  enum{ID_CHOIX,ID_BOUTON_AJOUTER_PERSONNE};
+void cadre::OnAfficherEntreDates(wxCommandEvent& e)
+{
+  enum{
+    ID_BOUTON_AFFICHER
+  };
 
-  auto CadreModifierPersonne = new cadre("Modifier une personne");
-  CadreModifierPersonne -> Show(true);
-  auto panneau = new wxPanel{CadreModifierPersonne, wxID_ANY};
+  auto cadreAfficherEntreDates = new cadre{"Rendez-vous entre dates"};
+  cadreAfficherEntreDates -> Show(true);
+  auto panneau = new wxPanel{cadreAfficherEntreDates, wxID_ANY};
 
-  auto c_choix = new wxChoice(panneau, ID_CHOIX);
 
-  auto txt1 = new wxStaticText{panneau, wxID_STATIC,("Nom")};
-  auto txt2 = new wxStaticText{panneau, wxID_STATIC,("Prenom")};
-  c_champNumero = new wxTextCtrl(panneau, wxID_STATIC,"Numero");
-  c_champEmail = new wxTextCtrl(panneau, wxID_STATIC,"Email");
+  auto jourD = new wxStaticText{panneau, wxID_STATIC,("Jour debut : ")};
+  auto jourF = new wxStaticText{panneau, wxID_STATIC,("Jour fin : ")};
+  auto moisD = new wxStaticText{panneau, wxID_STATIC,("Mois debut : ")};
+  auto moisF = new wxStaticText{panneau, wxID_STATIC,("Mois Fin : ")};
+  auto anneeD = new wxStaticText{panneau, wxID_STATIC,("Annee debut : ")};
+  auto anneeF = new wxStaticText{panneau, wxID_STATIC,("Annee Fin : ")};
 
-  auto bouton = new wxButton(panneau, ID_BOUTON_AJOUTER_PERSONNE, "Valider");
+  c_jourD = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_jourF = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_moisD = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_moisF = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_anneeD = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_anneeF = new wxTextCtrl(panneau, wxID_STATIC,"");
 
-  auto sizer1 = new wxBoxSizer{wxVERTICAL};
-  sizer1->Add(c_choix,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(txt1,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(txt2,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(c_champNumero,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(c_champEmail,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(bouton,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  auto bouton = new wxButton(panneau, ID_BOUTON_AFFICHER, "Afficher");
 
-  panneau->SetSizerAndFit(sizer1);
-  CadreModifierPersonne->SetSize(panneau->GetSize());
-  SetMinSize(GetSize());
 
+  auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
+  sizer1->Add(jourD,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer1->AddStretchSpacer(1);
+  sizer1->Add(c_jourD,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer2 = new wxBoxSizer{wxHORIZONTAL};
+  sizer2->Add(jourF,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer2->AddStretchSpacer(1);
+  sizer2->Add(c_jourF,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer3 = new wxBoxSizer{wxHORIZONTAL};
+  sizer3->Add(moisD,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer3->AddStretchSpacer(1);
+  sizer3->Add(c_moisD,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer4 = new wxBoxSizer{wxHORIZONTAL};
+  sizer4->Add(moisF,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer4->AddStretchSpacer(1);
+  sizer4->Add(c_moisF,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer5 = new wxBoxSizer{wxHORIZONTAL};
+  sizer5->Add(anneeD,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer5->AddStretchSpacer(1);
+  sizer5->Add(c_anneeD,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer6 = new wxBoxSizer{wxHORIZONTAL};
+  sizer6->Add(anneeF,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer6->AddStretchSpacer(1);
+  sizer6->Add(c_anneeF,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  c_listeRdvEntre = new wxStaticText{panneau,wxID_STATIC,""};
+
+  auto sizer = new wxBoxSizer{wxVERTICAL};
+  sizer->Add(sizer1,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer3,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer5,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer2,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer4,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer6,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(bouton,0,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(c_listeRdvEntre,1,wxALIGN_LEFT | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer);
+  cadreAfficherEntreDates->SetSize(panneau->GetSize());
+  cadreAfficherEntreDates->SetMinSize({300,50});
+
+
+  bouton->Bind(wxEVT_BUTTON, &cadre::OnRefreshAfficherEntreDates, this);
+}
+
+void cadre::OnRefreshAfficherEntreDates(wxCommandEvent& e)
+{
+  wxString t;
+
+  vector<string> liste =  repertoireRdv->afficherEntreDates(wxAtoi(c_jourD->GetValue()),wxAtoi(c_moisD->GetValue()),wxAtoi(c_anneeD->GetValue()),wxAtoi(c_jourF->GetValue()),wxAtoi(c_moisF->GetValue()),wxAtoi(c_anneeF->GetValue()));
+  for(unsigned i=0; i<liste.size(); i++)
+  {
+    t += liste[i];
+    t += wxString::FromUTF8("\xC2\xA0;\xC2\xA0");
+  }
+
+  c_listeRdvEntre->SetLabel(t);
 }

@@ -92,7 +92,7 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
       else if(nouveauChar == crtChar)
         i++;
     }
-//A AJOUTER
+
     if(nouveauNom.length()<crtNom.length())
     {
       if(i==nouveauNom.length())
@@ -100,7 +100,27 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
         return precedent;
       }
     }
-//A AJOUTER
+
+    if(nouveauNom == crt->cp_nom)
+    {
+    //  if(nouveauPrenom<crt->cp_prenom)
+      //  return precedent;
+
+      i = 0;
+      while (i < crt->cp_prenom.length() & i < nouveauPrenom.length())
+      {
+        nouveauChar = tolower(nouveauPrenom.at(i));
+        crtChar = tolower(crt->cp_prenom.at(i));
+
+        if(nouveauChar < crtChar)
+          return precedent;
+        else if(nouveauChar > crtChar)
+          break;
+        else
+          i++;
+      }
+    }
+
     precedent = crt;
     crt = crt->cp_suivant;
 

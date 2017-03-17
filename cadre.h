@@ -12,9 +12,11 @@ class cadre : public wxFrame
 {
   public :
     cadre();
+    cadre(string& c_nomFrame);
   private :
     LCPersonne* repertoirePersonne;
     LCRdv* repertoireRdv;
+    void OnCadrePrincipal();
     void OnCharger(wxCommandEvent& e);
     void OnSave(wxCommandEvent& e);
     void OnExit(wxCommandEvent& e);

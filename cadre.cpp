@@ -10,17 +10,28 @@
 
 using namespace std;
 
-enum
+cadre::cadre() : wxFrame{nullptr, wxID_ANY, "NomFrame", wxDefaultPosition}
 {
-  ID_LOAD, ID_NEW_PERSONNE, ID_EDIT_PERSONNE, ID_DELETE_PERSONNE,
-  ID_NEW_RDV, ID_EDIT_RDV, ID_DELETE_RDV, ID_DOC, ID_A_PROPOS,
-  ID_LISTE_PERSONNES, ID_LISTE_RDV, ID_RDV_DE, ID_RDV_ENTRE,
-  ID_DETAIL_RDV, ID_DETAIL_PERSONNE, ID_POPUP, ID_BOUTON_AJOUTER_PERSONNE, ID_CHAMP1_AJOUTER_PERSONNE, ID_CHAMP2_AJOUTER_PERSONNE, ID_CHAMP3_AJOUTER_PERSONNE,
-  ID_CHAMP4_AJOUTER_PERSONNE
-};
 
-cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Carnet de rendez-vous", wxDefaultPosition}
+}
+
+cadre::cadre(string& c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}
 {
+
+}
+
+void cadre::OnCadrePrincipal(){
+
+  enum
+  {
+    ID_LOAD, ID_NEW_PERSONNE, ID_EDIT_PERSONNE, ID_DELETE_PERSONNE,
+    ID_NEW_RDV, ID_EDIT_RDV, ID_DELETE_RDV, ID_DOC, ID_A_PROPOS,
+    ID_LISTE_PERSONNES, ID_LISTE_RDV, ID_RDV_DE, ID_RDV_ENTRE,
+    ID_DETAIL_RDV, ID_DETAIL_PERSONNE
+  };
+
+  auto  CadreMenuPrincipal = new cadre{"Menu Principal"};
+
   //initialisation des repertoires
   repertoirePersonne = new LCPersonne{};
   repertoireRdv = new LCRdv{};
@@ -29,7 +40,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Carnet de rendez-vous", wxDefaultPo
   SetClientSize(wxSize{960,540});
 
   //creation d'un panneau
-  auto panneau = new wxPanel{this, wxID_ANY};
+  auto panneau = new wxPanel{CadreMenuPrincipal, wxID_ANY};
   panneau->SetSize(GetClientSize());
 
   //creation des menus
@@ -73,51 +84,16 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Carnet de rendez-vous", wxDefaultPo
   SetMenuBar(menubar);
 
   //liaisons
-  Bind(wxEVT_MENU, &cadre::OnCharger, this, ID_LOAD);
-  Bind(wxEVT_MENU, &cadre::OnSave, this, wxID_SAVE);
-  Bind(wxEVT_MENU, &cadre::OnExit, this, wxID_EXIT);
-  Bind(wxEVT_MENU, &cadre::OnAfficherPersonnes, this, ID_LISTE_PERSONNES);
-  Bind(wxEVT_MENU, &cadre::OnAjouterPersonne, this, ID_NEW_PERSONNE);
+  Bind(wxEVT_MENU, &cadre::OnCharger, CadreMenuPrincipal, ID_LOAD);
+  Bind(wxEVT_MENU, &cadre::OnSave, CadreMenuPrincipal, wxID_SAVE);
+  Bind(wxEVT_MENU, &cadre::OnExit, CadreMenuPrincipal, wxID_EXIT);
+  Bind(wxEVT_MENU, &cadre::OnAfficherPersonnes, CadreMenuPrincipal, ID_LISTE_PERSONNES);
+  Bind(wxEVT_MENU, &cadre::OnAjouterPersonne, CadreMenuPrincipal, ID_NEW_PERSONNE);
 
 }
 
 void cadre::OnCharger(wxCommandEvent& e)
 {
-  //provisoire, sera remplace par l'import json
-
-  /*
-  repertoirePersonne->ajouter("Lefebvre","Kyllian", "06.92.38.77.78", "kyllianlefebvre@fakeemail.tld");
-  repertoirePersonne->ajouter("Texier","Lilian", "06.88.19.80.00", "liliantexier@fakeemail.tld");
-  repertoirePersonne->ajouter("Evrard","Juliette", "06.67.34.92.88", "julietteevrard@fakeemail.tld");
-  repertoirePersonne->ajouter("Grenier","Juliette", "06.34.10.68.70", "clemencegrenier@fakeemail.tld");
-  repertoirePersonne->ajouter("Simon","Mathieu", "06.33.15.83.95", "mathieusimon@fakeemail.tld");
-  repertoirePersonne->ajouter("Ruiz","Clement", "06.79.66.76.53", "clementmathieu@fakeemail.tld");
-  repertoirePersonne->ajouter("Ruiz","Florentin", "06.08.32.08.45", "florentinrichard@fakeemail.tld");
-  repertoirePersonne->ajouter("Ruiz","Theo", "06.36.60.14.14", "theoruiz@fakeemail.tld");
-  repertoirePersonne->ajouter("Ferre","Mathis", "06.52.35.59.69", "mathisferre@fakeemail.tld");
-  repertoirePersonne->ajouter("Dumas","Quentin", "06.71.23.98.10", "quentindumas@fakeemail.tld");
-
-  vector<vector<string>> p1;
-  p1.resize(2, vector<string>(2));
-  p1[0][0]="Lefebvre";
-  p1[0][1]="Kyllian";
-  p1[1][0]="Ruiz";
-  p1[1][1]="Clement";
-
-  vector<vector<string>> p2;
-  p2.resize(3, vector<string>(2));
-  p2[0][0]="Ruiz";
-  p2[0][1]="Clement";
-  p2[1][0]="Ruiz";
-  p2[1][1]="Florentin";
-  p2[2][0]="Dumas";
-  p2[2][1]="Quentin";
-
-
-  repertoireRdv->ajouter("rdv1", 28, 1, 2016, 15, 16, p1);
-  repertoireRdv->ajouter("rdv2", 2, 3, 2017, 11, 12, p2);
-*/
-
   delete repertoirePersonne;
   delete repertoireRdv;
 
@@ -169,7 +145,6 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
   auto txt = new wxStaticText{panneau,wxID_STATIC,t};
   auto sizer = new wxBoxSizer{wxVERTICAL};
   sizer->Add(txt,1, wxEXPAND | wxALL,10);
-
   panneau->SetSizerAndFit(sizer);
   f->SetSize(panneau->GetSize());
   f->SetMinSize({300,50});
@@ -177,13 +152,15 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
 
-  // enum{
-  //   ID_BOUTON_AJOUTER_PERSONNE, ID_CHAMP1_AJOUTER_PERSONNE, ID_CHAMP2_AJOUTER_PERSONNE, ID_CHAMP3_AJOUTER_PERSONNE,
-  //   ID_CHAMP4_AJOUTER_PERSONNE
-  // };
+  enum{
+    ID_BOUTON_AJOUTER_PERSONNE, ID_CHAMP1_AJOUTER_PERSONNE, ID_CHAMP2_AJOUTER_PERSONNE, ID_CHAMP3_AJOUTER_PERSONNE,
+    ID_CHAMP4_AJOUTER_PERSONNE
+  };
 
-  auto f = new wxFrame{nullptr, ID_POPUP, "Ajouter une personne", wxDefaultPosition};
-  f -> Show(true);
+  auto  CadreAjouterPersonne = new cadre{"Ajouter une personne"};
+
+
+  CadreAjouterPersonne -> Show(true);
   auto panneau = new wxPanel{f, wxID_ANY};
   // panneau->SetSize({6000,3000});
 
@@ -230,7 +207,7 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
   f->SetSize(panneau->GetSize());
   SetMinSize(GetSize());
 
-  Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterPersonne, this, ID_BOUTON_AJOUTER_PERSONNE);
+  Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterPersonne, CadreAjouterPersonne, ID_BOUTON_AJOUTER_PERSONNE);
 }
 
 void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){

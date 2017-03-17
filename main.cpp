@@ -17,9 +17,14 @@ int main()
     repertoirePersonne.ajouter("Evrard","Juliette", "06.67.34.92.88", "julietteevrard@fakeemail.tld");
     repertoirePersonne.ajouter("Grenier","Juliette", "06.34.10.68.70", "clemencegrenier@fakeemail.tld");
     repertoirePersonne.ajouter("Simon","Mathieu", "06.33.15.83.95", "mathieusimon@fakeemail.tld");
-    repertoirePersonne.ajouter("Ruiz","Clément", "06.79.66.76.53", "clementmathieu@fakeemail.tld");
-    repertoirePersonne.ajouter("Ruiz","Florentin", "06.08.32.08.45", "florentinrichard@fakeemail.tld");
+    repertoirePersonne.ajouter("Ruiz","Florentin", "06.79.66.76.53", "clementmathieu@fakeemail.tld");
+    repertoirePersonne.ajouter("Ruiz","Clément", "06.08.32.08.45", "florentinrichard@fakeemail.tld");
     repertoirePersonne.ajouter("Ruiz","Théo", "06.36.60.14.14", "theoruiz@fakeemail.tld");
+
+    repertoirePersonne.ajouter("Rui","Théo", "06.36.60.14.14", "theoruiz@fakeemail.tld");
+    repertoirePersonne.ajouter("Rui","Adegrth", "06.36.60.14.14", "theoruiz@fakeemail.tld");
+    repertoirePersonne.ajouter("Rui","Zazethrjukhéo", "06.36.60.14.14", "theoruiz@fakeemail.tld");
+
     repertoirePersonne.ajouter("Ferre","Mathis", "06.52.35.59.69", "mathisferre@fakeemail.tld");
     repertoirePersonne.ajouter("Dumas","Quentin", "06.71.23.98.10", "quentindumas@fakeemail.tld");
     repertoirePersonne.afficher();

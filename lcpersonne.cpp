@@ -92,6 +92,15 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
       else if(nouveauChar == crtChar)
         i++;
     }
+//A AJOUTER
+    if(nouveauNom.length()<crtNom.length())
+    {
+      if(i==nouveauNom.length())
+      {
+        return precedent;
+      }
+    }
+//A AJOUTER
     precedent = crt;
     crt = crt->cp_suivant;
 

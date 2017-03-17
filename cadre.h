@@ -12,7 +12,7 @@ class cadre : public wxFrame
 {
   public :
     cadre();
-    cadre(string& c_nomFrame);
+    cadre(string c_nomFrame);
   private :
     LCPersonne* repertoirePersonne;
     LCRdv* repertoireRdv;

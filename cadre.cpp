@@ -15,7 +15,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "NomFrame", wxDefaultPosition}
 
 }
 
-cadre::cadre(string& c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}
+cadre::cadre(string c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}
 {
 
 }
@@ -30,7 +30,7 @@ void cadre::OnCadrePrincipal(){
     ID_DETAIL_RDV, ID_DETAIL_PERSONNE
   };
 
-  auto  CadreMenuPrincipal = new cadre{"Menu Principal"};
+  auto  CadreMenuPrincipal = new cadre("Menu Principal");
 
   //initialisation des repertoires
   repertoirePersonne = new LCPersonne{};
@@ -124,9 +124,9 @@ void cadre::OnExit(wxCommandEvent& e)
 
 void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 {
-  auto f = new wxFrame{nullptr, ID_POPUP, "Liste des contacts", wxDefaultPosition};
-  f -> Show(true);
-  auto panneau = new wxPanel{f, wxID_ANY};
+  auto  CadreListePersonne = new cadre("Liste des contacts");
+  CadreListePersonne -> Show(true);
+  auto panneau = new wxPanel{CadreListePersonne, wxID_ANY};
 
   chainonPersonne* crt = repertoirePersonne->getTete();
   wxString t;
@@ -146,8 +146,8 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
   auto sizer = new wxBoxSizer{wxVERTICAL};
   sizer->Add(txt,1, wxEXPAND | wxALL,10);
   panneau->SetSizerAndFit(sizer);
-  f->SetSize(panneau->GetSize());
-  f->SetMinSize({300,50});
+  CadreListePersonne->SetSize(panneau->GetSize());
+  CadreListePersonne->SetMinSize({300,50});
 }
 
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
@@ -157,11 +157,11 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
     ID_CHAMP4_AJOUTER_PERSONNE
   };
 
-  auto  CadreAjouterPersonne = new cadre{"Ajouter une personne"};
+  auto CadreAjouterPersonne = new cadre("Ajouter une personne");
 
 
   CadreAjouterPersonne -> Show(true);
-  auto panneau = new wxPanel{f, wxID_ANY};
+  auto panneau = new wxPanel{CadreAjouterPersonne, wxID_ANY};
   // panneau->SetSize({6000,3000});
 
   auto txt1 = new wxStaticText{panneau, wxID_STATIC,("Nom : ")};
@@ -204,7 +204,7 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
   sizer5->Add(bouton,0,wxALIGN_LEFT | wxALL, 10);
 
   panneau->SetSizerAndFit(sizer5);
-  f->SetSize(panneau->GetSize());
+  CadreAjouterPersonne->SetSize(panneau->GetSize());
   SetMinSize(GetSize());
 
   Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterPersonne, CadreAjouterPersonne, ID_BOUTON_AJOUTER_PERSONNE);

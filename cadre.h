@@ -35,6 +35,8 @@ class cadre : public wxFrame
     wxTextCtrl *c_libelle, *c_jour, *c_mois, *c_annee, *c_heureDebut, *c_heureFin;
     wxStaticText *c_listeRdvEntre;
     wxListBox *c_listePersonnes, *c_listeParticipants;
+    wxListBox *c_toutesPersonnes, *c_tousRdv;
+    wxArrayString c_arrayParticipants, c_arrayRdv;
     wxArrayString c_ajoutParticipants;
     std::vector<string> repertoire;
 

@@ -18,10 +18,8 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
     ID_LOAD, ID_NEW_PERSONNE, ID_EDIT_PERSONNE, ID_DELETE_PERSONNE,
     ID_NEW_RDV, ID_EDIT_RDV, ID_DELETE_RDV, ID_DOC, ID_A_PROPOS,
     ID_LISTE_PERSONNES, ID_LISTE_RDV, ID_RDV_DE, ID_RDV_ENTRE,
-    ID_DETAIL_RDV, ID_DETAIL_PERSONNE
+    ID_DETAIL_RDV, ID_DETAIL_PERSONNE, ID_TOUTES_PERSONNES
   };
-
-  // auto  CadreMenuPrithisncipal = new cadre("Menu Principal");
 
   //initialisation des repertoires
   repertoirePersonne = new LCPersonne{};
@@ -71,6 +69,14 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   menubar -> Append(menuafficher, "Afficher");
   menubar -> Append(menuaide, "Aide");
   SetMenuBar(menubar);
+
+/*
+  //affichage des focntionnalités disponibles
+  wxString champTitre = "Fonctionnalités disponibles :";
+  wxString champFichier = "Menu Fichier : sauvegarde et récupération d'une liste de personnes et de rendez-vous";
+  wxString champEditer = "Menu Editer : "
+*/
+
 
   //liaisons
   Bind(wxEVT_MENU, &cadre::OnCharger, this, ID_LOAD);
@@ -345,13 +351,15 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
 void cadre::OnAjoutListeParticipants(wxCommandEvent& e)
 {
   int i = c_listePersonnes->GetSelection();
-  c_listeParticipants->InsertItems(1, &c_ajoutParticipants[i], 0);
+  if(i>=0)
+    c_listeParticipants->InsertItems(1, &c_ajoutParticipants[i], 0);
 }
 
 void cadre::OnRetirerListeParticipants(wxCommandEvent& e)
 {
   int i = c_listeParticipants->GetSelection();
-  c_listeParticipants->Delete(i);
+  if(i>=0)
+    c_listeParticipants->Delete(i);
 }
 
 void cadre::OnBoutonAjouterRdv(wxCommandEvent& e)

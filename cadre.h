@@ -1,9 +1,13 @@
 #include "lcpersonne.h"
 #include "lcrdv.h"
+#include <vector>
+#include <string>
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
+
+using namespace std;
 
 class LCPersonne;
 class LCRdv;
@@ -13,6 +17,8 @@ class cadre : public wxFrame
   public :
     cadre();
     cadre(string c_nomFrame);
+    void setRepertoire(string s, int i, int j);
+
   private :
     LCPersonne* repertoirePersonne;
     LCRdv* repertoireRdv;
@@ -21,13 +27,18 @@ class cadre : public wxFrame
     void OnExit(wxCommandEvent& e);
     void OnAfficherPersonnes(wxCommandEvent& e);
     void OnAjouterPersonne(wxCommandEvent& e);
+    void OnSupprimerPersonne(wxCommandEvent& e);
     void OnBoutonAjouterPersonne(wxCommandEvent& e);
     void OnModifierPersonne(wxCommandEvent& e);
+    void OnSelectionModifierPersonne(wxCommandEvent& e);
+    void OnBoutonModifierPersonne(wxCommandEvent& e);
 
     wxTextCtrl* c_champNom;
     wxTextCtrl* c_champPrenom;
     wxTextCtrl* c_champNumero;
     wxTextCtrl* c_champEmail;
-    std::vector<string> repertoire;
+    wxChoice* c_choix_personne;
+    wxStaticText* c_nom;
+    wxStaticText* c_prenom;
 
 };

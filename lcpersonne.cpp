@@ -245,27 +245,3 @@ string LCPersonne::getNumero(chainonPersonne* crt){
 chainonPersonne* LCPersonne::getSuivant(chainonPersonne* crt){
   return crt->cp_suivant;
 }
-
-void LCPersonne::vecteurNoms(vector<string>& v){
-
-  chainonPersonne* crt = l_tete;
-  int i = 0;
-
-  while(crt){
-    v[i] = crt->cp_nom;
-    crt = crt->cp_suivant;
-    i++;
-  }
-}
-
-void LCPersonne::vecteurPrenoms(vector<string>& v){
-
-  chainonPersonne* crt = l_tete;
-  int i = 0;
-
-  while(crt){
-    v[i] = crt->cp_prenom;
-    crt = crt->cp_suivant;
-    i++;
-  }
-}

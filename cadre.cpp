@@ -144,9 +144,7 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
 
-  enum{
-    ID_BOUTON_AJOUTER_PERSONNE
-  };
+  enum{ID_BOUTON};
 
   auto CadreAjouterPersonne = new cadre("Ajouter une personne");
   CadreAjouterPersonne -> Show(true);
@@ -162,7 +160,7 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
   c_champNumero = new wxTextCtrl(panneau, wxID_STATIC,"");
   c_champEmail = new wxTextCtrl(panneau, wxID_STATIC,"");
 
-  auto bouton = new wxButton(panneau, ID_BOUTON_AJOUTER_PERSONNE, "Valider");
+  auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
 
   auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
   sizer1->Add(txt1,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
@@ -201,36 +199,79 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
 void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
 
   repertoirePersonne->ajouter(std::string(c_champNom->GetValue()), std::string(c_champPrenom->GetValue()), std::string(c_champNumero->GetValue()), std::string(c_champEmail->GetValue()));
-
+  c_champNom->SetValue("");
+  c_champPrenom->SetValue("");
+  c_champNumero->SetValue("");
+  c_champEmail->SetValue("");
 }
 
 void cadre::OnModifierPersonne(wxCommandEvent& e){
 
-  enum{ID_CHOIX,ID_BOUTON_AJOUTER_PERSONNE};
+  enum{ID_CHOIX,ID_BOUTON};
+
+  wxArrayString repertoire;
+
+  chainonPersonne* crt = repertoirePersonne->getTete();
+  while(crt){
+    repertoire.Add(repertoirePersonne->getNom(crt) + " " + repertoirePersonne->getPrenom(crt));
+    crt = repertoirePersonne->getSuivant(crt);
+  }
 
   auto CadreModifierPersonne = new cadre("Modifier une personne");
   CadreModifierPersonne -> Show(true);
   auto panneau = new wxPanel{CadreModifierPersonne, wxID_ANY};
 
-  auto c_choix = new wxChoice(panneau, ID_CHOIX);
+  c_choix_personne = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,repertoire, ID_CHOIX);
 
-  auto txt1 = new wxStaticText{panneau, wxID_STATIC,("Nom")};
-  auto txt2 = new wxStaticText{panneau, wxID_STATIC,("Prenom")};
+  c_nom = new wxStaticText{panneau, wxID_STATIC,("Nom")};
+  c_prenom = new wxStaticText{panneau, wxID_STATIC,("Prenom")};
   c_champNumero = new wxTextCtrl(panneau, wxID_STATIC,"Numero");
   c_champEmail = new wxTextCtrl(panneau, wxID_STATIC,"Email");
 
-  auto bouton = new wxButton(panneau, ID_BOUTON_AJOUTER_PERSONNE, "Valider");
+  auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
 
   auto sizer1 = new wxBoxSizer{wxVERTICAL};
-  sizer1->Add(c_choix,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(txt1,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(txt2,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(c_champNumero,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(c_champEmail,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
-  sizer1->Add(bouton,1.8,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(c_choix_personne,2.5,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(c_nom,2.5,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(c_prenom,2.5,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(c_champNumero,2.5,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(c_champEmail,2.5,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+  sizer1->Add(bouton,2.5,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
 
   panneau->SetSizerAndFit(sizer1);
   CadreModifierPersonne->SetSize(panneau->GetSize());
   SetMinSize(GetSize());
+
+  c_choix_personne->Bind(wxEVT_CHOICE, &cadre::OnSelectionModifierPersonne, this);
+  bouton->Bind(wxEVT_BUTTON, &cadre::OnBoutonModifierPersonne, this);
+}
+
+void cadre::OnSelectionModifierPersonne(wxCommandEvent& e){
+
+  int sel = c_choix_personne->GetSelection();
+  chainonPersonne* crt = repertoirePersonne->getTete();
+  int i = 0;
+  while(i != sel){
+    crt = repertoirePersonne->getSuivant(crt);
+    i++;
+  }
+
+  c_nom->SetLabel(repertoirePersonne->getNom(crt));
+  c_prenom->SetLabel(repertoirePersonne->getPrenom(crt));
+  c_champNumero->SetValue(repertoirePersonne->getNumero(crt));
+  c_champEmail->SetValue(repertoirePersonne->getEmail(crt));
+}
+
+void cadre::OnBoutonModifierPersonne(wxCommandEvent& e){
+
+  repertoirePersonne->modifierNumero(string(c_nom->GetLabel()),string(c_prenom->GetLabel()),string(c_champNumero->GetValue()));
+  repertoirePersonne->modifierEmail(string(c_nom->GetLabel()),string(c_prenom->GetLabel()),string(c_champEmail->GetValue()));
+}
+
+void cadre::OnSupprimerPersonne(wxCommandEvent& e){
+
+  auto CadreSupprimerPersonne = new cadre("Supprimer une personne");
+  CadreSupprimerPersonne -> Show(true);
+  auto panneau = new wxPanel{CadreSupprimerPersonne, wxID_ANY};
 
 }

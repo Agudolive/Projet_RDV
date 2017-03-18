@@ -17,7 +17,6 @@ class cadre : public wxFrame
   public :
     cadre();
     cadre(string c_nomFrame);
-    void setRepertoire(string s, int i, int j);
 
   private :
     LCPersonne* repertoirePersonne;
@@ -32,6 +31,7 @@ class cadre : public wxFrame
     void OnModifierPersonne(wxCommandEvent& e);
     void OnSelectionModifierPersonne(wxCommandEvent& e);
     void OnBoutonModifierPersonne(wxCommandEvent& e);
+    void OnBoutonSupprimerPersonne(wxCommandEvent& e);
 
     wxTextCtrl* c_champNom;
     wxTextCtrl* c_champPrenom;

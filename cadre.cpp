@@ -78,6 +78,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnAfficherPersonnes, this, ID_LISTE_PERSONNES);
   Bind(wxEVT_MENU, &cadre::OnAjouterPersonne, this, ID_NEW_PERSONNE);
   Bind(wxEVT_MENU, &cadre::OnModifierPersonne, this, ID_EDIT_PERSONNE);
+  Bind(wxEVT_MENU, &cadre::OnSupprimerPersonne, this, ID_DELETE_PERSONNE);
 
 }
 
@@ -270,8 +271,43 @@ void cadre::OnBoutonModifierPersonne(wxCommandEvent& e){
 
 void cadre::OnSupprimerPersonne(wxCommandEvent& e){
 
+  enum{ID_CHOIX,ID_BOUTON};
+
+  wxArrayString repertoire;
+
+  chainonPersonne* crt = repertoirePersonne->getTete();
+  while(crt){
+    repertoire.Add(repertoirePersonne->getNom(crt) + " " + repertoirePersonne->getPrenom(crt));
+    crt = repertoirePersonne->getSuivant(crt);
+  }
+
   auto CadreSupprimerPersonne = new cadre("Supprimer une personne");
   CadreSupprimerPersonne -> Show(true);
   auto panneau = new wxPanel{CadreSupprimerPersonne, wxID_ANY};
 
+  c_choix_personne = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,repertoire, ID_CHOIX);
+
+  auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
+
+  auto sizer1 = new wxBoxSizer{wxVERTICAL};
+  sizer1->Add(c_choix_personne,6,wxALIGN_CENTER | wxEXPAND | wxALL, 10);
+  sizer1->Add(bouton,6,wxALIGN_LEFT | wxEXPAND | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer1);
+  CadreSupprimerPersonne->SetSize(panneau->GetSize());
+  SetMinSize(GetSize());
+
+  bouton->Bind(wxEVT_BUTTON, &cadre::OnBoutonSupprimerPersonne, this);
+}
+
+void cadre::OnBoutonSupprimerPersonne(wxCommandEvent& e){
+
+  int sel = c_choix_personne->GetSelection();
+  chainonPersonne* crt = repertoirePersonne->getTete();
+  int i = 0;
+  while(i != sel){
+    crt = repertoirePersonne->getSuivant(crt);
+    i++;
+  }
+  repertoirePersonne->supprimer(string(repertoirePersonne->getNom(crt)),string(repertoirePersonne->getPrenom(crt)),repertoireRdv);
 }

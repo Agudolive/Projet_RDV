@@ -27,10 +27,8 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   repertoirePersonne = new LCPersonne{};
   repertoireRdv = new LCRdv{};
 
-  //creation de la fenête vide
-  SetClientSize(wxSize{960,540});
+  //creation du panneau vide
   auto panneau = new wxPanel{this, wxID_ANY};
-  panneau->SetSize(GetClientSize());
 
   //creation des menus
   auto menufichier = new wxMenu;
@@ -72,12 +70,26 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   menubar -> Append(menuaide, "Aide");
   SetMenuBar(menubar);
 
-/*
+
   //affichage des focntionnalités disponibles
-  wxString champTitre = "Fonctionnalités disponibles :";
-  wxString champFichier = "Menu Fichier : sauvegarde et récupération d'une liste de personnes et de rendez-vous";
-  wxString champEditer = "Menu Editer : "
-*/
+  wxString champ = "";
+      // wxString::FromUTF8("\xC2\xA0");
+
+  champ += wxString::FromUTF8("Fonctionnalites disponibles :\x000D\x000D");
+  champ += "Menu Fichier :\x000D\x0009- Sauvegarde et recuperation d'une liste de personnes et de rendez-vous\x000D\x000D";
+  champ += "Menu Editer :\x000D\x0009- Creation/Edition/suppressions de personnes et rendez-vous\x000D\x000D";
+  champ += "Menu Afficher :\x000D\x0009- Liste des personnes avec leurs informations\x000D\x0009- Liste des rendez-vous avec date et heure\x000D\x0009- Tous les rendez vous d'une personne\x000D\x0009- Les details d'un rdv c-a-d les personnes le composant\x000D\x0009- Les rdv entre 2 date\x000D\x000D";
+  champ += "Menu Aide :\x000D\x0009- Un lien vers la documentation du projet\x000D\x0009- Les acteurs du projet";
+
+  auto txt = new wxStaticText{panneau,wxID_STATIC,champ,wxDefaultPosition, wxDefaultSize,0, wxStaticTextNameStr};
+
+  auto sizer = new wxBoxSizer{wxHORIZONTAL};
+  sizer->Add(txt,1, wxEXPAND | wxALL,10);
+
+  panneau->SetSizerAndFit(sizer);
+  SetClientSize(panneau->GetSize());
+  SetMinSize(panneau->GetSize());
+
 
   //liaisons
   Bind(wxEVT_MENU, &cadre::OnCharger, this, ID_LOAD);

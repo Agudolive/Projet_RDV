@@ -27,14 +27,15 @@ class cadre : public wxFrame
     void OnAfficherRdvs(wxCommandEvent& e);
     void OnAfficherEntreDates(wxCommandEvent& e);
     void OnRefreshAfficherEntreDates(wxCommandEvent& e);
+    void OnAjoutListeParticipants(wxCommandEvent& e);
+    void OnRetirerListeParticipants(wxCommandEvent& e);
 
-    wxTextCtrl* c_champNom;
-    wxTextCtrl* c_champPrenom;
-    wxTextCtrl* c_champNumero;
-    wxTextCtrl* c_champEmail;
+    wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;
     wxTextCtrl *c_libelle, *c_jour, *c_mois, *c_annee, *c_heureDebut, *c_heureFin;
     wxStaticText *c_listeRdvEntre;
+    wxListBox *c_listePersonnes, *c_listeParticipants;
+    wxArrayString c_ajoutParticipants;
     std::vector<string> repertoire;
 
 };

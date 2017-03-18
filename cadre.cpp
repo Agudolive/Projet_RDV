@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -242,11 +243,13 @@ void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
 void cadre::OnAjouterRdv(wxCommandEvent& e)
 {
   enum{
-    ID_BOUTON_AJOUTER_RDV, ID_LISTE_PERSONNES
+    ID_BOUTON_AJOUTER_RDV, ID_LISTE_PERSONNES, ID_LISTE_PARTICIPANTS,
+    ID_BOUTON_AJOUTER, ID_BOUTON_RETIRER
   };
 
   auto CadreAjouterRdv = new cadre{"Ajouter un rendez-vous"};
   CadreAjouterRdv -> Show(true);
+  CadreAjouterRdv -> SetMaxSize({500, 700});
   auto panneau = new wxPanel{CadreAjouterRdv, wxID_ANY};
 
   auto txt1 = new wxStaticText{panneau, wxID_STATIC,("Libelle : ")};
@@ -263,18 +266,21 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
   c_heureDebut = new wxTextCtrl(panneau, wxID_STATIC,"");
   c_heureFin = new wxTextCtrl(panneau, wxID_STATIC,"");
 
-  auto bouton = new wxButton(panneau, ID_BOUTON_AJOUTER_RDV, "Ajouter");
+  auto boutonConfirmer = new wxButton(panneau, ID_BOUTON_AJOUTER_RDV, "Ajouter");
+  auto boutonAjouter = new wxButton(panneau, ID_BOUTON_AJOUTER, ">");
+  auto boutonRetirer = new wxButton(panneau, ID_BOUTON_RETIRER, "<");
 
-  wxArrayString repertoire;
+  c_ajoutParticipants.Empty();
   chainonPersonne* crt = repertoirePersonne->getTete();
   while(crt)
   {
-    repertoire.Add(repertoirePersonne->getNom(crt) + " " + repertoirePersonne->getPrenom(crt));
+    wxString nom = repertoirePersonne->getNom(crt);
+    wxString prenom = repertoirePersonne->getPrenom(crt);
+    c_ajoutParticipants.Add(nom + " " + prenom);
     crt = repertoirePersonne->getSuivant(crt);
   }
-  auto liste = new wxListBox(panneau, ID_LISTE_PERSONNES, wxDefaultPosition, wxDefaultSize, &repertoire, 0, wxDefaultValidator, wxListBoxNameStr);
-
-
+  c_listePersonnes = new wxListBox(panneau, ID_LISTE_PERSONNES, wxDefaultPosition, {150, 200}, c_ajoutParticipants, 0, wxDefaultValidator, wxListBoxNameStr);
+  c_listeParticipants = new wxListBox(panneau, ID_LISTE_PARTICIPANTS, wxDefaultPosition, {150, 200}, 0, nullptr, 0, wxDefaultValidator, wxListBoxNameStr);
 
   auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
   sizer1->Add(txt1,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
@@ -306,7 +312,14 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
   sizer6->AddStretchSpacer(1);
   sizer6->Add(c_heureFin,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
 
+  auto sizer7 = new wxBoxSizer{wxVERTICAL};
+  sizer7->Add(boutonAjouter, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+  sizer7->Add(boutonRetirer, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
 
+  auto sizer8 = new wxBoxSizer{wxHORIZONTAL};
+  sizer8->Add(c_listePersonnes, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer8->Add(sizer7, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer8->Add(c_listeParticipants, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
 
   auto sizer = new wxBoxSizer{wxVERTICAL};
   sizer->Add(sizer1,1,wxALIGN_LEFT | wxALL, 10);
@@ -315,22 +328,54 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
   sizer->Add(sizer4,1,wxALIGN_LEFT | wxALL, 10);
   sizer->Add(sizer5,1,wxALIGN_LEFT | wxALL, 10);
   sizer->Add(sizer6,1,wxALIGN_LEFT | wxALL, 10);
-  sizer->Add(bouton,0,wxALIGN_LEFT | wxALL, 10);
-  sizer->Add(liste,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer8,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(boutonConfirmer,0,wxALIGN_LEFT | wxALL, 10);
 
 
   panneau->SetSizerAndFit(sizer);
   CadreAjouterRdv->SetSize(panneau->GetSize());
   SetMinSize(GetSize());
 
-  bouton->Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterRdv, this);
+  boutonAjouter->Bind(wxEVT_BUTTON, &cadre::OnAjoutListeParticipants, this);
+  boutonRetirer->Bind(wxEVT_BUTTON, &cadre::OnRetirerListeParticipants, this);
+  boutonConfirmer->Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterRdv, this);
 
+}
+
+void cadre::OnAjoutListeParticipants(wxCommandEvent& e)
+{
+  int i = c_listePersonnes->GetSelection();
+  c_listeParticipants->InsertItems(1, &c_ajoutParticipants[i], 0);
+}
+
+void cadre::OnRetirerListeParticipants(wxCommandEvent& e)
+{
+  int i = c_listeParticipants->GetSelection();
+  c_listeParticipants->Delete(i);
 }
 
 void cadre::OnBoutonAjouterRdv(wxCommandEvent& e)
 {
-  vector<vector<string>>test(0);
-  repertoireRdv->ajouter(std::string(c_libelle->GetValue()), wxAtoi(c_jour->GetValue()), wxAtoi(c_mois->GetValue()), wxAtoi(c_annee->GetValue()), wxAtoi(c_heureDebut->GetValue()), wxAtoi(c_heureFin->GetValue()), test);
+  wxArrayString liste;
+  int nb = c_listeParticipants->GetCount();
+
+  for(int i=0; i<nb; i++)
+    liste.Add(c_listeParticipants->GetString(i));
+  liste.Sort();
+
+  vector<vector<string>>listeVector(nb, vector<string>(2, ""));
+  for(int i=0; i<nb; i++)
+  {
+    string tmp, nom, prenom;
+    tmp = string(liste[i]);
+    stringstream ss(tmp);
+    getline(ss, nom, ' ');
+    getline(ss, prenom, ' ');
+
+    listeVector[i][0]=nom;
+    listeVector[i][1]=prenom;
+  }
+  repertoireRdv->ajouter(std::string(c_libelle->GetValue()), wxAtoi(c_jour->GetValue()), wxAtoi(c_mois->GetValue()), wxAtoi(c_annee->GetValue()), wxAtoi(c_heureDebut->GetValue()), wxAtoi(c_heureFin->GetValue()), listeVector);
 }
 
 

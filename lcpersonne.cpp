@@ -168,7 +168,7 @@ void LCPersonne::afficherPersonne(string nom, string prenom)
   supprime un chainon de la liste
   @param[in] nom, prenom - des string contenant le nom de la personne à retirer de la liste
 */
-void LCPersonne::supprimer(string nom, string prenom, LCRdv* listeRdv)
+bool LCPersonne::supprimer(string nom, string prenom, LCRdv* listeRdv)
 {
   chainonPersonne* crt = l_tete;
 
@@ -192,8 +192,9 @@ void LCPersonne::supprimer(string nom, string prenom, LCRdv* listeRdv)
   }
   else
   {
-    cout << "La personne a un rdv en cours, impossible de supprimer" << endl;
+    return 0;
   }
+  return 1;
 }
 
 void LCPersonne::modifierNumero(string nom, string prenom, string numero)
@@ -244,28 +245,4 @@ string LCPersonne::getNumero(chainonPersonne* crt){
 
 chainonPersonne* LCPersonne::getSuivant(chainonPersonne* crt){
   return crt->cp_suivant;
-}
-
-void LCPersonne::vecteurNoms(vector<string>& v){
-
-  chainonPersonne* crt = l_tete;
-  int i = 0;
-
-  while(crt){
-    v[i] = crt->cp_nom;
-    crt = crt->cp_suivant;
-    i++;
-  }
-}
-
-void LCPersonne::vecteurPrenoms(vector<string>& v){
-
-  chainonPersonne* crt = l_tete;
-  int i = 0;
-
-  while(crt){
-    v[i] = crt->cp_prenom;
-    crt = crt->cp_suivant;
-    i++;
-  }
 }

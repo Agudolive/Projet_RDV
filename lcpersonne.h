@@ -16,7 +16,7 @@ public:
     void ajouter(string nom, string prenom, string numero, string email);
     void afficher();
     void afficherPersonne(string nom, string prenom);
-    void supprimer(string nom, string prenom, LCRdv* listeRdv);
+    bool supprimer(string nom, string prenom, LCRdv* listeRdv);
 
     void modifierNumero(string nom, string prenom, string numero);
     void modifierEmail(string nom, string prenom, string email);

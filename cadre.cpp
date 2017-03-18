@@ -147,7 +147,7 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
 
   enum{ID_BOUTON};
 
-  auto CadreAjouterPersonne = new cadre("Ajouter une personne");
+  CadreAjouterPersonne = new cadre("Ajouter une personne");
   CadreAjouterPersonne -> Show(true);
   auto panneau = new wxPanel{CadreAjouterPersonne, wxID_ANY};
 
@@ -204,6 +204,7 @@ void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
   c_champPrenom->SetValue("");
   c_champNumero->SetValue("");
   c_champEmail->SetValue("");
+  CadreAjouterPersonne->Close(true);
 }
 
 void cadre::OnModifierPersonne(wxCommandEvent& e){
@@ -218,7 +219,7 @@ void cadre::OnModifierPersonne(wxCommandEvent& e){
     crt = repertoirePersonne->getSuivant(crt);
   }
 
-  auto CadreModifierPersonne = new cadre("Modifier une personne");
+  CadreModifierPersonne = new cadre("Modifier une personne");
   CadreModifierPersonne -> Show(true);
   auto panneau = new wxPanel{CadreModifierPersonne, wxID_ANY};
 
@@ -267,6 +268,7 @@ void cadre::OnBoutonModifierPersonne(wxCommandEvent& e){
 
   repertoirePersonne->modifierNumero(string(c_nom->GetLabel()),string(c_prenom->GetLabel()),string(c_champNumero->GetValue()));
   repertoirePersonne->modifierEmail(string(c_nom->GetLabel()),string(c_prenom->GetLabel()),string(c_champEmail->GetValue()));
+  CadreModifierPersonne->Close(true);
 }
 
 void cadre::OnSupprimerPersonne(wxCommandEvent& e){
@@ -281,7 +283,7 @@ void cadre::OnSupprimerPersonne(wxCommandEvent& e){
     crt = repertoirePersonne->getSuivant(crt);
   }
 
-  auto CadreSupprimerPersonne = new cadre("Supprimer une personne");
+  CadreSupprimerPersonne = new cadre("Supprimer une personne");
   CadreSupprimerPersonne -> Show(true);
   auto panneau = new wxPanel{CadreSupprimerPersonne, wxID_ANY};
 
@@ -302,6 +304,9 @@ void cadre::OnSupprimerPersonne(wxCommandEvent& e){
 
 void cadre::OnBoutonSupprimerPersonne(wxCommandEvent& e){
 
+  bool b;
+  enum{ID_CHOIX};
+  wxArrayString repertoire;
   int sel = c_choix_personne->GetSelection();
   chainonPersonne* crt = repertoirePersonne->getTete();
   int i = 0;
@@ -309,5 +314,8 @@ void cadre::OnBoutonSupprimerPersonne(wxCommandEvent& e){
     crt = repertoirePersonne->getSuivant(crt);
     i++;
   }
-  repertoirePersonne->supprimer(string(repertoirePersonne->getNom(crt)),string(repertoirePersonne->getPrenom(crt)),repertoireRdv);
+  b = repertoirePersonne->supprimer(string(repertoirePersonne->getNom(crt)),string(repertoirePersonne->getPrenom(crt)),repertoireRdv);
+  if(!b)
+    wxMessageBox("Impossible de supprimer ce contact","Attention",wxOK);
+  CadreSupprimerPersonne->Close(true);
 }

@@ -40,5 +40,7 @@ class cadre : public wxFrame
     wxChoice* c_choix_personne;
     wxStaticText* c_nom;
     wxStaticText* c_prenom;
-
+    cadre* CadreAjouterPersonne;
+    cadre* CadreModifierPersonne;
+    cadre* CadreSupprimerPersonne;
 };

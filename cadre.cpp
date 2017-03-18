@@ -76,6 +76,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnSave, this, wxID_SAVE);
   Bind(wxEVT_MENU, &cadre::OnExit, this, wxID_EXIT);
   Bind(wxEVT_MENU, &cadre::OnAfficherPersonnes, this, ID_LISTE_PERSONNES);
+  Bind(wxEVT_MENU, &cadre::OnAfficherRdvs, this, ID_LISTE_RDV);
   Bind(wxEVT_MENU, &cadre::OnAjouterPersonne, this, ID_NEW_PERSONNE);
   Bind(wxEVT_MENU, &cadre::OnAjouterRdv, this, ID_NEW_RDV);
   Bind(wxEVT_MENU, &cadre::OnAfficherEntreDates, this, ID_RDV_ENTRE);
@@ -241,7 +242,7 @@ void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
 void cadre::OnAjouterRdv(wxCommandEvent& e)
 {
   enum{
-    ID_BOUTON_AJOUTER_RDV
+    ID_BOUTON_AJOUTER_RDV, ID_LISTE_PERSONNES
   };
 
   auto CadreAjouterRdv = new cadre{"Ajouter un rendez-vous"};
@@ -263,6 +264,17 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
   c_heureFin = new wxTextCtrl(panneau, wxID_STATIC,"");
 
   auto bouton = new wxButton(panneau, ID_BOUTON_AJOUTER_RDV, "Ajouter");
+
+  wxArrayString repertoire;
+  chainonPersonne* crt = repertoirePersonne->getTete();
+  while(crt)
+  {
+    repertoire.Add(repertoirePersonne->getNom(crt) + " " + repertoirePersonne->getPrenom(crt));
+    crt = repertoirePersonne->getSuivant(crt);
+  }
+  auto liste = new wxListBox(panneau, ID_LISTE_PERSONNES, wxDefaultPosition, wxDefaultSize, &repertoire, 0, wxDefaultValidator, wxListBoxNameStr);
+
+
 
   auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
   sizer1->Add(txt1,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
@@ -304,6 +316,7 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
   sizer->Add(sizer5,1,wxALIGN_LEFT | wxALL, 10);
   sizer->Add(sizer6,1,wxALIGN_LEFT | wxALL, 10);
   sizer->Add(bouton,0,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(liste,1,wxALIGN_LEFT | wxALL, 10);
 
 
   panneau->SetSizerAndFit(sizer);
@@ -316,7 +329,8 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
 
 void cadre::OnBoutonAjouterRdv(wxCommandEvent& e)
 {
-
+  vector<vector<string>>test(0);
+  repertoireRdv->ajouter(std::string(c_libelle->GetValue()), wxAtoi(c_jour->GetValue()), wxAtoi(c_mois->GetValue()), wxAtoi(c_annee->GetValue()), wxAtoi(c_heureDebut->GetValue()), wxAtoi(c_heureFin->GetValue()), test);
 }
 
 

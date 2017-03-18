@@ -187,7 +187,7 @@ void LCPersonne::supprimer(string nom, string prenom, LCRdv* listeRdv)
       }
       chainonPersonne* tmp = crt->cp_suivant;
       crt->cp_suivant = crt->cp_suivant->cp_suivant;
-      delete tmp;;
+      delete tmp;
     }
   }
   else

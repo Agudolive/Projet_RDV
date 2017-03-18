@@ -27,7 +27,6 @@ class cadre : public wxFrame
     void OnExit(wxCommandEvent& e);
     void OnAfficherPersonnes(wxCommandEvent& e);
     void OnAjouterPersonne(wxCommandEvent& e);
-    void OnBoutonAjouterPersonne(wxCommandEvent& e);
     void OnAjouterRdv(wxCommandEvent& e);
     void OnBoutonAjouterRdv(wxCommandEvent& e);
     void OnAfficherRdvs(wxCommandEvent& e);
@@ -53,10 +52,6 @@ class cadre : public wxFrame
     void OnBoutonModifierPersonne(wxCommandEvent& e);
     void OnBoutonSupprimerPersonne(wxCommandEvent& e);
 
-    wxTextCtrl* c_champNom;
-    wxTextCtrl* c_champPrenom;
-    wxTextCtrl* c_champNumero;
-    wxTextCtrl* c_champEmail;
     wxChoice* c_choix_personne;
     wxStaticText* c_nom;
     wxStaticText* c_prenom;

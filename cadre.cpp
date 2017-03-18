@@ -21,9 +21,6 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
     ID_DETAIL_RDV, ID_DETAIL_PERSONNE, ID_TOUTES_PERSONNES
   };
 
-    ID_DETAIL_RDV, ID_DETAIL_PERSONNE
-  };
-
   // auto  CadreMenuPrithisncipal = new cadre("Menu Principal");
 
   //initialisation des repertoires
@@ -247,7 +244,7 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
 void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
 
   repertoirePersonne->ajouter(std::string(c_champNom->GetValue()), std::string(c_champPrenom->GetValue()), std::string(c_champNumero->GetValue()), std::string(c_champEmail->GetValue()));
-
+  CadreAjouterPersonne->Close(true);
 }
 
 void cadre::OnAjouterRdv(wxCommandEvent& e)
@@ -466,7 +463,6 @@ void cadre::OnAfficherEntreDates(wxCommandEvent& e)
   cadreAfficherEntreDates->SetSize(panneau->GetSize());
   cadreAfficherEntreDates->SetMinSize({300,50});
 
-
   bouton->Bind(wxEVT_BUTTON, &cadre::OnRefreshAfficherEntreDates, this);
 }
 
@@ -486,7 +482,6 @@ void cadre::OnRefreshAfficherEntreDates(wxCommandEvent& e)
   c_champPrenom->SetValue("");
   c_champNumero->SetValue("");
   c_champEmail->SetValue("");
-  CadreAjouterPersonne->Close(true);
 }
 
 void cadre::OnModifierPersonne(wxCommandEvent& e){

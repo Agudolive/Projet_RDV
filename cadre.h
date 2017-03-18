@@ -34,6 +34,13 @@ class cadre : public wxFrame
     void OnRefreshAfficherEntreDates(wxCommandEvent& e);
     void OnAjoutListeParticipants(wxCommandEvent& e);
     void OnRetirerListeParticipants(wxCommandEvent& e);
+    void OnSupprimerPersonne(wxCommandEvent& e);
+    void OnBoutonAjouterPersonne(wxCommandEvent& e);
+    void OnModifierPersonne(wxCommandEvent& e);
+    void OnSelectionModifierPersonne(wxCommandEvent& e);
+    void OnBoutonModifierPersonne(wxCommandEvent& e);
+    void OnBoutonSupprimerPersonne(wxCommandEvent& e);
+    void OnModiferRdv(wxCommandEvent& e);
 
     wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;
@@ -44,15 +51,8 @@ class cadre : public wxFrame
     wxArrayString c_arrayParticipants, c_arrayRdv;
     wxArrayString c_ajoutParticipants;
     std::vector<string> repertoire;
-
-    void OnSupprimerPersonne(wxCommandEvent& e);
-    void OnBoutonAjouterPersonne(wxCommandEvent& e);
-    void OnModifierPersonne(wxCommandEvent& e);
-    void OnSelectionModifierPersonne(wxCommandEvent& e);
-    void OnBoutonModifierPersonne(wxCommandEvent& e);
-    void OnBoutonSupprimerPersonne(wxCommandEvent& e);
-
     wxChoice* c_choix_personne;
+    wxChoice* c_choix_rdv;
     wxStaticText* c_nom;
     wxStaticText* c_prenom;
     cadre* CadreAjouterPersonne;

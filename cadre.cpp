@@ -596,3 +596,31 @@ void cadre::OnBoutonSupprimerPersonne(wxCommandEvent& e){
     wxMessageBox("Impossible de supprimer ce contact","Attention",wxOK);
   CadreSupprimerPersonne->Close(true);
 }
+
+void cadre::OnModiferRdv(wxCommandEvent& e){
+
+  wxArrayString listeRDV;
+
+  chainonRdv* crt = repertoireRdv->getTete();
+  while(crt){
+    listeRDV.Add(repertoireRdv->getLibelle(crt));
+    crt = repertoireRdv->getSuivant(crt);
+  }
+
+  enum{ID_CHOIX,ID_BOUTON};
+
+  wxTextCtrl *c_libelle, *c_jour, *c_mois, *c_annee, *c_heureDebut, *c_heureFin;
+
+  CadreSupprimerRdv = new cadre("Supprimer un rendez-vous");
+  CadreSupprimerRdv -> Show(true);
+  auto panneau = new wxPanel{CadreSupprimerRdv, wxID_ANY};
+
+  c_choix_rdv = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,listeRDV, ID_CHOIX);
+  c_libelle = new wxStaticText{panneau, wxID_STATIC,("Libellé")};
+  c_jour = new wxStaticText{panneau, wxID_STATIC,("Jour")};
+  c_mois = new wxStaticText{panneau, wxID_STATIC,("Mois")};
+  c_annee = new wxStaticText{panneau, wxID_STATIC,("Année")};
+  c_heureDebut = new wxStaticText{panneau, wxID_STATIC,("Heure de début")};
+  c_heureFin = new wxStaticText{panneau, wxID_STATIC,("Heure de fin")};
+
+}

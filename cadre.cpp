@@ -396,7 +396,54 @@ void cadre::OnBoutonAjouterRdv(wxCommandEvent& e)
     listeVector[i][0]=nom;
     listeVector[i][1]=prenom;
   }
-  repertoireRdv->ajouter(std::string(c_libelle->GetValue()), wxAtoi(c_jour->GetValue()), wxAtoi(c_mois->GetValue()), wxAtoi(c_annee->GetValue()), wxAtoi(c_heureDebut->GetValue()), wxAtoi(c_heureFin->GetValue()), listeVector);
+
+  string libelle = std::string(c_libelle->GetValue());
+  int jour = wxAtoi(c_jour->GetValue());
+  int mois = wxAtoi(c_mois->GetValue());
+  int annee = wxAtoi(c_annee->GetValue());
+  int heureDebut = wxAtoi(c_heureDebut->GetValue());
+  int heureFin = wxAtoi(c_heureFin->GetValue());
+
+  //on vérifie si tous les participants de la liste sont libres
+  bool conditionParticipants = true;
+  unsigned i = 0;
+  while( (conditionParticipants==true) & (i<listeVector.size()) )
+  {
+    conditionParticipants = repertoireRdv->estLibre(listeVector[i][0], listeVector[i][1], jour, mois, annee, heureDebut, jour, mois, annee, heureFin);
+    ++i;
+  }
+
+  //on vérifie si le rdv n'existe pas deja
+  bool conditionLibelle = true;
+  chainonRdv* crt = repertoireRdv->getTete();
+  while( (conditionLibelle==true) & (crt!=nullptr))
+  {
+    if(libelle==repertoireRdv->getLibelle(crt))
+      conditionLibelle = false;
+
+    crt = repertoireRdv->getSuivant(crt);
+  }
+
+  if( !conditionLibelle )
+    wxMessageBox("Ce rendez-vous existe deja");
+  else if( (jour>=32) | (jour<=0) )
+    wxMessageBox("Le jour choisi est invalide");
+  else if( (mois>=13) | (mois<=0) )
+    wxMessageBox("Le mois choisi est invalide");
+  else if( annee==0 )
+    wxMessageBox("L'annee choisie est invalide");
+  else if( (heureDebut>=24) | (heureDebut<=0) )
+    wxMessageBox("L'heure de commencement choisie est invalide");
+  else if( (heureFin>=24) | (heureFin<=0) )
+    wxMessageBox("L'heure de fin choisie est invalide");
+  else if(!conditionParticipants)
+  {
+    wxString txt = listeVector[i-1][0] + " " + listeVector[i-1][1];
+    txt.Printf(wxT("%s a deja un rendez-vous"), txt);
+    wxMessageBox(txt);
+  }
+  else
+    repertoireRdv->ajouter(libelle, jour, mois, annee, heureDebut, heureFin, listeVector);
 }
 
 

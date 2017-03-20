@@ -365,7 +365,18 @@ void cadre::OnAjoutListeParticipants(wxCommandEvent& e)
 {
   int i = c_listePersonnes->GetSelection();
   if(i>=0)
-    c_listeParticipants->InsertItems(1, &c_ajoutParticipants[i], 0);
+  {
+    bool dejaAjoute = false;
+    int nb = c_listeParticipants->GetCount();
+    for(int j=0; j<nb; j++)
+    {
+      if(c_listePersonnes->GetString(i) == c_listeParticipants->GetString(j))
+        dejaAjoute = true;
+    }
+
+    if(!dejaAjoute)
+      c_listeParticipants->InsertItems(1, &c_ajoutParticipants[i], 0);
+  }
 }
 
 void cadre::OnRetirerListeParticipants(wxCommandEvent& e)

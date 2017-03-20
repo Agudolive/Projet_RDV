@@ -10,13 +10,10 @@
 #include <sstream>
 
 using namespace std;
-/*
-cadre::~cadre()
-{
-  delete repertoirePersonne;
-  delete repertoireRdv;
-}*/
 
+/**
+  Construit le cadre principal et créé les élements de la fenêtre principale
+*/
 cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultPosition}
 {
   enum
@@ -112,10 +109,19 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnModiferRdv, this, ID_EDIT_RDV);
 }
 
+/**
+  Construit un objet de type cadre, permet la création de plusieures fenêtres différentes au seins de l'application
+  @param[in] c_nomFrame - un string contenant le nom de la fenêtre à créer
+*/
 cadre::cadre(string c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}{
 
 }
 
+/**
+  Charge la liste de personnes et rendez-vous à partir du fichier json
+  @param[in] e - un evenement declanché par le menu "Fichier -> Charger"
+  @param[out] repertoirePersonne, repertoireRdv - les répertoires remplis
+*/
 void cadre::OnCharger(wxCommandEvent& e){
 
   delete repertoirePersonne;
@@ -131,6 +137,11 @@ void cadre::OnCharger(wxCommandEvent& e){
   json_load.getRdv();
 }
 
+/**
+  Sauvegarde la liste de personnes et de rendez-vous dans un fichier json
+  @param[in] e - un evenement declanché par le menu "Fichier -> Save"
+  @param[out] repertoirePersonne, repertoireRdv - les répertoires à sauvegarder
+*/
 void cadre::OnSave(wxCommandEvent& e)
 {
   //appel de la sauvegarde json
@@ -140,11 +151,19 @@ void cadre::OnSave(wxCommandEvent& e)
   json_save.saveRdv();
 }
 
+/**
+  Ferme le cadre principale
+  @param[in] e - un evenement declanché par le menu "Fichier -> Quit"
+*/
 void cadre::OnExit(wxCommandEvent& e)
 {
   Close();
 }
 
+/**
+  Ouvre un fenêtre et affiche la liste de toutes les prsonnes
+  @param[in] e - un evenement declanché par le menu "Afficher -> Liste personnes"
+*/
 void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 {
   auto  CadreListePersonne = new cadre("Liste des contacts");
@@ -173,6 +192,10 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
   CadreListePersonne->SetMinSize({300,50});
 }
 
+/**
+  Ouvre un fenêtre et affiche la liste de toutes les rendez-vous
+  @param[in] e - un evenement declanché par le menu "Afficher -> Liste rendez-vous"
+*/
 void cadre::OnAfficherRdvs(wxCommandEvent& e)
 {
   auto  CadreListeRdvs = new cadre("Liste des rendez-vous");
@@ -205,7 +228,10 @@ void cadre::OnAfficherRdvs(wxCommandEvent& e)
 
 }
 
-
+/**
+  Ouvre un fenêtre et demande a l'utilisateur les informations pour ajouter une nouvelle personne
+  @param[in] e - un evenement declanché par le menu "Editer -> Personnes -> Editer personne"
+*/
 void cadre::OnAjouterPersonne(wxCommandEvent& e){
 
   enum{ID_BOUTON};
@@ -260,12 +286,20 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
   bouton->Bind(wxEVT_BUTTON, &cadre::OnBoutonAjouterPersonne, this);
 }
 
+/**
+  Ajoute une personne avec les informations données par l'utilisateur
+  @param[in] e - un evenement declanché par la méthode "cadre::OnAjouterPersonne"
+*/
 void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
 
   repertoirePersonne->ajouter(std::string(c_champNom->GetValue()), std::string(c_champPrenom->GetValue()), std::string(c_champNumero->GetValue()), std::string(c_champEmail->GetValue()));
   CadreAjouterPersonne->Close(true);
 }
 
+/**
+  Ouvre un fenêtre et demande a l'utilisateur les informations pour ajouter un nouveau rendez-vous
+  @param[in] e - un evenement declanché par le menu "Editer -> Rendez-vous -> Editer rendez-vous"
+*/
 void cadre::OnAjouterRdv(wxCommandEvent& e)
 {
   enum{
@@ -368,6 +402,10 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
 
 }
 
+/**
+  Ajoute une personne à la liste de participants d'un rendez-vous
+  @param[in] e - un evenement declanché par la méthode "cadre::OnAjouterRdv"
+*/
 void cadre::OnAjoutListeParticipants(wxCommandEvent& e)
 {
   int i = c_listePersonnes->GetSelection();
@@ -386,6 +424,10 @@ void cadre::OnAjoutListeParticipants(wxCommandEvent& e)
   }
 }
 
+/**
+  Retire une personne de la liste de participants d'un rendez-vous
+  @param[in] e - un evenement declanché par la méthode "cadre::OnAjouterRdv"
+*/
 void cadre::OnRetirerListeParticipants(wxCommandEvent& e)
 {
   int i = c_listeParticipants->GetSelection();
@@ -393,6 +435,10 @@ void cadre::OnRetirerListeParticipants(wxCommandEvent& e)
     c_listeParticipants->Delete(i);
 }
 
+/**
+  Ajoute un rendez-vous avec les informations données par l'utilisateur
+  @param[in] e - un evenement declanché par la méthode "cadre::OnAjouterRdv"
+*/
 void cadre::OnBoutonAjouterRdv(wxCommandEvent& e)
 {
   wxArrayString liste;
@@ -465,7 +511,10 @@ void cadre::OnBoutonAjouterRdv(wxCommandEvent& e)
 }
 
 
-
+/**
+  Créé une fenêtre et affiche les rendez-vous entre deux dates
+  @param[in] e - un evenement declanché par le menu "Afficher -> Rendez-vous entre..."
+*/
 void cadre::OnAfficherEntreDates(wxCommandEvent& e)
 {
   enum{
@@ -543,6 +592,10 @@ void cadre::OnAfficherEntreDates(wxCommandEvent& e)
   bouton->Bind(wxEVT_BUTTON, &cadre::OnRefreshAfficherEntreDates, this);
 }
 
+/**
+  Raffraichis la liste des rendez-vous lorsque l'utilisateur change les dates
+  @param[in] e - un evenement declanché par la méthode "cadre::OnAfficherEntreDates"
+*/
 void cadre::OnRefreshAfficherEntreDates(wxCommandEvent& e)
 {
   wxString t;
@@ -561,6 +614,10 @@ void cadre::OnRefreshAfficherEntreDates(wxCommandEvent& e)
   c_champEmail->SetValue("");
 }
 
+/**
+  Ouvre un fenêtre et demande a l'utilisateur les informations pour modifier une personne
+  @param[in] e - un evenement declanché par le menu "Editer -> Personnes -> Editer personnes"
+*/
 void cadre::OnModifierPersonne(wxCommandEvent& e){
 
   enum{ID_CHOIX,ID_BOUTON};
@@ -602,6 +659,11 @@ void cadre::OnModifierPersonne(wxCommandEvent& e){
   bouton->Bind(wxEVT_BUTTON, &cadre::OnBoutonModifierPersonne, this);
 }
 
+/**
+  Met a jour l'affichage des informations lorsque la personne a modifier est choisie
+  @param[in] e - un evenement declanché par la méthode "cadre::OnModifierPersonne"
+
+*/
 void cadre::OnSelectionModifierPersonne(wxCommandEvent& e){
 
   int sel = c_choix_personne->GetSelection();
@@ -618,6 +680,10 @@ void cadre::OnSelectionModifierPersonne(wxCommandEvent& e){
   c_champEmail->SetValue(repertoirePersonne->getEmail(crt));
 }
 
+/**
+  Applique les modifications demandées par l'utilisateur
+  @param[in] e -   @param[in] e - un evenement declanché par la méthode "cadre::OnModifierPersonne"
+*/
 void cadre::OnBoutonModifierPersonne(wxCommandEvent& e){
 
   repertoirePersonne->modifierNumero(string(c_nom->GetLabel()),string(c_prenom->GetLabel()),string(c_champNumero->GetValue()));
@@ -625,6 +691,10 @@ void cadre::OnBoutonModifierPersonne(wxCommandEvent& e){
   CadreModifierPersonne->Close(true);
 }
 
+/**
+  Affiche un fenêtre permettant à l'utilisateur de selectionner une personne à Supprimer
+  @param[in] e - un evenement declanché par le menu "Editer -> Personnes -> Supprimer personne"
+*/
 void cadre::OnSupprimerPersonne(wxCommandEvent& e){
 
   enum{ID_CHOIX,ID_BOUTON};
@@ -656,6 +726,10 @@ void cadre::OnSupprimerPersonne(wxCommandEvent& e){
   bouton->Bind(wxEVT_BUTTON, &cadre::OnBoutonSupprimerPersonne, this);
 }
 
+/**
+  Supprime la personne selectionnée
+  @param[in] e - un evenement declanché par la méthode "cadre::OnSupprimerPersonne"
+*/
 void cadre::OnBoutonSupprimerPersonne(wxCommandEvent& e){
 
   bool b;
@@ -674,6 +748,10 @@ void cadre::OnBoutonSupprimerPersonne(wxCommandEvent& e){
   CadreSupprimerPersonne->Close(true);
 }
 
+/**
+  Ouvre un fenêtre et demande a l'utilisateur les informations pour modifier un rendez-vous
+  @param[in] e - un evenement declanché par le menu "Editer -> Rendez-vous -> Editer rendez-vous"
+*/
 void cadre::OnModiferRdv(wxCommandEvent& e){
 
   wxArrayString listeRDV;
@@ -780,6 +858,11 @@ void cadre::OnModiferRdv(wxCommandEvent& e){
 
 }
 
+/**
+  Met a jour l'affichage des informations lorsque le rendez-vous a modifier est choisi
+  @param[in] e - un evenement declanché par la méthode "cadre::OnModiferRdv"
+
+*/
 void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
 
   int index;
@@ -814,11 +897,13 @@ void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
     c_listeBoxParticipants.Add(nom + " " + prenom);
     c_listeParticipants->InsertItems(1, &c_listeBoxParticipants[j], 0);
   }
-
-
-
 }
 
+
+/**
+  Réalise les modifications demandées par l'utilisateur
+  @param[in] e - un evenement declanché par la méthode "cadre::OnModiferRdv"
+*/
 void cadre::OnValiderModifierRdv(wxCommandEvent& e){
 
 wxArrayString liste;

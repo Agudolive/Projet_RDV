@@ -7,19 +7,24 @@
 #include "json.hpp"
 #include "chainonpersonne.h"
 
+/**
+  Construit un objet json pour sauvegarder/charger des données
+  @param[in] lcp, lcr - les répertoires de rendez-vous et de personnes a remplir ou sauvegarder
+*/
 fromJson::fromJson(LCPersonne *lcp, LCRdv *lcr) : fj_repertoirePersonne{lcp}, fj_repertoireRdv{lcr}
-    { }
+{ }
 
+/**
+  Constructeur par defaut de l'objet
+*/
 fromJson::fromJson()
-    { }
+{ }
 
-/*
- * -------------------
- * ---- PERSONNES ----
- * -------------------
- */
 
-// Retourne la liste de personnes contenue dans le fichier repertoire.json
+/**
+  Retourne la liste de personnes contenue dans le fichier repertoire.json
+  @param[out] fj_repertoirePersonne - le répertoire de personnes rempli
+*/
 void fromJson::getRepertoire()
 {
     ifstream input_json("repertoire.json");
@@ -47,7 +52,10 @@ void fromJson::getRepertoire()
 
 }
 
-// Sauvegarde la liste de personnes dans le fichier repertoire.json
+/**
+  Sauvegarde la liste de personnes dans le fichier repertoire.json
+  @param[in] fj_repertoirePersonne - le répertoire de personnes à sauvegarder
+*/
 void fromJson::saveRepertoire() {
     ofstream output_json("repertoire.json");
 
@@ -83,13 +91,10 @@ void fromJson::saveRepertoire() {
 
 }
 
-/*
- * -------------------
- * --- RENDEZ VOUS ---
- * -------------------
- */
-
-// Retourne la liste de rendez vous contenue dans le fichier rdv.json
+/**
+  Retourne la liste de rendez vous contenue dans le fichier rdv.json
+  @param[in] fj_repertoireRdv - le répertoire de rendez-vous rempli
+*/
 void fromJson::getRdv()
 {
     ifstream input_json("rdv.json");
@@ -132,8 +137,11 @@ void fromJson::getRdv()
     }
 }
 
-
-// Sauvegarde la liste de rendez vous dans le fichier rdv.json
+/**
+  Sauvegarde la liste de rendez vous dans le fichier rdv.json
+  @param[in] fj_repertoireRdv - le répertoire de rendez-vous à sauvegarder
+*/
+//
 void fromJson::saveRdv() {
     ofstream output_json("rdv.json");
 

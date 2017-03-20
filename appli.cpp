@@ -3,6 +3,9 @@
 
 wxIMPLEMENT_APP(appli);
 
+/**
+  Initialise le cadre principale et appel son affichage
+*/
 bool appli::OnInit()
 {
   auto c = new cadre;

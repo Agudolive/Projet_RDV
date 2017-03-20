@@ -45,6 +45,7 @@ class cadre : public wxFrame
     wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;
     wxTextCtrl *c_libelle, *c_jour, *c_mois, *c_annee, *c_heureDebut, *c_heureFin;
+    wxStaticText* c_choix_libelle;
     wxStaticText *c_listeRdvEntre;
     wxListBox *c_listePersonnes, *c_listeParticipants;
     wxListBox *c_toutesPersonnes, *c_tousRdv;
@@ -58,4 +59,5 @@ class cadre : public wxFrame
     cadre* CadreAjouterPersonne;
     cadre* CadreModifierPersonne;
     cadre* CadreSupprimerPersonne;
+    cadre* CadreSupprimerRdv;
 };

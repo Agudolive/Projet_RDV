@@ -14,8 +14,8 @@ public:
     LCPersonne();
     ~LCPersonne();
     void ajouter(string nom, string prenom, string numero, string email);
-    void afficher();
-    void afficherPersonne(string nom, string prenom);
+    //void afficher();
+    //void afficherPersonne(string nom, string prenom);
     bool supprimer(string nom, string prenom, LCRdv* listeRdv);
 
     void modifierNumero(string nom, string prenom, string numero);

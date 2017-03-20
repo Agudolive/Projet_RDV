@@ -10,6 +10,12 @@
 #include <sstream>
 
 using namespace std;
+/*
+cadre::~cadre()
+{
+  delete repertoirePersonne;
+  delete repertoireRdv;
+}*/
 
 cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultPosition}
 {

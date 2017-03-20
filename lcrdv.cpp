@@ -139,7 +139,7 @@ void LCRdv::supprimer(string libelle)
   Affiche pour un rendez-vous les paramètres et les informations des personnes présentes
   @param[in] libelle - le libellé du rendez-vous en question
   @param[in] listePersonnes - le répertoires des personnes enregistrées dans l'application
-*/
+
 void LCRdv::afficher(string libelle, LCPersonne* listePersonnes)
 {
   chainonRdv* crt = l_tete;
@@ -156,11 +156,11 @@ void LCRdv::afficher(string libelle, LCPersonne* listePersonnes)
     for(unsigned i=0; i<crt->cr_participants.size(); i++)
       listePersonnes->afficherPersonne(crt->cr_participants[i][0], crt->cr_participants[i][1]);
   }
-}
+}*/
 
 /**
   Affiche une liste de tous les rendez-vous présents dans la liste chainée
-*/
+
 void LCRdv::afficherListeRdv()
 {
   chainonRdv* crt = l_tete;
@@ -169,12 +169,13 @@ void LCRdv::afficherListeRdv()
     cout << crt->cr_libelle << " ; ";
     crt = crt->cr_suivant;
   }
-}
+}*/
 
 /**
   Affiche tous les rendez-vous compris entre deux dates
   @param[in] jour1, mois1, annee1 - des entiers représentant la borne inférieure de la date
   @param[in] jour2, mois2, annee2 - des entiers représentant la borne supérieure de la date
+  @return liste - vecteur contenant les libellés des rdv en question
 */
 vector<string> LCRdv::afficherEntreDates(int jour1, int mois1, int annee1, int jour2, int mois2, int annee2)
 {
@@ -224,7 +225,7 @@ vector<string> LCRdv::afficherEntreDates(int jour1, int mois1, int annee1, int j
   Affiche tous les rendez-vous d'une personne
   @param[in] nom, prenom - des string de la personne
   @param[in] listePersonnes - le répertoires des personnes enregistrées dans l'application
-*/
+
 void LCRdv::afficherPourPersonne(string nom, string prenom, LCPersonne* listePersonnes)
 {
   chainonRdv* crt = l_tete;
@@ -237,7 +238,7 @@ void LCRdv::afficherPourPersonne(string nom, string prenom, LCPersonne* listePer
 
     crt = crt->cr_suivant;
   }
-}
+}*/
 
 /**
   Modifier la date d'un rendez-vous
@@ -296,6 +297,11 @@ void LCRdv::modifierListePersonnes(string libelle, vector<vector<string>> partic
   }
 }
 
+/**
+Vérifie si une personne a un rendez-vous dans tout le repertoire
+@param[in] nom, prenom - les identifiants de la personne
+@return rdv - vrai si la personne a un rdv, faux sinon
+*/
 bool LCRdv::avoirRdv(string nom, string prenom)
 {
   chainonRdv* crt = l_tete;
@@ -313,7 +319,13 @@ bool LCRdv::avoirRdv(string nom, string prenom)
   return rdv;
 }
 
-
+/**
+Vérifie si une personne est libre entre deux dates données
+@param[in] nom, prenom - les identifiants de la personne
+@param[in] jour1, mois1, annee1, heure1 - le début de la période
+@param[in] jour2, mois2, annee2, heure2 - la fin de la période
+@return - vrai si la personne est libre, faux sinon
+*/
 bool LCRdv::estLibre(string nom, string prenom, int jour1, int mois1, int annee1, int heure1, int jour2, int mois2, int annee2, int heure2){
 
   chainonRdv* crt = l_tete;
@@ -368,46 +380,91 @@ bool LCRdv::estLibre(string nom, string prenom, int jour1, int mois1, int annee1
   return 1;
 }
 
+/**
+Retourne le libellé du rendez-vous
+@param[in] crt - l'adresse du chainon contenant l'information
+@return - un string contenant la valeur
+*/
 string LCRdv::getLibelle(chainonRdv *crt)
 {
   return crt->cr_libelle;
 }
 
+/**
+Retourne le jour du rendez-vous
+@param[in] crt - l'adresse du chainon contenant l'information
+@return - un int contenant la valeur
+*/
 int LCRdv::getJour(chainonRdv *crt)
 {
   return crt->cr_jour;
 }
 
+/**
+Retourne le mois du rendez-vous
+@param[in] crt - l'adresse du chainon contenant l'information
+@return - un int contenant la valeur
+*/
 int LCRdv::getMois(chainonRdv *crt)
 {
   return crt->cr_mois;
 }
 
+/**
+Retourne l'annee du rendez-vous
+@param[in] crt - l'adresse du chainon contenant l'information
+@return - un int contenant la valeur
+*/
 int LCRdv::getAnnee(chainonRdv *crt)
 {
   return crt->cr_annee;
 }
 
+/**
+Retourne l'heure de début du rendez-vous
+@param[in] crt - l'adresse du chainon contenant l'information
+@return - un int contenant la valeur
+*/
 int LCRdv::getHeureDebut(chainonRdv *crt)
 {
   return crt->cr_heureDebut;
 }
 
+/**
+Retourne l'heure de fin du rendez-vous
+@param[in] crt - l'adresse du chainon contenant l'information
+@return - un int contenant la valeur
+*/
 int LCRdv::getHeureFin(chainonRdv *crt)
 {
   return crt->cr_heureFin;
 }
 
 chainonRdv * LCRdv::getSuivant(chainonRdv *crt)
+/**
+Retourne le chainon suivant de la liste rendez-vous
+@param[in] crt - l'adresse du chainon courant
+@return - l'adresse du chainon suivant
+*/
 {
   return crt->cr_suivant;
 }
 
+/**
+Retourne l'adresse de la tete de la liste rendez-vous
+@param[in] crt - l'adresse du chainon courant
+@return - l'adresse du chainon de tete
+*/
 chainonRdv *LCRdv::getTete()
 {
   return l_tete;
 }
 
+/**
+Retourne la liste de tous les participants d'un rendez-vous
+@param[in] crt - l'adresse du chainon courant
+@return - vecteur a deux dimensions contenant tous les participants
+*/
 vector<vector<string>> LCRdv::getParticipants(chainonRdv *crt) {
     return crt->cr_participants;
 }

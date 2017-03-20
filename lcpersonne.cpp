@@ -137,7 +137,7 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
 
 /**
   Affiche une liste de toutes les instance de la classe chainonPersonne avec les paramètres associés
-*/
+
 void LCPersonne::afficher()
 {
   chainonPersonne* crt = l_tete;
@@ -146,12 +146,12 @@ void LCPersonne::afficher()
     cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
     crt = crt->cp_suivant;
   }
-}
+}*/
 
 /**
   Recherche un personne et affiche ses informations
   @param[in] nom, prenom - des string contenant le nom de la personne
-*/
+
 void LCPersonne::afficherPersonne(string nom, string prenom)
 {
   chainonPersonne* crt = l_tete;
@@ -162,11 +162,13 @@ void LCPersonne::afficherPersonne(string nom, string prenom)
 
   if( (crt->cp_nom == nom) & (crt->cp_prenom == prenom) )
     cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
-}
+}*/
 
 /**
-  supprime un chainon de la liste
+  supprime une personne de la liste si celle-ci n'a pas rendez-vous
   @param[in] nom, prenom - des string contenant le nom de la personne à retirer de la liste
+  @param[in] listeRdv - la liste de rendez-vous dans laquelle cherche
+  @return - vrai si la personne n'a pas de rdv, faux sinon
 */
 bool LCPersonne::supprimer(string nom, string prenom, LCRdv* listeRdv)
 {
@@ -197,6 +199,11 @@ bool LCPersonne::supprimer(string nom, string prenom, LCRdv* listeRdv)
   return 1;
 }
 
+/**
+  modifie le numero d'une personne
+  @param[in] nom, prenom - des string contenant le nom de la personne à retirer de la liste
+  @param[in] numero - un string contenant le nouveau numero
+*/
 void LCPersonne::modifierNumero(string nom, string prenom, string numero)
 {
   chainonPersonne* crt = l_tete;
@@ -210,6 +217,11 @@ void LCPersonne::modifierNumero(string nom, string prenom, string numero)
   }
 }
 
+/**
+  modifie l'adresse email d'une personne
+  @param[in] nom, prenom - des string contenant le nom de la personne à retirer de la liste
+  @param[in] numero - un string contenant la nouvelle adresse
+*/
 void LCPersonne::modifierEmail(string nom, string prenom, string email)
 {
   chainonPersonne* crt = l_tete;
@@ -223,26 +235,55 @@ void LCPersonne::modifierEmail(string nom, string prenom, string email)
   }
 }
 
+/**
+Retourne l'adresse de la tete de la liste rendez-vous
+@return - l'adresse du chainon de tete
+*/
 chainonPersonne* LCPersonne::getTete(){
   return l_tete;
 }
 
+/**
+Retourne l'adresse email d'une personne
+@param[in] crt - l'adresse du chainon contenant l'information
+@return - un string contnant l'adresse email
+*/
 string LCPersonne::getEmail(chainonPersonne* crt){
   return crt->cp_email;
 }
 
+/**
+Retourne le nom d'une personne
+@param[in] crt - l'adresse du chainon courant
+@return - un string contenant le nom
+*/
 string LCPersonne::getNom(chainonPersonne* crt){
   return crt->cp_nom;
 }
 
+/**
+Retourne le prenom d'une personne
+@param[in] crt - l'adresse du chainon courant
+@return - un string contenant le prenom
+*/
 string LCPersonne::getPrenom(chainonPersonne* crt){
   return crt->cp_prenom;
 }
 
+/**
+Retourne le numero d'une personne
+@param[in] crt - l'adresse du chainon courant
+@return - un string contenant le numero
+*/
 string LCPersonne::getNumero(chainonPersonne* crt){
   return crt->cp_numero;
 }
 
+/**
+Retourne l'adresse de la personne suivante dans la liste
+@param[in] crt - l'adresse du chainon courant
+@return - l'adresse du chainon suivant
+*/
 chainonPersonne* LCPersonne::getSuivant(chainonPersonne* crt){
   return crt->cp_suivant;
 }

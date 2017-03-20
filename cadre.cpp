@@ -109,6 +109,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnAjouterPersonne, this, ID_NEW_PERSONNE);
   Bind(wxEVT_MENU, &cadre::OnModifierPersonne, this, ID_EDIT_PERSONNE);
   Bind(wxEVT_MENU, &cadre::OnSupprimerPersonne, this, ID_DELETE_PERSONNE);
+  Bind(wxEVT_MENU, &cadre::OnModiferRdv, this, ID_EDIT_RDV);
 }
 
 cadre::cadre(string c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}{
@@ -685,16 +686,94 @@ void cadre::OnModiferRdv(wxCommandEvent& e){
 
   enum{ID_CHOIX,ID_BOUTON};
 
-  CadreSupprimerRdv = new cadre("Supprimer un rendez-vous");
-  CadreSupprimerRdv -> Show(true);
-  auto panneau = new wxPanel{CadreSupprimerRdv, wxID_ANY};
+  CadreModifierRdv = new cadre("Modifier un rendez-vous");
+  CadreModifierRdv -> Show(true);
+  auto panneau = new wxPanel{CadreModifierRdv, wxID_ANY};
 
   c_choix_rdv = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,listeRDV, ID_CHOIX);
-  c_choix_libelle = new wxStaticText{panneau, wxID_STATIC,("Libellé")};
+  c_choix_libelle = new wxStaticText{panneau, wxID_STATIC,("Libelle")};
   auto jour = new wxStaticText{panneau, wxID_STATIC,("Jour")};
   auto mois = new wxStaticText{panneau, wxID_STATIC,("Mois")};
-  auto annee = new wxStaticText{panneau, wxID_STATIC,("Année")};
-  auto heureDebut = new wxStaticText{panneau, wxID_STATIC,("Heure de début")};
+  auto annee = new wxStaticText{panneau, wxID_STATIC,("Annee")};
+  auto heureDebut = new wxStaticText{panneau, wxID_STATIC,("Heure de debut")};
   auto heureFin = new wxStaticText{panneau, wxID_STATIC,("Heure de fin")};
 
+  c_jour = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_mois = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_annee = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_heureDebut = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_heureFin = new wxTextCtrl(panneau, wxID_STATIC,"");
+  auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
+
+  auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
+  sizer1->Add(jour,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer1->AddStretchSpacer(1);
+  sizer1->Add(c_jour,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer2 = new wxBoxSizer{wxHORIZONTAL};
+  sizer2->Add(mois,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer2->AddStretchSpacer(1);
+  sizer2->Add(c_mois,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer3 = new wxBoxSizer{wxHORIZONTAL};
+  sizer3->Add(annee,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer3->AddStretchSpacer(1);
+  sizer3->Add(c_annee,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer4 = new wxBoxSizer{wxHORIZONTAL};
+  sizer4->Add(heureDebut,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer4->AddStretchSpacer(1);
+  sizer4->Add(c_heureDebut,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer5 = new wxBoxSizer{wxHORIZONTAL};
+  sizer5->Add(heureFin,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer5->AddStretchSpacer(1);
+  sizer5->Add(c_heureFin,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer6 = new wxBoxSizer{wxVERTICAL};
+  sizer6->Add(c_choix_rdv,0,wxALIGN_CENTER | wxALL, 10);
+  sizer6->Add(c_choix_libelle,1,wxALIGN_CENTER | wxALL, 10);
+  sizer6->Add(sizer1,1,wxALIGN_LEFT | wxALL, 10);
+  sizer6->Add(sizer2,1,wxALIGN_LEFT | wxALL, 10);
+  sizer6->Add(sizer3,1,wxALIGN_LEFT | wxALL, 10);
+  sizer6->Add(sizer4,1,wxALIGN_LEFT | wxALL, 10);
+  sizer6->Add(sizer5,1,wxALIGN_LEFT | wxALL, 10);
+  sizer6->Add(bouton,1,wxALIGN_CENTER | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer6);
+  CadreModifierRdv->SetSize(panneau->GetSize());
+  SetMinSize(GetSize());
+
+  c_choix_rdv->Bind(wxEVT_CHOICE, &cadre::OnSelectionModifierRdv, this);
+  bouton->Bind(wxEVT_BUTTON, &cadre::OnValiderModifierRdv, this);
+}
+
+void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
+
+  int index;
+  int i = 0;
+  index = c_choix_rdv->GetSelection();
+  chainonRdv* crt = repertoireRdv->getTete();
+
+  while(i != index){
+    crt = repertoireRdv->getSuivant(crt);
+    i++;
+  }
+
+  c_choix_libelle->SetLabel(repertoireRdv->getLibelle(crt));
+  c_jour->SetValue(wxString::Format(wxT("%i"),repertoireRdv->getJour(crt)));
+  c_mois->SetValue(wxString::Format(wxT("%i"),repertoireRdv->getMois(crt)));
+  c_annee->SetValue(wxString::Format(wxT("%i"),repertoireRdv->getAnnee(crt)));
+  c_heureDebut->SetValue(wxString::Format(wxT("%i"),repertoireRdv->getHeureDebut(crt)));
+  c_heureFin->SetValue(wxString::Format(wxT("%i"),repertoireRdv->getHeureFin(crt)));
+}
+
+void cadre::OnValiderModifierRdv(wxCommandEvent& e){
+
+  int index;
+  string nomRdv;
+  index = c_choix_rdv->GetSelection();
+  nomRdv = c_choix_rdv->GetString(index);
+  repertoireRdv->modifierDate(nomRdv, wxAtoi(c_jour->GetValue()), wxAtoi(c_mois->GetValue()), wxAtoi(c_annee->GetValue()));
+  CadreModifierRdv->Close(true);
 }

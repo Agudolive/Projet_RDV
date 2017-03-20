@@ -42,6 +42,8 @@ class cadre : public wxFrame
     void OnBoutonModifierPersonne(wxCommandEvent& e);
     void OnBoutonSupprimerPersonne(wxCommandEvent& e);
     void OnModiferRdv(wxCommandEvent& e);
+    void OnSelectionModifierRdv(wxCommandEvent& e);
+    void OnValiderModifierRdv(wxCommandEvent& e);
 
     wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;
@@ -61,4 +63,5 @@ class cadre : public wxFrame
     cadre* CadreModifierPersonne;
     cadre* CadreSupprimerPersonne;
     cadre* CadreSupprimerRdv;
+    cadre* CadreModifierRdv;
 };

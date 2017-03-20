@@ -43,12 +43,15 @@ class cadre : public wxFrame
     void OnModiferRdv(wxCommandEvent& e);
     void OnSelectionModifierRdv(wxCommandEvent& e);
     void OnValiderModifierRdv(wxCommandEvent& e);
+    void OnRdvDe(wxCommandEvent& e);
+    void OnSelectionRdvDe(wxCommandEvent& e);
 
     wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;
     wxTextCtrl *c_libelle, *c_jour, *c_mois, *c_annee, *c_heureDebut, *c_heureFin;
     wxStaticText* c_choix_libelle;
     wxStaticText *c_listeRdvEntre;
+    wxStaticText *txt;
     wxListBox *c_listePersonnes, *c_listeParticipants;
     wxListBox *c_toutesPersonnes, *c_tousRdv;
     wxArrayString c_arrayParticipants, c_arrayRdv;
@@ -63,4 +66,5 @@ class cadre : public wxFrame
     cadre* CadreSupprimerPersonne;
     cadre* CadreSupprimerRdv;
     cadre* CadreModifierRdv;
+    cadre* CadreRdvDe;
 };

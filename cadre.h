@@ -53,7 +53,7 @@ class cadre : public wxFrame
     wxListBox *c_listePersonnes, *c_listeParticipants;
     wxListBox *c_toutesPersonnes, *c_tousRdv;
     wxArrayString c_arrayParticipants, c_arrayRdv;
-    wxArrayString c_ajoutParticipants;
+    wxArrayString c_ajoutParticipants, c_listeBoxParticipants;
     std::vector<string> repertoire;
     wxChoice* c_choix_personne;
     wxChoice* c_choix_rdv;

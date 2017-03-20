@@ -684,7 +684,9 @@ void cadre::OnModiferRdv(wxCommandEvent& e){
     crt = repertoireRdv->getSuivant(crt);
   }
 
-  enum{ID_CHOIX,ID_BOUTON};
+  enum{ID_CHOIX,ID_BOUTON, ID_BOUTON_AJOUTER,
+    ID_BOUTON_RETIRER, ID_LISTE_PERSONNES,
+    ID_LISTE_PARTICIPANTS};
 
   CadreModifierRdv = new cadre("Modifier un rendez-vous");
   CadreModifierRdv -> Show(true);
@@ -704,6 +706,23 @@ void cadre::OnModiferRdv(wxCommandEvent& e){
   c_heureDebut = new wxTextCtrl(panneau, wxID_STATIC,"");
   c_heureFin = new wxTextCtrl(panneau, wxID_STATIC,"");
   auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
+
+  auto boutonAjouter = new wxButton(panneau, ID_BOUTON_AJOUTER, ">");
+  auto boutonRetirer = new wxButton(panneau, ID_BOUTON_RETIRER, "<");
+
+  //initialisation de la liste avec toutes les personnes
+  c_ajoutParticipants.Empty();
+  chainonPersonne* crtp = repertoirePersonne->getTete();
+  while(crtp)
+  {
+    wxString nom = repertoirePersonne->getNom(crtp);
+    wxString prenom = repertoirePersonne->getPrenom(crtp);
+    c_ajoutParticipants.Add(nom + " " + prenom);
+    crtp = repertoirePersonne->getSuivant(crtp);
+  }
+
+  c_listePersonnes = new wxListBox(panneau, ID_LISTE_PERSONNES, wxDefaultPosition, {150, 200}, c_ajoutParticipants, 0, wxDefaultValidator, wxListBoxNameStr);
+  c_listeParticipants = new wxListBox(panneau, ID_LISTE_PARTICIPANTS, wxDefaultPosition, {150, 200}, 0, nullptr, 0, wxDefaultValidator, wxListBoxNameStr);
 
   auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
   sizer1->Add(jour,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
@@ -731,21 +750,34 @@ void cadre::OnModiferRdv(wxCommandEvent& e){
   sizer5->Add(c_heureFin,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
 
   auto sizer6 = new wxBoxSizer{wxVERTICAL};
-  sizer6->Add(c_choix_rdv,0,wxALIGN_CENTER | wxALL, 10);
-  sizer6->Add(c_choix_libelle,1,wxALIGN_CENTER | wxALL, 10);
-  sizer6->Add(sizer1,1,wxALIGN_LEFT | wxALL, 10);
-  sizer6->Add(sizer2,1,wxALIGN_LEFT | wxALL, 10);
-  sizer6->Add(sizer3,1,wxALIGN_LEFT | wxALL, 10);
-  sizer6->Add(sizer4,1,wxALIGN_LEFT | wxALL, 10);
-  sizer6->Add(sizer5,1,wxALIGN_LEFT | wxALL, 10);
-  sizer6->Add(bouton,1,wxALIGN_CENTER | wxALL, 10);
+  sizer6->Add(boutonAjouter, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+  sizer6->Add(boutonRetirer, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
 
-  panneau->SetSizerAndFit(sizer6);
+  auto sizer7 = new wxBoxSizer{wxHORIZONTAL};
+  sizer7->Add(c_listePersonnes, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer7->Add(sizer6, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer7->Add(c_listeParticipants, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+
+  auto sizer8 = new wxBoxSizer{wxVERTICAL};
+  sizer8->Add(c_choix_rdv,0,wxALIGN_CENTER | wxALL, 10);
+  sizer8->Add(c_choix_libelle,1,wxALIGN_CENTER | wxALL, 10);
+  sizer8->Add(sizer1,1,wxALIGN_LEFT | wxALL, 10);
+  sizer8->Add(sizer2,1,wxALIGN_LEFT | wxALL, 10);
+  sizer8->Add(sizer3,1,wxALIGN_LEFT | wxALL, 10);
+  sizer8->Add(sizer4,1,wxALIGN_LEFT | wxALL, 10);
+  sizer8->Add(sizer5,1,wxALIGN_LEFT | wxALL, 10);
+  sizer8->Add(sizer7,0,wxALIGN_LEFT | wxALL, 10);
+  sizer8->Add(bouton,1,wxALIGN_CENTER | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer8);
   CadreModifierRdv->SetSize(panneau->GetSize());
   SetMinSize(GetSize());
 
   c_choix_rdv->Bind(wxEVT_CHOICE, &cadre::OnSelectionModifierRdv, this);
   bouton->Bind(wxEVT_BUTTON, &cadre::OnValiderModifierRdv, this);
+  boutonAjouter->Bind(wxEVT_BUTTON, &cadre::OnAjoutListeParticipants, this);
+  boutonRetirer->Bind(wxEVT_BUTTON, &cadre::OnRetirerListeParticipants, this);
+
 }
 
 void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
@@ -766,14 +798,91 @@ void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
   c_annee->SetValue(wxString::Format(wxT("%i"),repertoireRdv->getAnnee(crt)));
   c_heureDebut->SetValue(wxString::Format(wxT("%i"),repertoireRdv->getHeureDebut(crt)));
   c_heureFin->SetValue(wxString::Format(wxT("%i"),repertoireRdv->getHeureFin(crt)));
+
+  while(c_listeParticipants->GetCount() >= 1)
+  {
+    c_listeParticipants->Delete(0);
+  }
+
+  c_listeBoxParticipants.Empty();
+
+  vector<vector<string>> liste = repertoireRdv->getParticipants(crt);
+  for(unsigned j=0; j<liste.size(); j++)
+  {
+    wxString nom = liste[j][0];
+    wxString prenom = liste[j][1];
+    c_listeBoxParticipants.Add(nom + " " + prenom);
+    c_listeParticipants->InsertItems(1, &c_listeBoxParticipants[j], 0);
+  }
+
+
+
 }
 
 void cadre::OnValiderModifierRdv(wxCommandEvent& e){
 
-  int index;
-  string nomRdv;
-  index = c_choix_rdv->GetSelection();
-  nomRdv = c_choix_rdv->GetString(index);
-  repertoireRdv->modifierDate(nomRdv, wxAtoi(c_jour->GetValue()), wxAtoi(c_mois->GetValue()), wxAtoi(c_annee->GetValue()));
-  CadreModifierRdv->Close(true);
+wxArrayString liste;
+int nb = c_listeParticipants->GetCount();
+
+for(int i=0; i<nb; i++)
+  liste.Add(c_listeParticipants->GetString(i));
+liste.Sort();
+
+vector<vector<string>>listeVector(nb, vector<string>(2, ""));
+for(int i=0; i<nb; i++)
+{
+  string tmp, nom, prenom;
+  tmp = string(liste[i]);
+  stringstream ss(tmp);
+  getline(ss, nom, ' ');
+  getline(ss, prenom, ' ');
+
+  listeVector[i][0]=nom;
+  listeVector[i][1]=prenom;
+}
+
+int index;
+string libelle;
+index = c_choix_rdv->GetSelection();
+libelle = c_choix_rdv->GetString(index);
+
+int jour = wxAtoi(c_jour->GetValue());
+int mois = wxAtoi(c_mois->GetValue());
+int annee = wxAtoi(c_annee->GetValue());
+int heureDebut = wxAtoi(c_heureDebut->GetValue());
+int heureFin = wxAtoi(c_heureFin->GetValue());
+
+//on vérifie si tous les participants de la liste sont libres
+bool conditionParticipants = true;
+unsigned i = 0;
+while( (conditionParticipants==true) & (i<listeVector.size()) )
+{
+  conditionParticipants = repertoireRdv->estLibre(listeVector[i][0], listeVector[i][1], jour, mois, annee, heureDebut, jour, mois, annee, heureFin);
+  ++i;
+}
+
+if( (jour>=32) | (jour<=0) )
+  wxMessageBox("Le jour choisi est invalide");
+else if( (mois>=13) | (mois<=0) )
+  wxMessageBox("Le mois choisi est invalide");
+else if( annee==0 )
+  wxMessageBox("L'annee choisie est invalide");
+else if( (heureDebut>=24) | (heureDebut<=0) )
+  wxMessageBox("L'heure de commencement choisie est invalide");
+else if( (heureFin>=24) | (heureFin<=0) )
+  wxMessageBox("L'heure de fin choisie est invalide");
+else if(!conditionParticipants)
+{
+  wxString txt = listeVector[i-1][0] + " " + listeVector[i-1][1];
+  txt.Printf(wxT("%s a deja un rendez-vous"), txt);
+  wxMessageBox(txt);
+}
+else
+{
+  repertoireRdv->modifierDate(libelle, jour, mois, annee);
+  repertoireRdv->modifierHeure(libelle, heureDebut, heureFin);
+  repertoireRdv->modifierListePersonnes(libelle, listeVector);
+}
+
+CadreModifierRdv->Close(true);
 }

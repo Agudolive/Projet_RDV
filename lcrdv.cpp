@@ -63,48 +63,49 @@ chainonRdv* LCRdv::trier(string& nouveauLibelle) const
   unsigned i;
   chainonRdv* crt = l_tete;
   chainonRdv* precedent = l_tete;
-  if(crt == nullptr)
+
+  if(crt == nullptr) //si liste vide return null
     return nullptr;
 
   string crtLibelle;
   char nouveauChar, crtChar;
 
-  while( crt != nullptr)
+  while( crt != nullptr) //parcourt de toute la liste de rdv
   {
     crtLibelle = crt->cr_libelle;
     i = 0;
-    while ((i < crtLibelle.length()) & (i < nouveauLibelle.length()))
+    while ((i < crtLibelle.length()) & (i < nouveauLibelle.length())) //boucle sur tous les caractères du libelle avec le moins de lettres
     {
       nouveauChar = tolower(nouveauLibelle.at(i));
       crtChar = tolower(crtLibelle.at(i));
 
-      if(nouveauChar < crtChar)
+      if(nouveauChar < crtChar) //si le nouveau caractère est plus petit que le caractère courant de la liste, on retourne le chainon precedent
       {
-        if(crt != l_tete)
+        if(crt != l_tete) //cas en milleur de liste
           return precedent;
 
-        else if (crt == l_tete)
+        else if (crt == l_tete) //cas en tete de liste
           return nullptr;
       }
-      else if(nouveauChar > crtChar)
+      else if(nouveauChar > crtChar) //si le nouveau caractère est plus grand que le caractère courant de la liste, on passe un rdv suivant
         break;
 
-      else if(nouveauChar == crtChar)
+      else if(nouveauChar == crtChar) //si on a le même caracère, on passe au caractère suivant
         i++;
     }
 
-    if(nouveauLibelle.length()<crtLibelle.length())
+    if(nouveauLibelle.length()<crtLibelle.length()) //test si la taille du nouveau libelle est plus petite que celle du libelle de la liste
     {
-      if(i==nouveauLibelle.length())
+      if(i==nouveauLibelle.length()) //si on a comparé toutes les lettres et qu'elles sont toutes egales alors on a trouvé l'emplacement du nouveau rdv
       {
         return precedent;
       }
     }
 
-    precedent = crt;
-    crt = crt->cr_suivant;
+    precedent = crt; //sauvegarde du rdv precedent
+    crt = crt->cr_suivant; //incrementation pour parcourt de la liste de rdv
 
-    if(crt == nullptr)
+    if(crt == nullptr) //si on arrive en bout de liste, on peut ajouter le rdv ici
       return precedent;
   }
   return nullptr;
@@ -128,7 +129,6 @@ void LCRdv::supprimer(string libelle)
     {
       crt = crt->cr_suivant;
     }
-    //chainonRdv*
     crt = crt->cr_suivant;
     crt->cr_suivant = crt->cr_suivant->cr_suivant;
     delete crt;
@@ -136,43 +136,7 @@ void LCRdv::supprimer(string libelle)
 }
 
 /**
-  Affiche pour un rendez-vous les paramètres et les informations des personnes présentes
-  @param[in] libelle - le libellé du rendez-vous en question
-  @param[in] listePersonnes - le répertoires des personnes enregistrées dans l'application
-
-void LCRdv::afficher(string libelle, LCPersonne* listePersonnes)
-{
-  chainonRdv* crt = l_tete;
-
-  while( (libelle != crt->cr_libelle) &  (crt != nullptr) )
-  {
-    crt = crt->cr_suivant;
-  }
-
-  if(crt != nullptr)
-  {
-    cout << libelle << " :" << endl;
-    cout << "Le " << crt->cr_jour << "/" << crt->cr_mois << "/" << crt->cr_annee << " de " << crt->cr_heureDebut << "h à " << crt->cr_heureFin << "h" << endl;
-    for(unsigned i=0; i<crt->cr_participants.size(); i++)
-      listePersonnes->afficherPersonne(crt->cr_participants[i][0], crt->cr_participants[i][1]);
-  }
-}*/
-
-/**
-  Affiche une liste de tous les rendez-vous présents dans la liste chainée
-
-void LCRdv::afficherListeRdv()
-{
-  chainonRdv* crt = l_tete;
-  while(crt != nullptr)
-  {
-    cout << crt->cr_libelle << " ; ";
-    crt = crt->cr_suivant;
-  }
-}*/
-
-/**
-  Affiche tous les rendez-vous compris entre deux dates
+  Créer une liste de tous les rendez-vous compris entre deux dates
   @param[in] jour1, mois1, annee1 - des entiers représentant la borne inférieure de la date
   @param[in] jour2, mois2, annee2 - des entiers représentant la borne supérieure de la date
   @return liste - vecteur contenant les libellés des rdv en question
@@ -182,63 +146,43 @@ vector<string> LCRdv::afficherEntreDates(int jour1, int mois1, int annee1, int j
   vector<string> liste(0);
   chainonRdv* crt = l_tete;
 
-  while( crt != nullptr )
+  while( crt != nullptr ) //parcourt de toute la liste de rdv
   {
 
     bool inferieur = false;
     bool superieur = false;
 
     //test si la date de rdv est supérieure a la borne inférieur
-    if(crt->cr_annee > annee1)
-    superieur = true;
-    else if(crt->cr_annee == annee1)
+    if(crt->cr_annee > annee1) //si l'annee de rdv est strictement superieure a la borne inferieure on valide la condition
+      superieur = true;
+    else if(crt->cr_annee == annee1) //sinon, si il s'agit de la meme année
     {
-      if(crt->cr_mois > mois1)
-      superieur = true;
-      else if(crt->cr_mois == mois1)
-      if(crt->cr_jour >= jour1)
-      superieur = true;
+      if(crt->cr_mois > mois1) //si le mois de rdv est strictement superieur a la borne inferieure on valide la condition
+        superieur = true;
+      else if(crt->cr_mois == mois1) //sinon, si il s'agit du meme mois
+        if(crt->cr_jour >= jour1) //si le jour de rdv est superieur ou egal a la borne inferieure on valide la condition
+          superieur = true;
     }
 
     //test si la date de rdv est inférieur a la borne superieure
     if(crt->cr_annee < annee2)
-    inferieur = true;
+      inferieur = true;
     else if(crt->cr_annee == annee2)
     {
       if(crt->cr_mois < mois2)
-      inferieur = true;
+        inferieur = true;
       else if(crt->cr_mois == mois2)
-      if(crt->cr_jour <= jour2)
-      inferieur = true;
+        if(crt->cr_jour <= jour2)
+          inferieur = true;
     }
 
-    //si la date de rdv est comprise entre les deux bornes, on l'afficher
-    if(inferieur & superieur)
+    if(inferieur & superieur)  //si les deux conditions sont remplies, on ajoute le libelle du rdv dans le vecteur
       liste.push_back(crt->cr_libelle);
 
     crt = crt->cr_suivant;
   }
   return liste;
 }
-
-/**
-  Affiche tous les rendez-vous d'une personne
-  @param[in] nom, prenom - des string de la personne
-  @param[in] listePersonnes - le répertoires des personnes enregistrées dans l'application
-
-void LCRdv::afficherPourPersonne(string nom, string prenom, LCPersonne* listePersonnes)
-{
-  chainonRdv* crt = l_tete;
-
-  while( crt != nullptr )
-  {
-    for(unsigned i=0; i<crt->cr_participants.size(); i++)
-    if( (crt->cr_participants[i][0]==nom) & (crt->cr_participants[i][1]==prenom) )
-    afficher(crt->cr_libelle, listePersonnes);
-
-    crt = crt->cr_suivant;
-  }
-}*/
 
 /**
   Modifier la date d'un rendez-vous

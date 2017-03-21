@@ -18,7 +18,7 @@ class cadre : public wxFrame
   public :
     cadre();
     cadre(string c_nomFrame);
-  //  ~cadre();
+    ~cadre();
 
   private :
     LCPersonne* repertoirePersonne;

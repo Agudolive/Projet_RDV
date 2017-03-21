@@ -11,6 +11,12 @@
 
 using namespace std;
 
+cadre::~cadre()
+{
+  delete repertoirePersonne;
+  delete repertoireRdv;
+}
+
 /**
   Construit le cadre principal et créé les élements de la fenêtre principale
 */
@@ -973,7 +979,10 @@ else
 CadreModifierRdv->Close(true);
 }
 
-
+/**
+  Affiche la liste de rendez-vous d'une personne choisie par l'utilisateur
+  @param[in] e - un evenement declanché par le menu "Afficher -> Rendez-vous de..."
+*/
 void cadre::OnRdvDe(wxCommandEvent& e){
 
   enum{ID_CHOIX};
@@ -1004,6 +1013,9 @@ void cadre::OnRdvDe(wxCommandEvent& e){
 
 }
 
+/**Met a jour l'affichage de la liste de rendez-vous
+  @param[in] e - un evenement declanché par la méthode "cadre::OnRdvDe"
+*/
 void cadre::OnSelectionRdvDe(wxCommandEvent& e){
 
   wxString t;

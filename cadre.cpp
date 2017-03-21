@@ -907,7 +907,6 @@ void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
 */
 void cadre::OnValiderModifierRdv(wxCommandEvent& e){
 
-<<<<<<< HEAD
 wxArrayString liste;
 int nb = c_listeParticipants->GetCount();
 

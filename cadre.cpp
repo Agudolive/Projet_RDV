@@ -99,7 +99,6 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   SetClientSize(panneau->GetSize());
   SetMinSize(panneau->GetSize());
 
-
   //liaisons
   Bind(wxEVT_MENU, &cadre::OnCharger, this, ID_LOAD);
   Bind(wxEVT_MENU, &cadre::OnSave, this, wxID_SAVE);
@@ -693,6 +692,10 @@ void cadre::OnSelectionModifierPersonne(wxCommandEvent& e){
 */
 void cadre::OnBoutonModifierPersonne(wxCommandEvent& e){
 
+  if(c_choix_personne->GetSelection() == wxNOT_FOUND){
+    CadreModifierPersonne->Close(true);
+    return;
+  }
   repertoirePersonne->modifierNumero(string(c_nom->GetLabel()),string(c_prenom->GetLabel()),string(c_champNumero->GetValue()));
   repertoirePersonne->modifierEmail(string(c_nom->GetLabel()),string(c_prenom->GetLabel()),string(c_champEmail->GetValue()));
   CadreModifierPersonne->Close(true);
@@ -739,6 +742,10 @@ void cadre::OnSupprimerPersonne(wxCommandEvent& e){
 */
 void cadre::OnBoutonSupprimerPersonne(wxCommandEvent& e){
 
+  if(c_choix_personne->GetSelection() == wxNOT_FOUND){
+    CadreSupprimerPersonne->Close(true);
+    return;
+  }
   bool b;
   enum{ID_CHOIX};
   wxArrayString repertoire;
@@ -912,6 +919,11 @@ void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
   @param[in] e - un evenement declanché par la méthode "cadre::OnModiferRdv"
 */
 void cadre::OnValiderModifierRdv(wxCommandEvent& e){
+
+if(c_choix_rdv->GetSelection() == wxNOT_FOUND){
+  CadreModifierRdv->Close(true);
+  return;
+}
 
 wxArrayString liste;
 int nb = c_listeParticipants->GetCount();

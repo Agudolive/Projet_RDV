@@ -135,34 +135,6 @@ chainonPersonne* LCPersonne::trier(string& nouveauNom, string& nouveauPrenom) co
   return nullptr;
 }
 
-/**
-  Affiche une liste de toutes les instance de la classe chainonPersonne avec les paramètres associés
-
-void LCPersonne::afficher()
-{
-  chainonPersonne* crt = l_tete;
-  while(crt != nullptr)
-  {
-    cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
-    crt = crt->cp_suivant;
-  }
-}*/
-
-/**
-  Recherche un personne et affiche ses informations
-  @param[in] nom, prenom - des string contenant le nom de la personne
-
-void LCPersonne::afficherPersonne(string nom, string prenom)
-{
-  chainonPersonne* crt = l_tete;
-  while( !((crt->cp_nom == nom) & (crt->cp_prenom == prenom)) & (crt->cp_suivant != nullptr) )
-  {
-    crt = crt->cp_suivant;
-  }
-
-  if( (crt->cp_nom == nom) & (crt->cp_prenom == prenom) )
-    cout << crt->cp_nom << " ; " << crt->cp_prenom << " ; " << crt->cp_numero << " ; " << crt->cp_email << endl;
-}*/
 
 /**
   supprime une personne de la liste si celle-ci n'a pas rendez-vous

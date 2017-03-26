@@ -384,12 +384,12 @@ int LCRdv::getHeureFin(chainonRdv *crt)
   return crt->cr_heureFin;
 }
 
-chainonRdv * LCRdv::getSuivant(chainonRdv *crt)
 /**
 Retourne le chainon suivant de la liste rendez-vous
 @param[in] crt - l'adresse du chainon courant
 @return - l'adresse du chainon suivant
 */
+chainonRdv * LCRdv::getSuivant(chainonRdv *crt)
 {
   return crt->cr_suivant;
 }

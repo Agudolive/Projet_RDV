@@ -118,6 +118,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnRdvDe, this, ID_RDV_DE);
   Bind(wxEVT_MENU, &cadre::OnDetailRdv, this, ID_DETAIL_RDV);
   Bind(wxEVT_MENU, &cadre::OnDocumentation, this, ID_DOC);
+  Bind(wxEVT_MENU, &cadre::OnAbout, this, ID_A_PROPOS);
 }
 
 /**
@@ -1162,4 +1163,25 @@ void cadre::OnDocumentation(wxCommandEvent& e)
   wxString url = wxGetCwd();
   url += "/html/annotated.html";
   wxLaunchDefaultBrowser(url, 0);
+}
+
+void cadre::OnAbout(wxCommandEvent& e)
+{
+  auto CadreAbout = new cadre("LA propos");
+  CadreAbout -> Show(true);
+  auto panneau = new wxPanel{CadreAbout, wxID_ANY};
+
+  wxString t;
+  t += "Ce programme a ete realise dans le cadre du projet de structures de donnees de deuxieme annee de licence informatique.\n\n";
+  t += "Les professeurs referents :\n- CORDIER Frederic\n- MAILLOT Yvan\n\n";
+  t += "Les eleves createurs du projet :\n- AGUDO-PEREZ Olivier\n- GHERARDI Sylvain\n- HUOT Gael\n- CHOLE Nicolas\n";
+
+  auto txt = new wxStaticText{panneau,wxID_STATIC,t};
+  auto sizer = new wxBoxSizer{wxVERTICAL};
+
+  sizer->Add(txt,1, wxEXPAND | wxALL,10);
+  panneau->SetSizerAndFit(sizer);
+
+  CadreAbout->SetSize(panneau->GetSize());
+  CadreAbout->SetMinSize({300,50});
 }

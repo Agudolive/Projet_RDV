@@ -48,6 +48,7 @@ class cadre : public wxFrame
     void OnSelectionRdvDe(wxCommandEvent& e);
     void OnDetailRdv(wxCommandEvent& e);
     void OnSelectionDetailRdv(wxCommandEvent& e);
+    void OnDocumentation(wxCommandEvent& e);
 
     wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;

@@ -4,6 +4,8 @@
 #include "lcrdv.h"
 #include "fromJson.h"
 
+#include <wx/utils.h>
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -114,6 +116,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnModiferRdv, this, ID_EDIT_RDV);
   Bind(wxEVT_MENU, &cadre::OnRdvDe, this, ID_RDV_DE);
   Bind(wxEVT_MENU, &cadre::OnDetailRdv, this, ID_DETAIL_RDV);
+  Bind(wxEVT_MENU, &cadre::OnDocumentation, this, ID_DOC);
 }
 
 /**
@@ -1151,4 +1154,9 @@ void cadre::OnSelectionDetailRdv(wxCommandEvent& e)
   }
 
   txt->SetLabel(t);
+}
+
+void cadre::OnDocumentation(wxCommandEvent& e)
+{
+  wxLaunchDefaultBrowser("file:///home/necrosylv/Documents/s4/Projet_RDv/html/annotated.html", 0);
 }

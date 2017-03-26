@@ -61,7 +61,6 @@ void fromJson::saveRepertoire() {
 
     chainonPersonne *crt = fj_repertoirePersonne->getTete();
 
-    cout << "save ! " << endl;
     json array;
 
     while (crt)

@@ -322,8 +322,18 @@ void cadre::OnAjouterPersonne(wxCommandEvent& e){
 */
 void cadre::OnBoutonAjouterPersonne(wxCommandEvent& e){
 
-  repertoirePersonne->ajouter(std::string(c_champNom->GetValue()), std::string(c_champPrenom->GetValue()), std::string(c_champNumero->GetValue()), std::string(c_champEmail->GetValue()));
-  CadreAjouterPersonne->Close(true);
+  string nom = std::string(c_champNom->GetValue());
+  string prenom = std::string(c_champPrenom->GetValue());
+  string numero = std::string(c_champNumero->GetValue());
+  string email = std::string(c_champEmail->GetValue());
+
+  if( (nom!="") & (prenom!="") & (numero!="") & (email!="") )
+  {
+    repertoirePersonne->ajouter(nom, prenom, numero, email);
+    CadreAjouterPersonne->Close(true);
+  }
+  else
+    wxMessageBox("Tous les champs ne sont pas renseignes");
 }
 
 /**
@@ -631,20 +641,38 @@ void cadre::OnAfficherEntreDates(wxCommandEvent& e)
 */
 void cadre::OnRefreshAfficherEntreDates(wxCommandEvent& e)
 {
-  wxString t;
+  int jour_D = wxAtoi(c_jourD->GetValue());
+  int mois_D = wxAtoi(c_moisD->GetValue());
+  int annee_D = wxAtoi(c_anneeD->GetValue());
+  int jour_F = wxAtoi(c_jourF->GetValue());
+  int mois_F = wxAtoi(c_moisF->GetValue());
+  int annee_F = wxAtoi(c_anneeF->GetValue());
 
-  vector<string> liste =  repertoireRdv->afficherEntreDates(wxAtoi(c_jourD->GetValue()),wxAtoi(c_moisD->GetValue()),wxAtoi(c_anneeD->GetValue()),wxAtoi(c_jourF->GetValue()),wxAtoi(c_moisF->GetValue()),wxAtoi(c_anneeF->GetValue()));
-  for(unsigned i=0; i<liste.size(); i++)
+  if( (jour_D>=32) | (jour_D<=0) )
+    wxMessageBox("Le jour de depart choisi est invalide");
+  else if( (mois_D>=13) | (mois_D<=0) )
+    wxMessageBox("Le mois de depart choisi est invalide");
+  else if( annee_D==0 )
+    wxMessageBox("L'annee de depart choisie est invalide");
+  else if( (jour_F>=32) | (jour_F<=0) )
+    wxMessageBox("Le jour de fin choisi est invalide");
+  else if( (mois_F>=13) | (mois_F<=0) )
+    wxMessageBox("Le mois de fin choisi est invalide");
+  else if( annee_F==0 )
+    wxMessageBox("L'annee de fin choisie est invalide");
+  else
   {
-    t += liste[i];
-    t += wxString::FromUTF8("\xC2\xA0;\xC2\xA0");
-  }
+    wxString t;
 
-  c_listeRdvEntre->SetLabel(t);
-  c_champNom->SetValue("");
-  c_champPrenom->SetValue("");
-  c_champNumero->SetValue("");
-  c_champEmail->SetValue("");
+    vector<string> liste =  repertoireRdv->afficherEntreDates(jour_D, mois_D, annee_D, jour_F, mois_F, annee_F);
+    for(unsigned i=0; i<liste.size(); i++)
+    {
+      t += liste[i];
+      t += wxString::FromUTF8("\xC2\xA0;\xC2\xA0");
+    }
+
+    c_listeRdvEntre->SetLabel(t);
+  }
 }
 
 /**
@@ -1239,7 +1267,7 @@ void cadre::OnPersonneEstLibre(wxCommandEvent& e){
     crt = repertoirePersonne->getSuivant(crt);
   }
 
-  CadrePersonneEstLibre = new cadre("Afficher details de");
+  CadrePersonneEstLibre = new cadre("Est libre ?");
   CadrePersonneEstLibre -> Show(true);
   auto panneau = new wxPanel{CadrePersonneEstLibre, wxID_ANY};
   c_choix_personne = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,repertoire, ID_CHOIX);
@@ -1327,7 +1355,33 @@ void cadre::OnPersonneEstLibre(wxCommandEvent& e){
 
 void cadre::OnSelectionPersonneEstLibre(wxCommandEvent& e){
 
-  if(c_choix_personne->GetSelection() == wxNOT_FOUND);
+  int jour_D = wxAtoi(c_jourD->GetValue());
+  int mois_D = wxAtoi(c_moisD->GetValue());
+  int annee_D = wxAtoi(c_anneeD->GetValue());
+  int jour_F = wxAtoi(c_jourF->GetValue());
+  int mois_F = wxAtoi(c_moisF->GetValue());
+  int annee_F = wxAtoi(c_anneeF->GetValue());
+  int heureDebut = wxAtoi(c_heureDebut->GetValue());
+  int heureFin = wxAtoi(c_heureFin->GetValue());
+
+  if(c_choix_personne->GetSelection() == wxNOT_FOUND)
+    wxMessageBox("Aucune personne selectionnee");
+  else if( (heureDebut>=24) | (heureDebut<=0) )
+    wxMessageBox("L'heure de commencement choisie est invalide");
+  else if( (jour_D>=32) | (jour_D<=0) )
+    wxMessageBox("Le jour de depart choisi est invalide");
+  else if( (mois_D>=13) | (mois_D<=0) )
+    wxMessageBox("Le mois de depart choisi est invalide");
+  else if( annee_D==0 )
+    wxMessageBox("L'annee de depart choisie est invalide");
+  else if( (heureFin>=24) | (heureFin<=0) )
+    wxMessageBox("L'heure de fin choisie est invalide");
+  else if( (jour_F>=32) | (jour_F<=0) )
+    wxMessageBox("Le jour de fin choisi est invalide");
+  else if( (mois_F>=13) | (mois_F<=0) )
+    wxMessageBox("Le mois de fin choisi est invalide");
+  else if( annee_F==0 )
+    wxMessageBox("L'annee de fin choisie est invalide");
   else
   {
     bool Estlibre;
@@ -1344,7 +1398,7 @@ void cadre::OnSelectionPersonneEstLibre(wxCommandEvent& e){
     string nom = repertoirePersonne->getNom(crt_p);
     string prenom = repertoirePersonne->getPrenom(crt_p);
 
-    Estlibre = repertoireRdv->estLibre(nom,prenom,wxAtoi(c_jourD->GetLabel()),wxAtoi(c_moisD->GetLabel()),wxAtoi(c_anneeD->GetLabel()),wxAtoi(c_heureDebut->GetLabel()),wxAtoi(c_jourF->GetLabel()),wxAtoi(c_moisF->GetLabel()),wxAtoi(c_anneeF->GetLabel()),wxAtoi(c_heureFin->GetLabel()));
+    Estlibre = repertoireRdv->estLibre(nom, prenom, jour_D, mois_D, annee_D, heureDebut, jour_F, mois_F, annee_F, heureFin);
 
     if(Estlibre)
       txt->SetLabel("Cette personne est libre");

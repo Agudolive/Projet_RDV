@@ -113,6 +113,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnSupprimerPersonne, this, ID_DELETE_PERSONNE);
   Bind(wxEVT_MENU, &cadre::OnModiferRdv, this, ID_EDIT_RDV);
   Bind(wxEVT_MENU, &cadre::OnRdvDe, this, ID_RDV_DE);
+  Bind(wxEVT_MENU, &cadre::OnDetailRdv, this, ID_DETAIL_RDV);
 }
 
 /**
@@ -1068,5 +1069,86 @@ void cadre::OnSelectionRdvDe(wxCommandEvent& e){
     }
     crt_r = repertoireRdv->getSuivant(crt_r);
   }
+  txt->SetLabel(t);
+}
+
+
+void cadre::OnDetailRdv(wxCommandEvent& e)
+{
+  enum{ID_CHOIX};
+
+  wxArrayString repertoire;
+  CadreDetailRdv = new cadre("Afficher detail rendez-vous");
+  CadreDetailRdv -> Show(true);
+  auto panneau = new wxPanel{CadreDetailRdv, wxID_ANY};
+  chainonRdv* crt = repertoireRdv->getTete();
+
+  while(crt){
+    repertoire.Add( repertoireRdv->getLibelle(crt) );
+    crt = repertoireRdv->getSuivant(crt);
+  }
+  c_choix_rdv = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,repertoire, ID_CHOIX);
+
+  txt = new wxStaticText{panneau,wxID_STATIC,""};
+  auto sizer = new wxBoxSizer{wxVERTICAL};
+
+  sizer->Add(c_choix_rdv,1,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(txt,1,wxALIGN_CENTER | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer);
+  CadreDetailRdv->SetSize(panneau->GetSize());
+  SetMinSize(GetSize());
+
+  c_choix_rdv->Bind(wxEVT_CHOICE, &cadre::OnSelectionDetailRdv, this);
+
+}
+
+void cadre::OnSelectionDetailRdv(wxCommandEvent& e)
+{
+  wxString t;
+  int sel = c_choix_rdv->GetSelection();
+  chainonRdv* crt_r = repertoireRdv->getTete();
+  int i = 0;
+  while(i != sel){
+    crt_r = repertoireRdv->getSuivant(crt_r);
+    i++;
+  }
+
+  t += repertoireRdv->getLibelle(crt_r);
+  t += wxString::FromUTF8("\xC2\xA0 le \xC2\xA0");
+  t += wxString::Format(wxT("%i"),repertoireRdv->getJour(crt_r));
+  t += wxString::FromUTF8("/");
+  t += wxString::Format(wxT("%i"),repertoireRdv->getMois(crt_r));
+  t += wxString::FromUTF8("/");
+  t += wxString::Format(wxT("%i"),repertoireRdv->getAnnee(crt_r));
+  t += wxString::FromUTF8("\xC2\xA0");
+  t += wxString::FromUTF8("de");
+  t += wxString::FromUTF8("\xC2\xA0");
+  t += wxString::Format(wxT("%i"),repertoireRdv->getHeureDebut(crt_r));
+  t += wxString::FromUTF8("h");
+  t += wxString::FromUTF8("\xC2\xA0");
+  t += wxString::FromUTF8("a");
+  t += wxString::Format(wxT("%i"),repertoireRdv->getHeureFin(crt_r));
+  t += wxString::FromUTF8("h");
+  t += wxString::FromUTF8("\nParticipants :\n");
+
+  vector<vector<string>> rep = repertoireRdv->getParticipants(crt_r);
+
+  for(unsigned j=0; j<rep.size(); j++)
+  {
+    chainonPersonne* crt_p = repertoirePersonne->getTete();
+    while(crt_p)
+    {
+      string nom = repertoirePersonne->getNom(crt_p);
+      string prenom = repertoirePersonne->getPrenom(crt_p);
+      if( (rep[j][0]==nom) & (rep[j][1]==prenom) )
+      {
+        t += nom + " " + prenom + " ; " + repertoirePersonne->getNumero(crt_p) + " ; " + repertoirePersonne->getEmail(crt_p) + "\n";
+      }
+
+      crt_p = repertoirePersonne->getSuivant(crt_p);
+    }
+  }
+
   txt->SetLabel(t);
 }

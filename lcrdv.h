@@ -15,10 +15,7 @@ public:
     void ajouter(string libelle, int jour, int mois, int annee, int heureDebut, int heureFin, vector<vector<string>> participants);
     void supprimer(string libelle);
 
-    //void afficher(string libelle, LCPersonne* listePersonnes);
-    //void afficherListeRdv();
     vector<string> afficherEntreDates(int jour1, int mois1, int annee1, int jour2, int mois2, int annee2);
-    //void afficherPourPersonne(string nom, string prenom, LCPersonne* listePersonnes);
 
     void modifierDate(string libelle, int jour, int mois, int annee);
     void modifierHeure(string libelle, int heureDebut, int HeureFin);

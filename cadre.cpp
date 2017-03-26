@@ -16,8 +16,8 @@ using namespace std;
 
 cadre::~cadre()
 {
-  delete repertoirePersonne;
-  delete repertoireRdv;
+  //delete repertoirePersonne;
+  //delete repertoireRdv;
 }
 
 /**
@@ -182,7 +182,7 @@ void cadre::OnExit(wxCommandEvent& e)
 */
 void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 {
-  auto  CadreListePersonne = new cadre("Liste des contacts");
+  auto CadreListePersonne = new cadre("Liste des contacts");
   CadreListePersonne -> Show(true);
   auto panneau = new wxPanel{CadreListePersonne, wxID_ANY};
 
@@ -200,13 +200,27 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
     t += "\n";
     crt = repertoirePersonne->getSuivant(crt);
   }
+  crt = nullptr;
+  //auto bouton = new wxButton(panneau, wxID_EXIT, "");
+
+
   auto txt = new wxStaticText{panneau,wxID_STATIC,t};
   auto sizer = new wxBoxSizer{wxVERTICAL};
   sizer->Add(txt,1, wxEXPAND | wxALL,10);
+//  sizer->Add(bouton,0,wxEXPAND | wxALL,10);
   panneau->SetSizerAndFit(sizer);
   CadreListePersonne->SetSize(panneau->GetSize());
   CadreListePersonne->SetMinSize({300,50});
+  //CadreListePersonne->Close();
+  //delete CadreListePersonne;
+  //bouton->Bind(wxEVT_BUTTON, &cadre::OnExitAfficherPersonnes, this);
 }
+/*
+void cadre::OnExitAfficherPersonnes(wxCommandEvent& e)
+{
+  CadreListePersonne->Close();
+  //delete CadreListePersonne;
+}*/
 
 /**
   Ouvre un fenêtre et affiche la liste de toutes les rendez-vous
@@ -214,7 +228,7 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
 */
 void cadre::OnAfficherRdvs(wxCommandEvent& e)
 {
-  auto  CadreListeRdvs = new cadre("Liste des rendez-vous");
+  auto CadreListeRdvs = new cadre("Liste des rendez-vous");
   CadreListeRdvs -> Show(true);
   auto panneau = new wxPanel{CadreListeRdvs, wxID_ANY};
 
@@ -323,7 +337,7 @@ void cadre::OnAjouterRdv(wxCommandEvent& e)
     ID_BOUTON_AJOUTER, ID_BOUTON_RETIRER
   };
 
-  auto CadreAjouterRdv = new cadre{"Ajouter un rendez-vous"};
+  CadreAjouterRdv = new cadre{"Ajouter un rendez-vous"};
   CadreAjouterRdv -> Show(true);
   CadreAjouterRdv -> SetMaxSize({500, 700});
   auto panneau = new wxPanel{CadreAjouterRdv, wxID_ANY};
@@ -523,7 +537,10 @@ void cadre::OnBoutonAjouterRdv(wxCommandEvent& e)
     wxMessageBox(txt);
   }
   else
+  {
     repertoireRdv->ajouter(libelle, jour, mois, annee, heureDebut, heureFin, listeVector);
+    CadreAjouterRdv->Close(true);
+  }
 }
 
 
@@ -996,9 +1013,9 @@ else
   repertoireRdv->modifierDate(libelle, jour, mois, annee);
   repertoireRdv->modifierHeure(libelle, heureDebut, heureFin);
   repertoireRdv->modifierListePersonnes(libelle, listeVector);
+  CadreModifierRdv->Close(true);
 }
 
-CadreModifierRdv->Close(true);
 }
 
 /**
@@ -1310,26 +1327,31 @@ void cadre::OnPersonneEstLibre(wxCommandEvent& e){
 
 void cadre::OnSelectionPersonneEstLibre(wxCommandEvent& e){
 
-  bool Estlibre;
-
-  wxString t;
-  int sel = c_choix_personne->GetSelection();
-  chainonPersonne* crt_p = repertoirePersonne->getTete();
-  int i = 0;
-  while(i != sel){
-    crt_p = repertoirePersonne->getSuivant(crt_p);
-    i++;
-  }
-
-  string nom = repertoirePersonne->getNom(crt_p);
-  string prenom = repertoirePersonne->getPrenom(crt_p);
-
-  Estlibre = repertoireRdv->estLibre(nom,prenom,wxAtoi(c_jourD->GetLabel()),wxAtoi(c_moisD->GetLabel()),wxAtoi(c_anneeD->GetLabel()),wxAtoi(c_heureDebut->GetLabel()),wxAtoi(c_jourF->GetLabel()),wxAtoi(c_moisF->GetLabel()),wxAtoi(c_anneeF->GetLabel()),wxAtoi(c_heureFin->GetLabel()));
-
-  if(Estlibre)
-    txt->SetLabel("Cette personne est libre");
+  if(c_choix_personne->GetSelection() == wxNOT_FOUND);
   else
-    txt->SetLabel("Cette personne n'est pas libre");
+  {
+    bool Estlibre;
+
+    wxString t;
+    int sel = c_choix_personne->GetSelection();
+    chainonPersonne* crt_p = repertoirePersonne->getTete();
+    int i = 0;
+    while(i != sel){
+      crt_p = repertoirePersonne->getSuivant(crt_p);
+      i++;
+    }
+
+    string nom = repertoirePersonne->getNom(crt_p);
+    string prenom = repertoirePersonne->getPrenom(crt_p);
+
+    Estlibre = repertoireRdv->estLibre(nom,prenom,wxAtoi(c_jourD->GetLabel()),wxAtoi(c_moisD->GetLabel()),wxAtoi(c_anneeD->GetLabel()),wxAtoi(c_heureDebut->GetLabel()),wxAtoi(c_jourF->GetLabel()),wxAtoi(c_moisF->GetLabel()),wxAtoi(c_anneeF->GetLabel()),wxAtoi(c_heureFin->GetLabel()));
+
+    if(Estlibre)
+      txt->SetLabel("Cette personne est libre");
+    else
+      txt->SetLabel("Cette personne n'est pas libre");
+  }
+}
 
 void cadre::OnDetailRdv(wxCommandEvent& e)
 {

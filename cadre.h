@@ -57,6 +57,8 @@ class cadre : public wxFrame
     void OnDocumentation(wxCommandEvent& e);
     void OnAbout(wxCommandEvent& e);
 
+    //void OnExitAfficherPersonnes(wxCommandEvent& e);
+
     wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;
     wxTextCtrl *c_libelle, *c_jour, *c_mois, *c_annee, *c_heureDebut, *c_heureFin;
@@ -79,6 +81,6 @@ class cadre : public wxFrame
     cadre* CadreModifierRdv;
     cadre* CadreRdvDe;
     cadre* CadreDetailsPersonne;
-    cadre* CadrePersonneEstLibre;
-    cadre* CadreDetailRdv;
+    cadre *CadrePersonneEstLibre, *CadreDetailRdv, *CadreAjouterRdv;
+    //cadre *CadreListePersonne;
 };

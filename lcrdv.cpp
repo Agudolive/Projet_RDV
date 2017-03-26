@@ -283,14 +283,16 @@ bool LCRdv::estLibre(string nom, string prenom, int jour1, int mois1, int annee1
 
         if(crt->cr_annee > annee1)
           superieur = true;
-        else if(crt->cr_annee == annee1){
+        else if(crt->cr_annee == annee1)
+        {
           if(crt->cr_mois > mois1)
             superieur = true;
-          else if(crt->cr_mois == mois1){
+          else if(crt->cr_mois == mois1)
+          {
             if(crt->cr_jour > jour1)
               superieur = true;
-            else if(crt->cr_jour == jour1){
-              superieur = true;
+            else if(crt->cr_jour == jour1)
+            {
               if(crt->cr_heureDebut >= heure1)
                 superieur = true;
             }
@@ -300,14 +302,16 @@ bool LCRdv::estLibre(string nom, string prenom, int jour1, int mois1, int annee1
         //test si la date de rdv est inférieur a la borne superieure
         if(crt->cr_annee < annee2)
         inferieur = true;
-        else if(crt->cr_annee == annee2){
+        else if(crt->cr_annee == annee2)
+        {
           if(crt->cr_mois < mois2)
             inferieur = true;
-          else if (crt->cr_mois == mois2){
+          else if (crt->cr_mois == mois2)
+          {
             if(crt->cr_jour <= jour2)
               inferieur = true;
-            else if (crt->cr_jour == jour2){
-              inferieur = true;
+            else if (crt->cr_jour == jour2)
+            {
               if(crt->cr_heureFin <= heure2)
                 inferieur = true;
             }

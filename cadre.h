@@ -23,6 +23,7 @@ class cadre : public wxFrame
   private :
     LCPersonne* repertoirePersonne;
     LCRdv* repertoireRdv;
+
     void OnCharger(wxCommandEvent& e);
     void OnSave(wxCommandEvent& e);
     void OnExit(wxCommandEvent& e);
@@ -57,30 +58,27 @@ class cadre : public wxFrame
     void OnDocumentation(wxCommandEvent& e);
     void OnAbout(wxCommandEvent& e);
 
-    //void OnExitAfficherPersonnes(wxCommandEvent& e);
-
     wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;
     wxTextCtrl *c_libelle, *c_jour, *c_mois, *c_annee, *c_heureDebut, *c_heureFin;
-    wxStaticText* c_choix_libelle;
-    wxStaticText *c_listeRdvEntre;
-    wxStaticText *txt;
+
+    wxStaticText *c_choix_libelle, *c_listeRdvEntre, *txt;
+
     wxListBox *c_listePersonnes, *c_listeParticipants;
     wxListBox *c_toutesPersonnes, *c_tousRdv;
+
     wxArrayString c_arrayParticipants, c_arrayRdv;
     wxArrayString c_ajoutParticipants, c_listeBoxParticipants;
+
     std::vector<string> repertoire;
-    wxChoice* c_choix_personne;
-    wxChoice* c_choix_rdv;
+
+    wxChoice *c_choix_personne, *c_choix_rdv;
+
     wxStaticText* c_nom;
     wxStaticText* c_prenom;
-    cadre* CadreAjouterPersonne;
-    cadre* CadreModifierPersonne;
-    cadre* CadreSupprimerPersonne;
-    cadre* CadreSupprimerRdv;
-    cadre* CadreModifierRdv;
-    cadre* CadreRdvDe;
-    cadre* CadreDetailsPersonne;
-    cadre *CadrePersonneEstLibre, *CadreDetailRdv, *CadreAjouterRdv;
-    //cadre *CadreListePersonne;
+
+    cadre *CadreAjouterPersonne, *CadreModifierPersonne;
+    cadre *CadreSupprimerPersonne, *CadreSupprimerRdv;
+    cadre *CadreModifierRdv, *CadreRdvDe;
+    cadre *CadreDetailsPersonne, *CadrePersonneEstLibre, *CadreDetailRdv, *CadreAjouterRdv;
 };

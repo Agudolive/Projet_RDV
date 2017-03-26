@@ -24,5 +24,3 @@ private:
 };
 
 #endif // CHAINONRDV_H
-
-//tabContingence.resize(k_n, vector<double>(k_m));

@@ -15,10 +15,7 @@
 using namespace std;
 
 cadre::~cadre()
-{
-  //delete repertoirePersonne;
-  //delete repertoireRdv;
-}
+{}
 
 /**
   Construit le cadre principal et créé les élements de la fenêtre principale
@@ -32,8 +29,6 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
     ID_LISTE_PERSONNES, ID_LISTE_RDV, ID_RDV_DE, ID_RDV_ENTRE,
     ID_DETAIL_RDV, ID_DETAIL_PERSONNE, ID_TOUTES_PERSONNES,ID_EST_LIBRE
   };
-
-  // auto  CadreMenuPrithisncipal = new cadre("Menu Principal");
 
   //initialisation des repertoires
   repertoirePersonne = new LCPersonne{};
@@ -86,7 +81,6 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
 
   //affichage des focntionnalités disponibles
   wxString champ = "";
-      // wxString::FromUTF8("\xC2\xA0");
 
   champ += wxString::FromUTF8("Fonctionnalites disponibles :\x000D\x000D");
   champ += "Menu Fichier :\x000D\x0009- Sauvegarde et recuperation d'une liste de personnes et de rendez-vous\x000D\x000D";
@@ -129,9 +123,8 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Construit un objet de type cadre, permet la création de plusieures fenêtres différentes au seins de l'application
   @param[in] c_nomFrame - un string contenant le nom de la fenêtre à créer
 */
-cadre::cadre(string c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}{
-
-}
+cadre::cadre(string c_nomFrame) : wxFrame{nullptr, wxID_ANY, c_nomFrame, wxDefaultPosition}
+{}
 
 /**
   Charge la liste de personnes et rendez-vous à partir du fichier json
@@ -200,27 +193,16 @@ void cadre::OnAfficherPersonnes(wxCommandEvent& e)
     t += "\n";
     crt = repertoirePersonne->getSuivant(crt);
   }
-  crt = nullptr;
-  //auto bouton = new wxButton(panneau, wxID_EXIT, "");
-
 
   auto txt = new wxStaticText{panneau,wxID_STATIC,t};
   auto sizer = new wxBoxSizer{wxVERTICAL};
   sizer->Add(txt,1, wxEXPAND | wxALL,10);
-//  sizer->Add(bouton,0,wxEXPAND | wxALL,10);
+
   panneau->SetSizerAndFit(sizer);
   CadreListePersonne->SetSize(panneau->GetSize());
   CadreListePersonne->SetMinSize({300,50});
-  //CadreListePersonne->Close();
-  //delete CadreListePersonne;
-  //bouton->Bind(wxEVT_BUTTON, &cadre::OnExitAfficherPersonnes, this);
+
 }
-/*
-void cadre::OnExitAfficherPersonnes(wxCommandEvent& e)
-{
-  CadreListePersonne->Close();
-  //delete CadreListePersonne;
-}*/
 
 /**
   Ouvre un fenêtre et affiche la liste de toutes les rendez-vous
@@ -552,7 +534,6 @@ void cadre::OnBoutonAjouterRdv(wxCommandEvent& e)
     CadreAjouterRdv->Close(true);
   }
 }
-
 
 /**
   Créé une fenêtre et affiche les rendez-vous entre deux dates
@@ -973,76 +954,76 @@ void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
   Réalise les modifications demandées par l'utilisateur
   @param[in] e - un evenement declanché par la méthode "cadre::OnModiferRdv"
 */
-void cadre::OnValiderModifierRdv(wxCommandEvent& e){
-
-if(c_choix_rdv->GetSelection() == wxNOT_FOUND){
-  CadreModifierRdv->Close(true);
-  return;
-}
-
-wxArrayString liste;
-int nb = c_listeParticipants->GetCount();
-
-for(int i=0; i<nb; i++)
-  liste.Add(c_listeParticipants->GetString(i));
-liste.Sort();
-
-vector<vector<string>>listeVector(nb, vector<string>(2, ""));
-for(int i=0; i<nb; i++)
+void cadre::OnValiderModifierRdv(wxCommandEvent& e)
 {
-  string tmp, nom, prenom;
-  tmp = string(liste[i]);
-  stringstream ss(tmp);
-  getline(ss, nom, ' ');
-  getline(ss, prenom, ' ');
+  if(c_choix_rdv->GetSelection() == wxNOT_FOUND){
+    CadreModifierRdv->Close(true);
+    return;
+  }
 
-  listeVector[i][0]=nom;
-  listeVector[i][1]=prenom;
-}
+  wxArrayString liste;
+  int nb = c_listeParticipants->GetCount();
 
-int index;
-string libelle;
-index = c_choix_rdv->GetSelection();
-libelle = c_choix_rdv->GetString(index);
+  for(int i=0; i<nb; i++)
+    liste.Add(c_listeParticipants->GetString(i));
+  liste.Sort();
 
-int jour = wxAtoi(c_jour->GetValue());
-int mois = wxAtoi(c_mois->GetValue());
-int annee = wxAtoi(c_annee->GetValue());
-int heureDebut = wxAtoi(c_heureDebut->GetValue());
-int heureFin = wxAtoi(c_heureFin->GetValue());
+  vector<vector<string>>listeVector(nb, vector<string>(2, ""));
+  for(int i=0; i<nb; i++)
+  {
+    string tmp, nom, prenom;
+    tmp = string(liste[i]);
+    stringstream ss(tmp);
+    getline(ss, nom, ' ');
+    getline(ss, prenom, ' ');
 
-//on vérifie si tous les participants de la liste sont libres
-bool conditionParticipants = true;
-unsigned i = 0;
-while( (conditionParticipants==true) & (i<listeVector.size()) )
-{
-  conditionParticipants = repertoireRdv->estLibre(listeVector[i][0], listeVector[i][1], jour, mois, annee, heureDebut, jour, mois, annee, heureFin);
-  ++i;
-}
+    listeVector[i][0]=nom;
+    listeVector[i][1]=prenom;
+  }
 
-if( (jour>=32) | (jour<=0) )
-  wxMessageBox("Le jour choisi est invalide");
-else if( (mois>=13) | (mois<=0) )
-  wxMessageBox("Le mois choisi est invalide");
-else if( annee==0 )
-  wxMessageBox("L'annee choisie est invalide");
-else if( (heureDebut>=24) | (heureDebut<=0) )
-  wxMessageBox("L'heure de commencement choisie est invalide");
-else if( (heureFin>=24) | (heureFin<=0) )
-  wxMessageBox("L'heure de fin choisie est invalide");
-else if(!conditionParticipants)
-{
-  wxString txt = listeVector[i-1][0] + " " + listeVector[i-1][1];
-  txt.Printf(wxT("%s a deja un rendez-vous"), txt);
-  wxMessageBox(txt);
-}
-else
-{
-  repertoireRdv->modifierDate(libelle, jour, mois, annee);
-  repertoireRdv->modifierHeure(libelle, heureDebut, heureFin);
-  repertoireRdv->modifierListePersonnes(libelle, listeVector);
-  CadreModifierRdv->Close(true);
-}
+  int index;
+  string libelle;
+  index = c_choix_rdv->GetSelection();
+  libelle = c_choix_rdv->GetString(index);
+
+  int jour = wxAtoi(c_jour->GetValue());
+  int mois = wxAtoi(c_mois->GetValue());
+  int annee = wxAtoi(c_annee->GetValue());
+  int heureDebut = wxAtoi(c_heureDebut->GetValue());
+  int heureFin = wxAtoi(c_heureFin->GetValue());
+
+  //on vérifie si tous les participants de la liste sont libres
+  bool conditionParticipants = true;
+  unsigned i = 0;
+  while( (conditionParticipants==true) & (i<listeVector.size()) )
+  {
+    conditionParticipants = repertoireRdv->estLibre(listeVector[i][0], listeVector[i][1], jour, mois, annee, heureDebut, jour, mois, annee, heureFin);
+    ++i;
+  }
+
+  if( (jour>=32) | (jour<=0) )
+    wxMessageBox("Le jour choisi est invalide");
+  else if( (mois>=13) | (mois<=0) )
+    wxMessageBox("Le mois choisi est invalide");
+  else if( annee==0 )
+    wxMessageBox("L'annee choisie est invalide");
+  else if( (heureDebut>=24) | (heureDebut<=0) )
+    wxMessageBox("L'heure de commencement choisie est invalide");
+  else if( (heureFin>=24) | (heureFin<=0) )
+    wxMessageBox("L'heure de fin choisie est invalide");
+  else if(!conditionParticipants)
+  {
+    wxString txt = listeVector[i-1][0] + " " + listeVector[i-1][1];
+    txt.Printf(wxT("%s a deja un rendez-vous"), txt);
+    wxMessageBox(txt);
+  }
+  else
+  {
+    repertoireRdv->modifierDate(libelle, jour, mois, annee);
+    repertoireRdv->modifierHeure(libelle, heureDebut, heureFin);
+    repertoireRdv->modifierListePersonnes(libelle, listeVector);
+    CadreModifierRdv->Close(true);
+  }
 
 }
 
@@ -1080,7 +1061,8 @@ void cadre::OnRdvDe(wxCommandEvent& e){
 
 }
 
-/**Met a jour l'affichage de la liste de rendez-vous
+/**
+  Met a jour l'affichage de la liste de rendez-vous
   @param[in] e - un evenement declanché par la méthode "cadre::OnRdvDe"
 */
 void cadre::OnSelectionRdvDe(wxCommandEvent& e){
@@ -1126,6 +1108,10 @@ void cadre::OnSelectionRdvDe(wxCommandEvent& e){
   txt->SetLabel(t);
 }
 
+/**
+  Affiche la liste de rendez-vous et permet à l'utilisateur de selectionner le redndez-vous à supprimer
+  @param[in] e - un evenement declanché par le menu "Editter -> Rendez-vous -> supprimer rendez-vous"
+*/
 void cadre::OnSupprimerRdv(wxCommandEvent& e){
 
   enum{ID_CHOIX,ID_BOUTON};
@@ -1157,6 +1143,10 @@ void cadre::OnSupprimerRdv(wxCommandEvent& e){
   bouton->Bind(wxEVT_BUTTON, &cadre::OnValiderSupprimerRdv, this);
 }
 
+/**
+  Supprimer le rendez-vous selectionné par l'utilisateur
+  @param[in] e - un evenement declanché par la méthode cadre::OnSupprimerRdv
+*/
 void cadre::OnValiderSupprimerRdv(wxCommandEvent& e){
 
   if(c_choix_rdv->GetSelection() == wxNOT_FOUND){
@@ -1171,7 +1161,10 @@ void cadre::OnValiderSupprimerRdv(wxCommandEvent& e){
   CadreSupprimerRdv->Close(true);
 }
 
-
+/**
+  Affiche la liste de personne et permet à l'utilisateur de selectionner la personne pour laquelle il faut afficher les détails
+  @param[in] e - un evenement declanché par le menu "Afficher -> Détail personne"
+*/
 void cadre::OnDetailsPersonne(wxCommandEvent& e){
 
   enum{ID_CHOIX};
@@ -1202,6 +1195,10 @@ void cadre::OnDetailsPersonne(wxCommandEvent& e){
   c_choix_personne->Bind(wxEVT_CHOICE, &cadre::OnSelectionDetailsPersonne, this);
 }
 
+/**
+  Met à jour les informations en fonction de la personne selectionnée
+  @param[in] e - un evenement declanché par la méthode cadre::OnDetailsPersonne
+*/
 void cadre::OnSelectionDetailsPersonne(wxCommandEvent& e){
 
   wxString t;
@@ -1254,6 +1251,10 @@ void cadre::OnSelectionDetailsPersonne(wxCommandEvent& e){
   txt->SetLabel(t);
 }
 
+/**
+  Affiche la liste de personne et permet à l'utilisateur de selectionner la personne pour laquelle il faut vérifier si elle à un rendez-vous
+  @param[in] e - un evenement declanché par le menu "Afficher -> Est libre"
+*/
 void cadre::OnPersonneEstLibre(wxCommandEvent& e){
 
   enum{ID_CHOIX,ID_BOUTON};
@@ -1353,6 +1354,10 @@ void cadre::OnPersonneEstLibre(wxCommandEvent& e){
   bouton->Bind(wxEVT_BUTTON, &cadre::OnSelectionPersonneEstLibre, this);
 }
 
+/**
+  Vérifie que les informations entrées par l'utilisateur soient correctes et affiche le résultat
+  @param[in] e - un evenement declanché par la méthode cadre::OnPersonneEstLibre
+*/
 void cadre::OnSelectionPersonneEstLibre(wxCommandEvent& e){
 
   int jour_D = wxAtoi(c_jourD->GetValue());
@@ -1407,6 +1412,10 @@ void cadre::OnSelectionPersonneEstLibre(wxCommandEvent& e){
   }
 }
 
+/**
+  Permet à l'utilisateur de selectionner le rendez-vous pour lequel il faut afficher les détails
+  @param[in] e - un evenement declanché par le menu "Afficher -> Detail rendez-vous"
+*/
 void cadre::OnDetailRdv(wxCommandEvent& e)
 {
   enum{ID_CHOIX};
@@ -1437,6 +1446,10 @@ void cadre::OnDetailRdv(wxCommandEvent& e)
 
 }
 
+/**
+  Met à jour l'affichage en fonction de la selection
+  @param[in] e - un evenement declanché par la méthode cadre::OnDetailRdv
+*/
 void cadre::OnSelectionDetailRdv(wxCommandEvent& e)
 {
   wxString t;
@@ -1487,6 +1500,10 @@ void cadre::OnSelectionDetailRdv(wxCommandEvent& e)
   txt->SetLabel(t);
 }
 
+/**
+  Ouvre dans un navigateur la documentation du programme
+  @param[in] e - un evenement declanché par le menu "Aide -> Documentation"
+*/
 void cadre::OnDocumentation(wxCommandEvent& e)
 {
   wxString url = wxGetCwd();
@@ -1494,6 +1511,10 @@ void cadre::OnDocumentation(wxCommandEvent& e)
   wxLaunchDefaultBrowser(url, 0);
 }
 
+/**
+  Affiche les credits de l'application
+  @param[in] e - un evenement declanché par le menu "Aide -> A propos"
+*/
 void cadre::OnAbout(wxCommandEvent& e)
 {
   auto CadreAbout = new cadre("LA propos");

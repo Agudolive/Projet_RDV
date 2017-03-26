@@ -1,7 +1,3 @@
-//
-// Created by root on 12/03/17.
-//
-
 #ifndef PROJET_RDV_FROMJSON_H
 #define PROJET_RDV_FROMJSON_H
 #include "json.hpp"

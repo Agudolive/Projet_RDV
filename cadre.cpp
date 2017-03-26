@@ -84,9 +84,9 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
 
   champ += wxString::FromUTF8("Fonctionnalites disponibles :\x000D\x000D");
   champ += "Menu Fichier :\x000D\x0009- Sauvegarde et recuperation d'une liste de personnes et de rendez-vous\x000D\x000D";
-  champ += "Menu Editer :\x000D\x0009- Creation/Edition/suppressions de personnes et rendez-vous\x000D\x000D";
-  champ += "Menu Afficher :\x000D\x0009- Liste des personnes avec leurs informations\x000D\x0009- Liste des rendez-vous avec date et heure\x000D\x0009- Tous les rendez vous d'une personne\x000D\x0009- Les details d'un rdv c-a-d les personnes le composant\x000D\x0009- Les rdv entre 2 date\x000D\x000D";
-  champ += "Menu Aide :\x000D\x0009- Un lien vers la documentation du projet\x000D\x0009- Les acteurs du projet";
+  champ += "Menu Editer :\x000D\x0009- Creation/Edition/suppression de personnes et de rendez-vouss\x000D\x000D";
+  champ += "Menu Afficher :\x000D\x0009- Liste des personnes avec leurs informations\x000D\x0009- Liste des rendez-vous\x000D\x0009- Tous les rendez vous d'une personne\x000D\x0009- Les details d'un rendez-vous\x000D\x0009- Les details d'une personne\x000D\x0009- Verification si la personne est libre\x000D\x0009- Les rendez-vous entre deux dates\x000D\x000D";
+  champ += "Menu Aide :\x000D\x0009- Lien vers la documentation du projet\x000D\x0009- Les acteurs du projet";
 
   auto txt = new wxStaticText{panneau,wxID_STATIC,champ,wxDefaultPosition, wxDefaultSize,0, wxStaticTextNameStr};
 
@@ -1050,12 +1050,12 @@ void cadre::OnRdvDe(wxCommandEvent& e){
   txt = new wxStaticText{panneau,wxID_STATIC,""};
   auto sizer = new wxBoxSizer{wxVERTICAL};
 
-  sizer->Add(c_choix_personne,1,wxALIGN_CENTER | wxALL, 10);
-  sizer->Add(txt,1,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(c_choix_personne,0,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(txt,0,wxALIGN_LEFT | wxALL, 10);
 
   panneau->SetSizerAndFit(sizer);
   CadreRdvDe->SetSize(panneau->GetSize());
-  SetMinSize(GetSize());
+  CadreRdvDe->SetMinSize({400,100});
 
   c_choix_personne->Bind(wxEVT_CHOICE, &cadre::OnSelectionRdvDe, this);
 
@@ -1185,12 +1185,12 @@ void cadre::OnDetailsPersonne(wxCommandEvent& e){
   txt = new wxStaticText{panneau,wxID_STATIC,""};
   auto sizer = new wxBoxSizer{wxVERTICAL};
 
-  sizer->Add(c_choix_personne,1,wxALIGN_CENTER | wxALL, 10);
-  sizer->Add(txt,1,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(c_choix_personne,0,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(txt,0,wxALIGN_LEFT | wxALL, 10);
 
   panneau->SetSizerAndFit(sizer);
   CadreDetailsPersonne->SetSize(panneau->GetSize());
-  SetMinSize(GetSize());
+  CadreDetailsPersonne->SetMinSize({400,200});
 
   c_choix_personne->Bind(wxEVT_CHOICE, &cadre::OnSelectionDetailsPersonne, this);
 }
@@ -1435,12 +1435,12 @@ void cadre::OnDetailRdv(wxCommandEvent& e)
   txt = new wxStaticText{panneau,wxID_STATIC,""};
   auto sizer = new wxBoxSizer{wxVERTICAL};
 
-  sizer->Add(c_choix_rdv,1,wxALIGN_CENTER | wxALL, 10);
-  sizer->Add(txt,1,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(c_choix_rdv,0,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(txt,0,wxALIGN_LEFT | wxALL, 10);
 
   panneau->SetSizerAndFit(sizer);
   CadreDetailRdv->SetSize(panneau->GetSize());
-  SetMinSize(GetSize());
+  CadreDetailRdv->SetMinSize({500,200});
 
   c_choix_rdv->Bind(wxEVT_CHOICE, &cadre::OnSelectionDetailRdv, this);
 

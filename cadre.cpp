@@ -5,6 +5,7 @@
 #include "fromJson.h"
 
 #include <wx/utils.h>
+#include <wx/filefn.h>
 
 #include <string>
 #include <vector>
@@ -1158,5 +1159,7 @@ void cadre::OnSelectionDetailRdv(wxCommandEvent& e)
 
 void cadre::OnDocumentation(wxCommandEvent& e)
 {
-  wxLaunchDefaultBrowser("file:///home/necrosylv/Documents/s4/Projet_RDv/html/annotated.html", 0);
+  wxString url = wxGetCwd();
+  url += "/html/annotated.html";
+  wxLaunchDefaultBrowser(url, 0);
 }

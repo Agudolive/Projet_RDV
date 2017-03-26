@@ -27,7 +27,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
     ID_LOAD, ID_NEW_PERSONNE, ID_EDIT_PERSONNE, ID_DELETE_PERSONNE,
     ID_NEW_RDV, ID_EDIT_RDV, ID_DELETE_RDV, ID_DOC, ID_A_PROPOS,
     ID_LISTE_PERSONNES, ID_LISTE_RDV, ID_RDV_DE, ID_RDV_ENTRE,
-    ID_DETAIL_RDV, ID_DETAIL_PERSONNE, ID_TOUTES_PERSONNES
+    ID_DETAIL_RDV, ID_DETAIL_PERSONNE, ID_TOUTES_PERSONNES,ID_EST_LIBRE
   };
 
   // auto  CadreMenuPrithisncipal = new cadre("Menu Principal");
@@ -66,6 +66,7 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   menuafficher -> Append(ID_RDV_ENTRE, "Rendez-vous entre ...");
   menuafficher -> Append(ID_DETAIL_RDV, "Details du rendez-vous");
   menuafficher -> Append(ID_DETAIL_PERSONNE, "Details de la personne");
+  menuafficher -> Append(ID_EST_LIBRE, "Personne est libre");
 
   auto menuaide = new wxMenu;
   menuaide -> Append(ID_DOC, "Documentation");
@@ -113,6 +114,9 @@ cadre::cadre() : wxFrame{nullptr, wxID_ANY, "Gestion de rendez-vous", wxDefaultP
   Bind(wxEVT_MENU, &cadre::OnSupprimerPersonne, this, ID_DELETE_PERSONNE);
   Bind(wxEVT_MENU, &cadre::OnModiferRdv, this, ID_EDIT_RDV);
   Bind(wxEVT_MENU, &cadre::OnRdvDe, this, ID_RDV_DE);
+  Bind(wxEVT_MENU, &cadre::OnSupprimerRdv, this, ID_DELETE_RDV);
+  Bind(wxEVT_MENU, &cadre::OnDetailsPersonne, this, ID_DETAIL_PERSONNE);
+  Bind(wxEVT_MENU, &cadre::OnPersonneEstLibre, this, ID_EST_LIBRE);
 }
 
 /**
@@ -1069,4 +1073,255 @@ void cadre::OnSelectionRdvDe(wxCommandEvent& e){
     crt_r = repertoireRdv->getSuivant(crt_r);
   }
   txt->SetLabel(t);
+}
+
+void cadre::OnSupprimerRdv(wxCommandEvent& e){
+
+  enum{ID_CHOIX,ID_BOUTON};
+
+  wxArrayString listeRDV;
+
+  chainonRdv* crt = repertoireRdv->getTete();
+  while(crt){
+    listeRDV.Add(repertoireRdv->getLibelle(crt));
+    crt = repertoireRdv->getSuivant(crt);
+  }
+
+  CadreSupprimerRdv = new cadre("Supprimer rendez-vous");
+  CadreSupprimerRdv -> Show(true);
+  auto panneau = new wxPanel{CadreSupprimerRdv, wxID_ANY};
+
+  c_choix_rdv = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,listeRDV, ID_CHOIX);
+  auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
+
+  auto sizer = new wxBoxSizer{wxVERTICAL};
+
+  sizer->Add(c_choix_rdv,1,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(bouton,1,wxALIGN_CENTER | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer);
+  CadreSupprimerRdv->SetSize(panneau->GetSize());
+  SetMinSize(GetSize());
+
+  bouton->Bind(wxEVT_BUTTON, &cadre::OnValiderSupprimerRdv, this);
+}
+
+void cadre::OnValiderSupprimerRdv(wxCommandEvent& e){
+
+  if(c_choix_rdv->GetSelection() == wxNOT_FOUND){
+    CadreModifierRdv->Close(true);
+    return;
+  }
+  int index;
+  string libelle;
+  index = c_choix_rdv->GetSelection();
+  libelle = c_choix_rdv->GetString(index);
+  repertoireRdv->supprimer(libelle);
+  CadreSupprimerRdv->Close(true);
+}
+
+
+void cadre::OnDetailsPersonne(wxCommandEvent& e){
+
+  enum{ID_CHOIX};
+
+  wxArrayString repertoire;
+
+  chainonPersonne* crt = repertoirePersonne->getTete();
+
+  while(crt){
+    repertoire.Add(repertoirePersonne->getNom(crt) + " " + repertoirePersonne->getPrenom(crt));
+    crt = repertoirePersonne->getSuivant(crt);
+  }
+
+  CadreDetailsPersonne = new cadre("Afficher details de");
+  CadreDetailsPersonne -> Show(true);
+  auto panneau = new wxPanel{CadreDetailsPersonne, wxID_ANY};
+  c_choix_personne = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,repertoire, ID_CHOIX);
+  txt = new wxStaticText{panneau,wxID_STATIC,""};
+  auto sizer = new wxBoxSizer{wxVERTICAL};
+
+  sizer->Add(c_choix_personne,1,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(txt,1,wxALIGN_CENTER | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer);
+  CadreDetailsPersonne->SetSize(panneau->GetSize());
+  SetMinSize(GetSize());
+
+  c_choix_personne->Bind(wxEVT_CHOICE, &cadre::OnSelectionDetailsPersonne, this);
+}
+
+void cadre::OnSelectionDetailsPersonne(wxCommandEvent& e){
+
+  wxString t;
+  int sel = c_choix_personne->GetSelection();
+  chainonPersonne* crt_p = repertoirePersonne->getTete();
+  int i = 0;
+  while(i != sel){
+    crt_p = repertoirePersonne->getSuivant(crt_p);
+    i++;
+  }
+
+  string nom = repertoirePersonne->getNom(crt_p);
+  string prenom = repertoirePersonne->getPrenom(crt_p);
+
+  t += nom;
+  t += wxString::FromUTF8("\xC2\xA0 \xC2\xA0");
+  t += prenom;
+  t += wxString::FromUTF8("\n");
+  t += repertoirePersonne->getNumero(crt_p);
+  t += wxString::FromUTF8("\n");
+  t += repertoirePersonne->getEmail(crt_p);
+  t += wxString::FromUTF8("\n");
+
+  chainonRdv* crt_r = repertoireRdv->getTete();
+  while(crt_r){
+    vector<vector<string>> rep = repertoireRdv->getParticipants(crt_r);
+    for(unsigned i = 0; i < rep.size(); i++){
+      if((rep[i][0]==nom) && (rep[i][1]==prenom)){
+        t += repertoireRdv->getLibelle(crt_r);
+        t += wxString::FromUTF8("\xC2\xA0 le \xC2\xA0");
+        t += wxString::Format(wxT("%i"),repertoireRdv->getJour(crt_r));
+        t += wxString::FromUTF8("/");
+        t += wxString::Format(wxT("%i"),repertoireRdv->getMois(crt_r));
+        t += wxString::FromUTF8("/");
+        t += wxString::Format(wxT("%i"),repertoireRdv->getAnnee(crt_r));
+        t += wxString::FromUTF8("\xC2\xA0");
+        t += wxString::FromUTF8("de");
+        t += wxString::FromUTF8("\xC2\xA0");
+        t += wxString::Format(wxT("%i"),repertoireRdv->getHeureDebut(crt_r));
+        t += wxString::FromUTF8("h");
+        t += wxString::FromUTF8("\xC2\xA0");
+        t += wxString::FromUTF8("a");
+        t += wxString::Format(wxT("%i"),repertoireRdv->getHeureFin(crt_r));
+        t += wxString::FromUTF8("h");
+        t += wxString::FromUTF8("\n");
+      }
+    }
+    crt_r = repertoireRdv->getSuivant(crt_r);
+  }
+  txt->SetLabel(t);
+}
+
+void cadre::OnPersonneEstLibre(wxCommandEvent& e){
+
+  enum{ID_CHOIX,ID_BOUTON};
+
+  wxArrayString repertoire;
+
+  chainonPersonne* crt = repertoirePersonne->getTete();
+
+  while(crt){
+    repertoire.Add(repertoirePersonne->getNom(crt) + " " + repertoirePersonne->getPrenom(crt));
+    crt = repertoirePersonne->getSuivant(crt);
+  }
+
+  CadrePersonneEstLibre = new cadre("Afficher details de");
+  CadrePersonneEstLibre -> Show(true);
+  auto panneau = new wxPanel{CadrePersonneEstLibre, wxID_ANY};
+  c_choix_personne = new wxChoice(panneau,1,wxDefaultPosition,wxDefaultSize,repertoire, ID_CHOIX);
+  txt = new wxStaticText{panneau,wxID_STATIC,""};
+
+  auto heureD = new wxStaticText{panneau, wxID_STATIC,("Heure de debut")};
+  auto heureF = new wxStaticText{panneau, wxID_STATIC,("Heure de fin")};
+  auto jourD = new wxStaticText{panneau, wxID_STATIC,("Jour debut")};
+  auto jourF = new wxStaticText{panneau, wxID_STATIC,("Jour fin")};
+  auto moisD = new wxStaticText{panneau, wxID_STATIC,("Mois debut")};
+  auto moisF = new wxStaticText{panneau, wxID_STATIC,("Mois fin")};
+  auto anneeD = new wxStaticText{panneau, wxID_STATIC,("annee debut")};
+  auto anneeF = new wxStaticText{panneau, wxID_STATIC,("annee fin")};
+
+  c_jourD = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_jourF = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_moisD = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_moisF = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_anneeD = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_anneeF = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_heureDebut = new wxTextCtrl(panneau, wxID_STATIC,"");
+  c_heureFin = new wxTextCtrl(panneau, wxID_STATIC,"");
+
+  auto bouton = new wxButton(panneau, ID_BOUTON, "Valider");
+
+  auto sizer1 = new wxBoxSizer{wxHORIZONTAL};
+  sizer1->Add(jourD,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer1->AddStretchSpacer(1);
+  sizer1->Add(c_jourD,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer2 = new wxBoxSizer{wxHORIZONTAL};
+  sizer2->Add(jourF,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer2->AddStretchSpacer(1);
+  sizer2->Add(c_jourF,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer3 = new wxBoxSizer{wxHORIZONTAL};
+  sizer3->Add(moisD,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer3->AddStretchSpacer(1);
+  sizer3->Add(c_moisD,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer4 = new wxBoxSizer{wxHORIZONTAL};
+  sizer4->Add(moisF,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer4->AddStretchSpacer(1);
+  sizer4->Add(c_moisF,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer5 = new wxBoxSizer{wxHORIZONTAL};
+  sizer5->Add(anneeD,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer5->AddStretchSpacer(1);
+  sizer5->Add(c_anneeD,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer6 = new wxBoxSizer{wxHORIZONTAL};
+  sizer6->Add(anneeF,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer6->AddStretchSpacer(1);
+  sizer6->Add(c_anneeF,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer7 = new wxBoxSizer{wxHORIZONTAL};
+  sizer7->Add(heureD,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer7->AddStretchSpacer(1);
+  sizer7->Add(c_heureDebut,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer8 = new wxBoxSizer{wxHORIZONTAL};
+  sizer8->Add(heureF,1,wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 10);
+  sizer8->AddStretchSpacer(1);
+  sizer8->Add(c_heureFin,1,wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALIGN_RIGHT | wxALL, 10);
+
+  auto sizer = new wxBoxSizer{wxVERTICAL};
+  sizer->Add(c_choix_personne,1,wxALIGN_CENTER | wxALL, 10);
+  sizer->Add(sizer7,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer1,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer3,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer5,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer8,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer2,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer4,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(sizer6,1,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(bouton,0,wxALIGN_LEFT | wxALL, 10);
+  sizer->Add(txt,0,wxALIGN_LEFT | wxALL, 10);
+
+  panneau->SetSizerAndFit(sizer);
+  CadrePersonneEstLibre->SetSize(panneau->GetSize());
+  SetMinSize(GetSize());
+
+  bouton->Bind(wxEVT_BUTTON, &cadre::OnSelectionPersonneEstLibre, this);
+}
+
+void cadre::OnSelectionPersonneEstLibre(wxCommandEvent& e){
+
+  bool Estlibre;
+
+  wxString t;
+  int sel = c_choix_personne->GetSelection();
+  chainonPersonne* crt_p = repertoirePersonne->getTete();
+  int i = 0;
+  while(i != sel){
+    crt_p = repertoirePersonne->getSuivant(crt_p);
+    i++;
+  }
+
+  string nom = repertoirePersonne->getNom(crt_p);
+  string prenom = repertoirePersonne->getPrenom(crt_p);
+
+  Estlibre = repertoireRdv->estLibre(nom,prenom,wxAtoi(c_jourD->GetLabel()),wxAtoi(c_moisD->GetLabel()),wxAtoi(c_anneeD->GetLabel()),wxAtoi(c_heureDebut->GetLabel()),wxAtoi(c_jourF->GetLabel()),wxAtoi(c_moisF->GetLabel()),wxAtoi(c_anneeF->GetLabel()),wxAtoi(c_heureFin->GetLabel()));
+
+  if(Estlibre)
+    txt->SetLabel("Cette personne est libre");
+  else
+    txt->SetLabel("Cette personne n'est pas libre");
 }

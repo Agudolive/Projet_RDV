@@ -46,6 +46,12 @@ class cadre : public wxFrame
     void OnValiderModifierRdv(wxCommandEvent& e);
     void OnRdvDe(wxCommandEvent& e);
     void OnSelectionRdvDe(wxCommandEvent& e);
+    void OnValiderSupprimerRdv(wxCommandEvent& e);
+    void OnSupprimerRdv(wxCommandEvent& e);
+    void OnDetailsPersonne(wxCommandEvent& e);
+    void OnSelectionDetailsPersonne(wxCommandEvent& e);
+    void OnPersonneEstLibre(wxCommandEvent& e);
+    void OnSelectionPersonneEstLibre(wxCommandEvent& e);
 
     wxTextCtrl *c_champNom, *c_champPrenom, *c_champNumero, *c_champEmail;
     wxTextCtrl *c_jourD, *c_jourF, *c_moisD, *c_moisF, *c_anneeD, *c_anneeF;
@@ -68,4 +74,6 @@ class cadre : public wxFrame
     cadre* CadreSupprimerRdv;
     cadre* CadreModifierRdv;
     cadre* CadreRdvDe;
+    cadre* CadreDetailsPersonne;
+    cadre* CadrePersonneEstLibre;
 };

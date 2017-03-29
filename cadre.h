@@ -71,6 +71,7 @@ class cadre : public wxFrame
     wxArrayString c_ajoutParticipants, c_listeBoxParticipants;
 
     std::vector<string> repertoire;
+    std::vector<vector<string>> c_listeInitiale;
 
     wxChoice *c_choix_personne, *c_choix_rdv;
 

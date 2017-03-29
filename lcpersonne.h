@@ -24,7 +24,6 @@ public:
     string getPrenom(chainonPersonne* crt);
     string getNumero(chainonPersonne* crt);
     string getEmail(chainonPersonne* crt);
-    void setTete();
     chainonPersonne* getSuivant(chainonPersonne* crt);
 
 private:

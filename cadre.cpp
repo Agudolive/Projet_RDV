@@ -939,11 +939,12 @@ void cadre::OnSelectionModifierRdv(wxCommandEvent& e){
 
   c_listeBoxParticipants.Empty();
 
-  vector<vector<string>> liste = repertoireRdv->getParticipants(crt);
-  for(unsigned j=0; j<liste.size(); j++)
+  c_listeInitiale = repertoireRdv->getParticipants(crt);
+
+  for(unsigned j=0; j<c_listeInitiale.size(); j++)
   {
-    wxString nom = liste[j][0];
-    wxString prenom = liste[j][1];
+    wxString nom = c_listeInitiale[j][0];
+    wxString prenom = c_listeInitiale[j][1];
     c_listeBoxParticipants.Add(nom + " " + prenom);
     c_listeParticipants->InsertItems(1, &c_listeBoxParticipants[j], 0);
   }
@@ -997,7 +998,17 @@ void cadre::OnValiderModifierRdv(wxCommandEvent& e)
   unsigned i = 0;
   while( (conditionParticipants==true) & (i<listeVector.size()) )
   {
-    conditionParticipants = repertoireRdv->estLibre(listeVector[i][0], listeVector[i][1], jour, mois, annee, heureDebut, jour, mois, annee, heureFin);
+    string nomTmp = listeVector[i][0];
+    string prenomTmp = listeVector[i][1];
+    bool conditionParticipantInitial = false;
+
+    for(unsigned j=0; j<listeVector.size(); j++)
+      if( (nomTmp == listeVector[j][0]) & (prenomTmp == listeVector[j][1]) )
+        conditionParticipantInitial = true;
+
+    if(!conditionParticipantInitial)
+      conditionParticipants = repertoireRdv->estLibre(nomTmp, prenomTmp, jour, mois, annee, heureDebut, jour, mois, annee, heureFin);
+
     ++i;
   }
 
